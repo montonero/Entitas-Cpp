@@ -33,6 +33,8 @@ def build(ctx):
         source = ctx.path.ant_glob('EntitasPP/*.cpp'),
         target = 'entitas',
         cxxflags     = ['-std=c++14'],
+        includes = 'EntitasPP',
+        export_includes = '. EntitasPP',
     )
 
     s1 = ctx.path.ant_glob(['*.cpp'])
@@ -46,6 +48,16 @@ def build(ctx):
         use =  ['entitas']
     )
 
+    s1 = ctx.path.ant_glob(['sample/*.cpp'])
+    ctx.program(
+        source = s1,
+        features='cxx cxxprogram',
+        target='s1',
+        cxxflags     = ['-std=c++14'],
+        # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
+        # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
+        use =  ['entitas']
+    )
 
 
     if ctx.cmd != 'clean':

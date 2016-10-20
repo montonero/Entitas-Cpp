@@ -204,7 +204,7 @@ observer->ClearCollectedEntities();
 
 ###### Entitas C&#35;
 ```csharp
-public class MoveSystem : IExecuteSystem, ISetPool {
+public class MoveSystem : IExecuteSystem, ISetPoolSystem {
     Group _group;
 
     public void SetPool(Pool pool) {
@@ -223,7 +223,7 @@ public class MoveSystem : IExecuteSystem, ISetPool {
 
 ###### Entitas++
 ```cpp
-class MoveSystem : public IExecuteSystem, public ISetPool {
+class MoveSystem : public IExecuteSystem, public ISetPoolSystem {
     std::shared_ptr<Group> _group;
 
     public:
