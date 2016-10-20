@@ -29,16 +29,24 @@ def build(ctx):
     # ctx.recurse('chibi')
     # ctx.recurse(ctx.env.ws_client_dir)
 
-    s1 = ctx.path.ant_glob(['*.cpp', 'EntitasPP/*.cpp'])
+    ctx.stlib(
+        source = ctx.path.ant_glob('EntitasPP/*.cpp'),
+        target = 'entitas',
+        cxxflags     = ['-std=c++14'],
+    )
+
+    s1 = ctx.path.ant_glob(['*.cpp'])
     ctx.program(
-        source=s1,
+        source = s1,
         features='cxx cxxprogram',
-        target='app',
+        target='demo',
         cxxflags     = ['-std=c++14'],
         # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
-        use = libs 
+        use =  ['entitas']
     )
+
+
 
     if ctx.cmd != 'clean':
         from waflib import Logs
