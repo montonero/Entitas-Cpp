@@ -9,16 +9,17 @@
 
 namespace EntitasPP
 {
-struct TriggerOnEvent
-{
-	public:
-		TriggerOnEvent(const Matcher trigger, const GroupEventType eventType)
-		{
-			this->trigger = trigger;
-			this->eventType = eventType;
-		}
+    struct TriggerOnEvent
+    {
+    public:
+        TriggerOnEvent() = default;
+        TriggerOnEvent(const Matcher trigger, const GroupEventType eventType)
+        {
+            this->trigger = trigger;
+            this->eventType = eventType;
+        }
 
-		Matcher trigger;
-		GroupEventType eventType;
-};
+        Matcher trigger;
+        GroupEventType eventType;
+    };
 }

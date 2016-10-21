@@ -75,6 +75,14 @@ public:
   float speed {0.f};
 };
 
+
+struct RenderComponent : public IComponent
+{
+    void Reset(Material m) { material = m; }
+    Material material;
+};
+
+
 class MoveSystem : public IExecuteSystem, public ISetPoolSystem
 {
     std::shared_ptr<Group> _group;
@@ -94,6 +102,36 @@ class MoveSystem : public IExecuteSystem, public ISetPoolSystem
 };
 
 
+/*
+class RenderPositionSystem : public IReactiveSystem
+{
+    // std::unique_ptr<TriggerOnEvent> trigger;
+    TriggerOnEvent trigger;
+
+public:
+    RenderPositionSystem()
+    {
+        trigger = Matcher_AllOf(Position, RenderComponent)->OnEntityAdded();
+        // trigger.reset(Matcher_AllOf(Position, RenderComponent)->OnEntityAdded());
+    }
+
+    void Execute(std::vector<EntityPtr> entities)
+    {
+        // Gets executed only if the observed group changed.
+        // Changed entities are passed as an argument
+        for (auto& e : entities)
+        {
+            auto pos = e->Get<Position>();
+            // NOTE: Unity-only example, but this maybe could be the code if Unity were compatible with C++
+            // e->Get<View>()->gameObject.transform.position = new Vector3(pos->x, pos->y, pos->z);
+        }
+    }
+};
+*/
+
+
+
+
 
 int main(const int argc, const char* argv[])
 {
@@ -105,6 +143,11 @@ int main(const int argc, const char* argv[])
 
   for(unsigned int i = 0; i < 2; ++i) {
     systems->Execute();
+  }
+
+  auto entities = pool->GetEntities(Matcher_AllOf(RenderComponent, Position)); // *Some magic preprocessor involved*
+  for (auto &e : entities) { // e is a shared_ptr of Entity
+      // do something
   }
 
   return 0;
