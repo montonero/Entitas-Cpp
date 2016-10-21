@@ -19,27 +19,27 @@ class Pool
 		Pool(const unsigned int startCreationIndex = 1);
 		~Pool();
 
-		auto CreateEntity() -> EntityPtr;
-		bool HasEntity(const EntityPtr& entity) const;
-		void DestroyEntity(EntityPtr entity);
-		void DestroyAllEntities();
+		auto createEntity() -> EntityPtr;
+		bool hasEntity(const EntityPtr& entity) const;
+		void destroyEntity(EntityPtr entity);
+		void destroyAllEntities();
 
-		auto GetEntities() -> std::vector<EntityPtr>;
-		auto GetEntities(const Matcher matcher) -> std::vector<EntityPtr>;
-		auto GetGroup(Matcher matcher) -> std::shared_ptr<Group>;
+		auto getEntities() -> std::vector<EntityPtr>;
+		auto getEntities(const Matcher matcher) -> std::vector<EntityPtr>;
+		auto getGroup(Matcher matcher) -> std::shared_ptr<Group>;
 
-		void ClearGroups();
-		void ResetCreationIndex();
-		void ClearComponentPool(const ComponentId index);
-		void ClearComponentPools();
-		void Reset();
+		void clearGroups();
+		void resetCreationIndex();
+		void clearComponentPool(const ComponentId index);
+		void clearComponentPools();
+		void reset();
 
-		auto GetEntityCount() const -> unsigned int;
-		auto GetReusableEntitiesCount() const -> unsigned int;
-		auto GetRetainedEntitiesCount() const -> unsigned int;
+		auto getEntityCount() const -> unsigned int;
+		auto getReusableEntitiesCount() const -> unsigned int;
+		auto getRetainedEntitiesCount() const -> unsigned int;
 
-		auto CreateSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>;
-		template <typename T> inline auto CreateSystem() -> std::shared_ptr<ISystem>;
+		auto createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>;
+		template <typename T> inline auto createSystem() -> std::shared_ptr<ISystem>;
 
 		using PoolChanged = Delegate<void(Pool* pool, EntityPtr entity)>;
 		using GroupChanged = Delegate<void(Pool* pool, std::shared_ptr<Group> group)>;
@@ -51,9 +51,9 @@ class Pool
 		GroupChanged OnGroupCleared;
 
 	private:
-		void UpdateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component);
-		void UpdateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
-		void OnEntityReleased(Entity* entity);
+		void updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component);
+		void updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
+		void onEntityReleased(Entity* entity);
 
 		unsigned int mCreationIndex;
 		std::unordered_set<EntityPtr> mEntities;
@@ -69,8 +69,8 @@ class Pool
 };
 
 template <typename T>
-auto Pool::CreateSystem() -> std::shared_ptr<ISystem>
+auto Pool::createSystem() -> std::shared_ptr<ISystem>
 {
-	return CreateSystem(std::dynamic_pointer_cast<ISystem>(std::shared_ptr<T>(new T())));
+	return createSystem(std::dynamic_pointer_cast<ISystem>(std::shared_ptr<T>(new T())));
 }
 }

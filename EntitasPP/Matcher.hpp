@@ -16,31 +16,31 @@ class Matcher
 {
 	public:
 		Matcher() = default;
-		static auto AllOf(const ComponentIdList indices) -> const Matcher;
-		static auto AllOf(const MatcherList matchers) -> const Matcher;
-		static auto AnyOf(const ComponentIdList indices) -> const Matcher;
-		static auto AnyOf(const MatcherList matchers) -> const Matcher;
-		static auto NoneOf(const ComponentIdList indices) -> const Matcher;
-		static auto NoneOf(const MatcherList matchers) -> const Matcher;
+		static auto allOf(const ComponentIdList indices) -> const Matcher;
+		static auto allOf(const MatcherList matchers) -> const Matcher;
+		static auto anyOf(const ComponentIdList indices) -> const Matcher;
+		static auto anyOf(const MatcherList matchers) -> const Matcher;
+		static auto noneOf(const ComponentIdList indices) -> const Matcher;
+		static auto noneOf(const MatcherList matchers) -> const Matcher;
 
-		bool IsEmpty() const;
-		bool Matches(const EntityPtr& entity);
-		auto GetIndices() -> const ComponentIdList;
-		auto GetAllOfIndices() const -> const ComponentIdList;
-		auto GetAnyOfIndices() const -> const ComponentIdList;
-		auto GetNoneOfIndices() const -> const ComponentIdList;
+		bool isEmpty() const;
+		bool matches(const EntityPtr& entity);
+		auto getIndices() -> const ComponentIdList;
+		auto getAllOfIndices() const -> const ComponentIdList;
+		auto getAnyOfIndices() const -> const ComponentIdList;
+		auto getNoneOfIndices() const -> const ComponentIdList;
 
-		auto GetHashCode() const -> unsigned int;
-		bool CompareIndices(const Matcher& matcher) const;
+		auto getHashCode() const -> unsigned int;
+		bool compareIndices(const Matcher& matcher) const;
 
-		auto OnEntityAdded() -> const TriggerOnEvent;
-		auto OnEntityRemoved() -> const TriggerOnEvent;
-		auto OnEntityAddedOrRemoved() -> const TriggerOnEvent;
+		auto onEntityAdded() -> const TriggerOnEvent;
+		auto onEntityRemoved() -> const TriggerOnEvent;
+		auto onEntityAddedOrRemoved() -> const TriggerOnEvent;
 
 		bool operator ==(const Matcher right) const;
 
 	protected:
-		void CalculateHash();
+		void calculateHash();
 
 		ComponentIdList mIndices;
 		ComponentIdList mAllOfIndices;
@@ -48,10 +48,10 @@ class Matcher
 		ComponentIdList mNoneOfIndices;
 
 	private:
-		auto ApplyHash(unsigned int hash, const ComponentIdList indices, int i1, int i2) const -> unsigned int;
-		auto MergeIndices() const -> ComponentIdList;
-		static auto MergeIndices(MatcherList matchers) -> ComponentIdList;
-		static auto DistinctIndices(ComponentIdList indices) -> ComponentIdList;
+		auto applyHash(unsigned int hash, const ComponentIdList indices, int i1, int i2) const -> unsigned int;
+		auto mergeIndices() const -> ComponentIdList;
+		static auto mergeIndices(MatcherList matchers) -> ComponentIdList;
+		static auto distinctIndices(ComponentIdList indices) -> ComponentIdList;
 
 		unsigned int mCachedHash{0};
 };
@@ -64,7 +64,7 @@ struct hash<EntitasPP::Matcher>
 {
 	std::size_t operator()(const EntitasPP::Matcher& matcher) const
 	{
-		return hash<unsigned int>()(matcher.GetHashCode());
+		return hash<unsigned int>()(matcher.getHashCode());
 	}
 };
 }
@@ -80,8 +80,8 @@ namespace
 #define GET_MACRO(_1, _2, _3, _4, _5, _6, NAME,...) NAME
 #define FOR_EACH(MODIFIER,...) GET_MACRO(__VA_ARGS__, FUNC_6, FUNC_5, FUNC_4, FUNC_3, FUNC_2, FUNC_1)(MODIFIER, __VA_ARGS__)
 
-#define COMPONENT_GET_TYPE_ID(COMPONENT_CLASS) EntitasPP::ComponentTypeId::Get<COMPONENT_CLASS>()
-#define Matcher_AllOf(...) (EntitasPP::Matcher)EntitasPP::Matcher::AllOf(std::vector<EntitasPP::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
-#define Matcher_AnyOf(...) (EntitasPP::Matcher)EntitasPP::Matcher::AnyOf(std::vector<EntitasPP::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
-#define Matcher_NoneOf(...) (EntitasPP::Matcher)EntitasPP::Matcher::NoneOf(std::vector<EntitasPP::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
+#define COMPONENT_GET_TYPE_ID(COMPONENT_CLASS) EntitasPP::ComponentTypeId::get<COMPONENT_CLASS>()
+#define Matcher_allOf(...) (EntitasPP::Matcher)EntitasPP::Matcher::allOf(std::vector<EntitasPP::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
+#define Matcher_anyOf(...) (EntitasPP::Matcher)EntitasPP::Matcher::anyOf(std::vector<EntitasPP::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
+#define Matcher_noneOf(...) (EntitasPP::Matcher)EntitasPP::Matcher::noneOf(std::vector<EntitasPP::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
 }

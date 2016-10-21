@@ -13,12 +13,12 @@ Group::Group(const Matcher& matcher) : mMatcher(matcher)
 {
 }
 
-auto Group::Count() const -> const unsigned int
+auto Group::count() const -> const unsigned int
 {
 	return mEntities.size();
 }
 
-auto Group::GetEntities() -> std::vector<EntityPtr>
+auto Group::getEntities() -> std::vector<EntityPtr>
 {
 	if(mEntitiesCache.empty() && !mEntities.empty())
 	{
@@ -28,15 +28,15 @@ auto Group::GetEntities() -> std::vector<EntityPtr>
 	return mEntitiesCache;
 }
 
-auto Group::GetSingleEntity() const -> EntityPtr
+auto Group::getSingleEntity() const -> EntityPtr
 {
-	auto count = Count();
+	auto count_ = count();
 
-	if(count == 1)
+	if(count_ == 1)
 	{
 		return *(mEntities.begin());
 	}
-	else if(count == 0)
+	else if(count_ == 0)
 	{
 		return nullptr;
 	}
@@ -48,73 +48,73 @@ auto Group::GetSingleEntity() const -> EntityPtr
 	return nullptr;
 }
 
-bool Group::ContainsEntity(const EntityPtr& entity) const
+bool Group::containsEntity(const EntityPtr& entity) const
 {
 	return std::find(mEntities.begin(), mEntities.end(), entity) != mEntities.end();
 }
 
-auto Group::GetMatcher() const -> Matcher
+auto Group::getMatcher() const -> Matcher
 {
 	return mMatcher;
 }
 
-auto Group::CreateObserver(const GroupEventType eventType) -> std::shared_ptr<GroupObserver>
+auto Group::createObserver(const GroupEventType eventType) -> std::shared_ptr<GroupObserver>
 {
 	return std::shared_ptr<GroupObserver>(new GroupObserver(mInstance.lock(), eventType));
 }
 
-void Group::SetInstance(std::shared_ptr<Group> instance)
+void Group::setInstance(std::shared_ptr<Group> instance)
 {
 	mInstance = std::weak_ptr<Group>(instance);
 }
 
-auto Group::HandleEntity(EntityPtr entity) -> GroupChanged*
+auto Group::handleEntity(EntityPtr entity) -> GroupChanged*
 {
-	return mMatcher.Matches(entity) ? AddEntity(entity) : RemoveEntity(entity);
+	return mMatcher.matches(entity) ? addEntity(entity) : removeEntity(entity);
 }
 
-void Group::HandleEntitySilently(EntityPtr entity)
+void Group::handleEntitySilently(EntityPtr entity)
 {
-	if(mMatcher.Matches(entity))
+	if(mMatcher.matches(entity))
 	{
-		AddEntitySilently(entity);
+		addEntitySilently(entity);
 	}
 	else
 	{
-		RemoveEntitySilently(entity);
+		removeEntitySilently(entity);
 	}
 }
 
-void Group::HandleEntity(EntityPtr entity, ComponentId index, IComponent* component)
+void Group::handleEntity(EntityPtr entity, ComponentId index, IComponent* component)
 {
-	if(mMatcher.Matches(entity))
+	if(mMatcher.matches(entity))
 	{
-		AddEntity(entity, index, component);
+		addEntity(entity, index, component);
 	}
 	else
 	{
-		RemoveEntity(entity, index, component);
+		removeEntity(entity, index, component);
 	}
 }
 
-void Group::UpdateEntity(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
+void Group::updateEntity(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
 {
-	if(ContainsEntity(entity))
+	if(containsEntity(entity))
 	{
-		OnEntityRemoved(mInstance.lock(), entity, index, previousComponent);
-		OnEntityAdded(mInstance.lock(), entity, index, newComponent);
+		onEntityRemoved(mInstance.lock(), entity, index, previousComponent);
+		onEntityAdded(mInstance.lock(), entity, index, newComponent);
 		OnEntityUpdated(mInstance.lock(), entity, index, previousComponent, newComponent);
 	}
 }
 
-void Group::RemoveAllEventHandlers()
+void Group::removeAllEventHandlers()
 {
-	OnEntityAdded.Clear();
-	OnEntityRemoved.Clear();
-	OnEntityUpdated.Clear();
+	onEntityAdded.clear();
+	onEntityRemoved.clear();
+	OnEntityUpdated.clear();
 }
 
-bool Group::AddEntitySilently(EntityPtr entity)
+bool Group::addEntitySilently(EntityPtr entity)
 {
 	if(mEntities.insert(entity).second)
 	{
@@ -125,20 +125,20 @@ bool Group::AddEntitySilently(EntityPtr entity)
 	return false;
 }
 
-void Group::AddEntity(EntityPtr entity, ComponentId index, IComponent* component)
+void Group::addEntity(EntityPtr entity, ComponentId index, IComponent* component)
 {
-	if(AddEntitySilently(entity))
+	if(addEntitySilently(entity))
 	{
-		OnEntityAdded(mInstance.lock(), entity, index, component);
+		onEntityAdded(mInstance.lock(), entity, index, component);
 	}
 }
 
-auto Group::AddEntity(EntityPtr entity) -> GroupChanged*
+auto Group::addEntity(EntityPtr entity) -> GroupChanged*
 {
-	return AddEntitySilently(entity) ? &OnEntityAdded : nullptr;
+	return addEntitySilently(entity) ? &onEntityAdded : nullptr;
 }
 
-bool Group::RemoveEntitySilently(EntityPtr entity)
+bool Group::removeEntitySilently(EntityPtr entity)
 {
 	if(mEntities.erase(entity))
 	{
@@ -149,16 +149,16 @@ bool Group::RemoveEntitySilently(EntityPtr entity)
 	return false;
 }
 
-void Group::RemoveEntity(EntityPtr entity, ComponentId index, IComponent* component)
+void Group::removeEntity(EntityPtr entity, ComponentId index, IComponent* component)
 {
-	if(RemoveEntitySilently(entity))
+	if(removeEntitySilently(entity))
 	{
-		OnEntityRemoved(mInstance.lock(), entity, index, component);
+		onEntityRemoved(mInstance.lock(), entity, index, component);
 	}
 }
 
-auto Group::RemoveEntity(EntityPtr entity) -> GroupChanged*
+auto Group::removeEntity(EntityPtr entity) -> GroupChanged*
 {
-	return RemoveEntitySilently(entity) ? &OnEntityRemoved : nullptr;
+	return removeEntitySilently(entity) ? &onEntityRemoved : nullptr;
 }
 }

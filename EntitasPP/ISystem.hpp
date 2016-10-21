@@ -33,37 +33,37 @@ class ISetPoolSystem
 		virtual void SetPool(Pool* pool) = 0;
 };
 
-class IInitializeSystem
+class IinitializeSystem
 {
 	protected:
-		IInitializeSystem() = default;
+		IinitializeSystem() = default;
 
 	public:
-		virtual ~IInitializeSystem() = default;
+		virtual ~IinitializeSystem() = default;
 
-		virtual void Initialize() = 0;
+		virtual void initialize() = 0;
 };
 
-class IExecuteSystem : public ISystem
+class IexecuteSystem : public ISystem
 {
 	protected:
-		IExecuteSystem() = default;
+		IexecuteSystem() = default;
 
 	public:
-		virtual ~IExecuteSystem() = default;
+		virtual ~IexecuteSystem() = default;
 
-		virtual void Execute() = 0;
+		virtual void execute() = 0;
 };
 
-class IFixedExecuteSystem : public ISystem
+class IfixedExecuteSystem : public ISystem
 {
 	protected:
-		IFixedExecuteSystem() = default;
+		IfixedExecuteSystem() = default;
 
 	public:
-		virtual ~IFixedExecuteSystem() = default;
+		virtual ~IfixedExecuteSystem() = default;
 
-		virtual void FixedExecute() = 0;
+		virtual void fixedExecute() = 0;
 };
 
 class IReactiveExecuteSystem : public ISystem
@@ -74,7 +74,7 @@ class IReactiveExecuteSystem : public ISystem
 	public:
 		virtual ~IReactiveExecuteSystem() = default;
 
-		virtual void Execute(std::vector<EntityPtr> entities) = 0;
+		virtual void execute(std::vector<EntityPtr> entities) = 0;
 };
 
 class IReactiveSystem : public IReactiveExecuteSystem
@@ -111,9 +111,9 @@ class IExcludeComponents
 		Matcher excludeComponents;
 };
 
-class IClearReactiveSystem
+class IclearReactiveSystem
 {
 	protected:
-		IClearReactiveSystem() = default;
+		IclearReactiveSystem() = default;
 };
 }

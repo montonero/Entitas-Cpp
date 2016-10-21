@@ -9,7 +9,7 @@
 
 namespace EntitasPP
 {
-class ReactiveSystem : public IExecuteSystem
+class ReactiveSystem : public IexecuteSystem
 {
 	public:
 		ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveSystem> subsystem);
@@ -17,11 +17,11 @@ class ReactiveSystem : public IExecuteSystem
 		ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSystem> subsystem, std::vector<TriggerOnEvent> triggers);
 		~ReactiveSystem();
 
-		auto GetSubsystem() const -> std::shared_ptr<IReactiveExecuteSystem>;
-		void Activate();
-		void Deactivate();
-		void Clear();
-		void Execute();
+		auto getSubsystem() const -> std::shared_ptr<IReactiveExecuteSystem>;
+		void activate();
+		void deactivate();
+		void clear();
+		void execute();
 
 	private:
 		std::shared_ptr<IReactiveExecuteSystem> mSubsystem;

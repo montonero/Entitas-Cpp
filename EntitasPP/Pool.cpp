@@ -13,12 +13,12 @@ namespace EntitasPP
 Pool::Pool(const unsigned int startCreationIndex)
 {
 	mCreationIndex = startCreationIndex;
-	mOnEntityReleasedCache = std::bind(&Pool::OnEntityReleased, this, std::placeholders::_1);
+	mOnEntityReleasedCache = std::bind(&Pool::onEntityReleased, this, std::placeholders::_1);
 }
 
 Pool::~Pool()
 {
-	Reset();
+	reset();
 
 	// TODO: Components don't get destroyed.
 
@@ -45,7 +45,7 @@ Pool::~Pool()
 	}
 }
 
-auto Pool::CreateEntity() -> EntityPtr
+auto Pool::createEntity() -> EntityPtr
 {
 	EntityPtr entity;
 
@@ -58,11 +58,11 @@ auto Pool::CreateEntity() -> EntityPtr
 	{
 		entity = EntityPtr(new Entity(&mComponentPools), [](void* entity)
 		{
-			(static_cast<Entity*>(entity)->OnEntityReleased(static_cast<Entity*>(entity)));
+			(static_cast<Entity*>(entity)->onEntityReleased(static_cast<Entity*>(entity)));
 		});
 	}
 
-	entity->SetInstance(entity);
+	entity->setInstance(entity);
 	entity->mIsEnabled = true;
 	entity->mUuid = mCreationIndex++;
 
@@ -71,31 +71,31 @@ auto Pool::CreateEntity() -> EntityPtr
 
 	entity->OnComponentAdded += [this](EntityPtr entity, ComponentId index, IComponent* component)
 	{
-		UpdateGroupsComponentAddedOrRemoved(entity, index, component);
+		updateGroupsComponentAddedOrRemoved(entity, index, component);
 	};
 	entity->OnComponentRemoved += [this](EntityPtr entity, ComponentId index, IComponent* component)
 	{
-		UpdateGroupsComponentAddedOrRemoved(entity, index, component);
+		updateGroupsComponentAddedOrRemoved(entity, index, component);
 	};
 	entity->OnComponentReplaced += [this](EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
 	{
-		UpdateGroupsComponentReplaced(entity, index, previousComponent, newComponent);
+		updateGroupsComponentReplaced(entity, index, previousComponent, newComponent);
 	};
 
-	entity->OnEntityReleased.Clear();
-	entity->OnEntityReleased += mOnEntityReleasedCache;
+	entity->onEntityReleased.clear();
+	entity->onEntityReleased += mOnEntityReleasedCache;
 
 	OnEntityCreated(this, entity);
 
 	return entity;
 }
 
-bool Pool::HasEntity(const EntityPtr& entity) const
+bool Pool::hasEntity(const EntityPtr& entity) const
 {
 	return std::find(mEntities.begin(), mEntities.end(), std::weak_ptr<Entity>(entity)) != mEntities.end();
 }
 
-void Pool::DestroyEntity(EntityPtr entity)
+void Pool::destroyEntity(EntityPtr entity)
 {
 	auto removed = mEntities.erase(entity);
 
@@ -107,12 +107,12 @@ void Pool::DestroyEntity(EntityPtr entity)
 	mEntitiesCache.clear();
 
 	OnEntityWillBeDestroyed(this, entity);
-	entity->Destroy();
+	entity->destroy();
 	OnEntityDestroyed(this, entity);
 
 	if (entity.use_count() == 1)
 	{
-		entity->OnEntityReleased -= mOnEntityReleasedCache;
+		entity->onEntityReleased -= mOnEntityReleasedCache;
 		mReusableEntities.push(entity.get());
 	}
 	else
@@ -121,14 +121,14 @@ void Pool::DestroyEntity(EntityPtr entity)
 	}
 }
 
-void Pool::DestroyAllEntities()
+void Pool::destroyAllEntities()
 {
 	{
 		auto entitiesTemp = std::vector<EntityPtr>(mEntities.begin(), mEntities.end());
 
 		while(! mEntities.empty())
 		{
-			DestroyEntity(entitiesTemp.back());
+			destroyEntity(entitiesTemp.back());
 			entitiesTemp.pop_back();
 		}
 	}
@@ -137,12 +137,12 @@ void Pool::DestroyAllEntities()
 
 	if (! mRetainedEntities.empty())
 	{
-		// Try calling Pool.ClearGroups() and SystemContainer.ClearReactiveSystems() before calling pool.DestroyAllEntities() to avoid memory leaks
+		// Try calling Pool.clearGroups() and SystemContainer.clearReactiveSystems() before calling pool.destroyAllEntities() to avoid memory leaks
 		throw std::runtime_error("Error, pool detected retained entities although all entities got destroyed. Did you release all entities?");
 	}
 }
 
-auto Pool::GetEntities() -> std::vector<EntityPtr>
+auto Pool::getEntities() -> std::vector<EntityPtr>
 {
 	if(mEntitiesCache.empty())
 	{
@@ -152,12 +152,12 @@ auto Pool::GetEntities() -> std::vector<EntityPtr>
 	return mEntitiesCache;
 }
 
-auto Pool::GetEntities(const Matcher matcher) -> std::vector<EntityPtr>
+auto Pool::getEntities(const Matcher matcher) -> std::vector<EntityPtr>
 {
-	return GetGroup(std::move(matcher))->GetEntities();
+	return getGroup(std::move(matcher))->getEntities();
 }
 
-auto Pool::GetGroup(Matcher matcher) -> std::shared_ptr<Group>
+auto Pool::getGroup(Matcher matcher) -> std::shared_ptr<Group>
 {
 	std::shared_ptr<Group> group = nullptr;
 
@@ -166,20 +166,20 @@ auto Pool::GetGroup(Matcher matcher) -> std::shared_ptr<Group>
 	if (it == mGroups.end())
 	{
 		group = std::shared_ptr<Group>(new Group(matcher));
-		group->SetInstance(group);
+		group->setInstance(group);
 
-		auto entities = GetEntities();
+		auto entities = getEntities();
 
 		for (int i = 0, entitiesLength = entities.size(); i < entitiesLength; i++)
 		{
-			group->HandleEntitySilently(entities[i]);
+			group->handleEntitySilently(entities[i]);
 		}
 
-		mGroups[group->GetMatcher()] = group;
+		mGroups[group->getMatcher()] = group;
 
-		for (int i = 0, indicesLength = matcher.GetIndices().size(); i < indicesLength; i++)
+		for (int i = 0, indicesLength = matcher.getIndices().size(); i < indicesLength; i++)
 		{
-			mGroupsForIndex[matcher.GetIndices()[i]].push_back(group);
+			mGroupsForIndex[matcher.getIndices()[i]].push_back(group);
 		}
 
 		OnGroupCreated(this, group);
@@ -192,11 +192,11 @@ auto Pool::GetGroup(Matcher matcher) -> std::shared_ptr<Group>
 	return group;
 }
 
-void Pool::ClearGroups()
+void Pool::clearGroups()
 {
 	for (const auto &it : mGroups)
 	{
-		it.second->RemoveAllEventHandlers();
+		it.second->removeAllEventHandlers();
 		OnGroupCleared(this, it.second);
 	}
 
@@ -210,12 +210,12 @@ void Pool::ClearGroups()
 	mGroupsForIndex.clear();
 }
 
-void Pool::ResetCreationIndex()
+void Pool::resetCreationIndex()
 {
 	mCreationIndex = 0;
 }
 
-void Pool::ClearComponentPool(const ComponentId index)
+void Pool::clearComponentPool(const ComponentId index)
 {
 	while(! mComponentPools.at(index).empty())
 	{
@@ -223,37 +223,37 @@ void Pool::ClearComponentPool(const ComponentId index)
 	}
 }
 
-void Pool::ClearComponentPools()
+void Pool::clearComponentPools()
 {
 	for(const auto &pair : mComponentPools)
 	{
-		ClearComponentPool(pair.first);
+		clearComponentPool(pair.first);
 	}
 }
 
-void Pool::Reset()
+void Pool::reset()
 {
-	ClearGroups();
-	DestroyAllEntities();
-	ResetCreationIndex();
+	clearGroups();
+	destroyAllEntities();
+	resetCreationIndex();
 }
 
-auto Pool::GetEntityCount() const -> unsigned int
+auto Pool::getEntityCount() const -> unsigned int
 {
 	return mEntities.size();
 }
 
-auto Pool::GetReusableEntitiesCount() const -> unsigned int
+auto Pool::getReusableEntitiesCount() const -> unsigned int
 {
 	return mReusableEntities.size();
 }
 
-auto Pool::GetRetainedEntitiesCount() const -> unsigned int
+auto Pool::getRetainedEntitiesCount() const -> unsigned int
 {
 	return mRetainedEntities.size();
 }
 
-auto Pool::CreateSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>
+auto Pool::createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>
 {
 	if(std::dynamic_pointer_cast<ISetPoolSystem>(system) != nullptr)
 	{
@@ -273,7 +273,7 @@ auto Pool::CreateSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISys
 	return system;
 }
 
-void Pool::UpdateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)
+void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)
 {
 	if(mGroupsForIndex.find(index) == mGroupsForIndex.end())
 	{
@@ -288,7 +288,7 @@ void Pool::UpdateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId ind
 
 		for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i)
 		{
-			events.push_back(groups[i].lock()->HandleEntity(entity));
+			events.push_back(groups[i].lock()->handleEntity(entity));
 		}
 
 		for (int i = 0, eventsCount = events.size(); i < eventsCount; ++i)
@@ -298,7 +298,7 @@ void Pool::UpdateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId ind
 	}
 }
 
-void Pool::UpdateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
+void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
 {
 	if(mGroupsForIndex.find(index) == mGroupsForIndex.end())
 	{
@@ -309,12 +309,12 @@ void Pool::UpdateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IC
 	{
 		for(const auto &g : mGroupsForIndex[index])
 		{
-			g.lock()->UpdateEntity(entity, index, previousComponent, newComponent);
+			g.lock()->updateEntity(entity, index, previousComponent, newComponent);
 		}
 	}
 }
 
-void Pool::OnEntityReleased(Entity* entity)
+void Pool::onEntityReleased(Entity* entity)
 {
 	if (entity->mIsEnabled)
 	{

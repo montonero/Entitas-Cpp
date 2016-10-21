@@ -8,101 +8,101 @@
 
 namespace EntitasPP
 {
-auto Matcher::AllOf(const ComponentIdList indices) -> const Matcher
+auto Matcher::allOf(const ComponentIdList indices) -> const Matcher
 {
 	auto matcher = Matcher();
-	matcher.mAllOfIndices = DistinctIndices(indices);
-	matcher.CalculateHash();
+	matcher.mAllOfIndices = distinctIndices(indices);
+	matcher.calculateHash();
 
 	return matcher;
 }
 
-auto Matcher::AllOf(const MatcherList matchers) -> const Matcher
+auto Matcher::allOf(const MatcherList matchers) -> const Matcher
 {
-	return Matcher::AllOf(MergeIndices(matchers));
+	return Matcher::allOf(mergeIndices(matchers));
 }
 
-auto Matcher::AnyOf(const ComponentIdList indices) -> const Matcher
+auto Matcher::anyOf(const ComponentIdList indices) -> const Matcher
 {
 	auto matcher = Matcher();
-	matcher.mAnyOfIndices = DistinctIndices(indices);
-	matcher.CalculateHash();
+	matcher.mAnyOfIndices = distinctIndices(indices);
+	matcher.calculateHash();
 
 	return matcher;
 }
 
-auto Matcher::AnyOf(const MatcherList matchers) -> const Matcher
+auto Matcher::anyOf(const MatcherList matchers) -> const Matcher
 {
-	return Matcher::AnyOf(MergeIndices(matchers));
+	return Matcher::anyOf(mergeIndices(matchers));
 }
 
-auto Matcher::NoneOf(const ComponentIdList indices) -> const Matcher
+auto Matcher::noneOf(const ComponentIdList indices) -> const Matcher
 {
 	auto matcher = Matcher();
-	matcher.mNoneOfIndices = DistinctIndices(indices);
-	matcher.CalculateHash();
+	matcher.mNoneOfIndices = distinctIndices(indices);
+	matcher.calculateHash();
 
 	return matcher;
 }
 
-auto Matcher::NoneOf(const MatcherList matchers) -> const Matcher
+auto Matcher::noneOf(const MatcherList matchers) -> const Matcher
 {
-	return Matcher::NoneOf(MergeIndices(matchers));
+	return Matcher::noneOf(mergeIndices(matchers));
 }
 
-bool Matcher::IsEmpty() const
+bool Matcher::isEmpty() const
 {
 	return (mAllOfIndices.empty() && mAnyOfIndices.empty() && mNoneOfIndices.empty());
 }
 
-bool Matcher::Matches(const EntityPtr& entity)
+bool Matcher::matches(const EntityPtr& entity)
 {
-	auto matchesAllOf = mAllOfIndices.empty() || entity->HasComponents(mAllOfIndices);
-	auto matchesAnyOf = mAnyOfIndices.empty() || entity->HasAnyComponent(mAnyOfIndices);
-	auto matchesNoneOf = mNoneOfIndices.empty() || ! entity->HasAnyComponent(mNoneOfIndices);
+	auto matchesAllOf = mAllOfIndices.empty() || entity->hasComponents(mAllOfIndices);
+	auto matchesAnyOf = mAnyOfIndices.empty() || entity->hasAnyComponent(mAnyOfIndices);
+	auto matchesNoneOf = mNoneOfIndices.empty() || ! entity->hasAnyComponent(mNoneOfIndices);
 
 	return matchesAllOf && matchesAnyOf && matchesNoneOf;
 }
 
-auto Matcher::GetIndices() -> const ComponentIdList
+auto Matcher::getIndices() -> const ComponentIdList
 {
 	if(mIndices.empty())
 	{
-		mIndices = MergeIndices();
+		mIndices = mergeIndices();
 	}
 
 	return mIndices;
 }
 
-auto Matcher::GetAllOfIndices() const -> const ComponentIdList
+auto Matcher::getAllOfIndices() const -> const ComponentIdList
 {
 	return mAllOfIndices;
 }
 
-auto Matcher::GetAnyOfIndices() const -> const ComponentIdList
+auto Matcher::getAnyOfIndices() const -> const ComponentIdList
 {
 	return mAnyOfIndices;
 }
 
-auto Matcher::GetNoneOfIndices() const -> const ComponentIdList
+auto Matcher::getNoneOfIndices() const -> const ComponentIdList
 {
 	return mNoneOfIndices;
 }
 
-auto Matcher::GetHashCode() const -> unsigned int
+auto Matcher::getHashCode() const -> unsigned int
 {
 	return mCachedHash;
 }
 
-bool Matcher::CompareIndices(const Matcher& matcher) const
+bool Matcher::compareIndices(const Matcher& matcher) const
 {
-	if(matcher.IsEmpty())
+	if(matcher.isEmpty())
 	{
 		return false;
 	}
 
-	auto leftIndices = this->MergeIndices();
-	auto rightIndices = matcher.MergeIndices();
+	auto leftIndices = this->mergeIndices();
+	auto rightIndices = matcher.mergeIndices();
 
 	if(leftIndices.size() != rightIndices.size())
 	{
@@ -120,27 +120,27 @@ bool Matcher::CompareIndices(const Matcher& matcher) const
 	return true;
 }
 
-auto Matcher::OnEntityAdded() -> const TriggerOnEvent
+auto Matcher::onEntityAdded() -> const TriggerOnEvent
 {
-	return TriggerOnEvent(*this, GroupEventType::OnEntityAdded);
+	return TriggerOnEvent(*this, GroupEventType::onEntityAdded);
 }
 
-auto Matcher::OnEntityRemoved() -> const TriggerOnEvent
+auto Matcher::onEntityRemoved() -> const TriggerOnEvent
 {
-	return TriggerOnEvent(*this, GroupEventType::OnEntityRemoved);
+	return TriggerOnEvent(*this, GroupEventType::onEntityRemoved);
 }
 
-auto Matcher::OnEntityAddedOrRemoved() -> const TriggerOnEvent
+auto Matcher::onEntityAddedOrRemoved() -> const TriggerOnEvent
 {
-	return TriggerOnEvent(*this, GroupEventType::OnEntityAddedOrRemoved);
+	return TriggerOnEvent(*this, GroupEventType::onEntityAddedOrRemoved);
 }
 
 bool Matcher::operator ==(const Matcher right) const
 {
-	return this->GetHashCode() == right.GetHashCode() && this->CompareIndices(right);
+	return this->getHashCode() == right.getHashCode() && this->compareIndices(right);
 }
 
-auto Matcher::MergeIndices() const -> ComponentIdList
+auto Matcher::mergeIndices() const -> ComponentIdList
 {
 	auto indicesList = ComponentIdList();
 	indicesList.reserve(mAllOfIndices.size() + mAnyOfIndices.size() + mNoneOfIndices.size());
@@ -160,21 +160,21 @@ auto Matcher::MergeIndices() const -> ComponentIdList
 		indicesList.push_back(id);
 	}
 
-	return DistinctIndices(indicesList);
+	return distinctIndices(indicesList);
 }
 
-void Matcher::CalculateHash()
+void Matcher::calculateHash()
 {
 	unsigned int hash = typeid(Matcher).hash_code();
 
-	hash = ApplyHash(hash, mAllOfIndices, 3, 53);
-	hash = ApplyHash(hash, mAnyOfIndices, 307, 367);
-	hash = ApplyHash(hash, mNoneOfIndices, 647, 683);
+	hash = applyHash(hash, mAllOfIndices, 3, 53);
+	hash = applyHash(hash, mAnyOfIndices, 307, 367);
+	hash = applyHash(hash, mNoneOfIndices, 647, 683);
 
 	mCachedHash = hash;
 }
 
-auto Matcher::ApplyHash(unsigned int hash, const ComponentIdList indices, int i1, int i2) const -> unsigned int
+auto Matcher::applyHash(unsigned int hash, const ComponentIdList indices, int i1, int i2) const -> unsigned int
 {
 	if (indices.size() > 0)
 	{
@@ -189,13 +189,13 @@ auto Matcher::ApplyHash(unsigned int hash, const ComponentIdList indices, int i1
 	return hash;
 }
 
-auto Matcher::MergeIndices(MatcherList matchers) -> ComponentIdList
+auto Matcher::mergeIndices(MatcherList matchers) -> ComponentIdList
 {
 	unsigned int totalIndices = 0;
 
 	for(auto &matcher : matchers)
 	{
-		totalIndices += matcher.GetIndices().size();
+		totalIndices += matcher.getIndices().size();
 	}
 
 	auto indices = ComponentIdList();
@@ -203,7 +203,7 @@ auto Matcher::MergeIndices(MatcherList matchers) -> ComponentIdList
 
 	for(auto &matcher : matchers)
 	{
-		for(const auto &id : matcher.GetIndices())
+		for(const auto &id : matcher.getIndices())
 		{
 			indices.push_back(id);
 		}
@@ -212,7 +212,7 @@ auto Matcher::MergeIndices(MatcherList matchers) -> ComponentIdList
 	return indices;
 }
 
-auto Matcher::DistinctIndices(ComponentIdList indices) -> ComponentIdList
+auto Matcher::distinctIndices(ComponentIdList indices) -> ComponentIdList
 {
 	std::sort(indices.begin(), indices.end());
 	indices.erase(std::unique(indices.begin(), indices.end()), indices.end());

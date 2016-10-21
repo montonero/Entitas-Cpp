@@ -9,31 +9,31 @@
 
 namespace EntitasPP
 {
-class SystemContainer : public IInitializeSystem, public IExecuteSystem, public IFixedExecuteSystem
+class SystemContainer : public IinitializeSystem, public IexecuteSystem, public IfixedExecuteSystem
 {
 	public:
 		SystemContainer() = default;
 
-		auto Add(std::shared_ptr<ISystem> system) -> SystemContainer*;
-		template <typename T> inline auto Add() -> SystemContainer*;
+		auto add(std::shared_ptr<ISystem> system) -> SystemContainer*;
+		template <typename T> inline auto add() -> SystemContainer*;
 
-		void Initialize();
-		void Execute();
-		void FixedExecute();
+		void initialize();
+		void execute();
+		void fixedExecute();
 
-		void ActivateReactiveSystems();
-		void DeactivateReactiveSystems();
-		void ClearReactiveSystems();
+		void activateReactiveSystems();
+		void deactivateReactiveSystems();
+		void clearReactiveSystems();
 
 	private:
-		std::vector<std::shared_ptr<IInitializeSystem>> mInitializeSystems;
-		std::vector<std::shared_ptr<IExecuteSystem>> mExecuteSystems;
-		std::vector<std::shared_ptr<IFixedExecuteSystem>> mFixedExecuteSystems;
+		std::vector<std::shared_ptr<IinitializeSystem>> mInitializeSystems;
+		std::vector<std::shared_ptr<IexecuteSystem>> mExecuteSystems;
+		std::vector<std::shared_ptr<IfixedExecuteSystem>> mFixedExecuteSystems;
 };
 
 template <typename T>
-auto SystemContainer::Add() -> SystemContainer*
+auto SystemContainer::add() -> SystemContainer*
 {
-	return Add(std::shared_ptr<T>(new T()));
+	return add(std::shared_ptr<T>(new T()));
 }
 }

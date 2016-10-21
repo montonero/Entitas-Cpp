@@ -22,13 +22,13 @@ class GroupObserver
 		GroupObserver(std::vector<std::shared_ptr<Group>> groups, std::vector<GroupEventType> eventTypes);
 		~GroupObserver();
 
-		void Activate();
-		void Deactivate();
-		auto GetCollectedEntities() -> std::unordered_set<EntityPtr>;
-		void ClearCollectedEntities();
+		void activate();
+		void deactivate();
+		auto getCollectedEntities() -> std::unordered_set<EntityPtr>;
+		void clearCollectedEntities();
 
 	private:
-		void AddEntity(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* component);
+		void addEntity(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* component);
 
 		std::unordered_set<EntityPtr> mCollectedEntities;
 		std::vector<std::shared_ptr<Group>> mGroups;

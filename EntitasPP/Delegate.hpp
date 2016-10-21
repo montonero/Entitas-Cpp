@@ -20,12 +20,12 @@ class Delegate;
 namespace DelegateImpl
 {
 template <typename TReturnType, typename... TArgs>
-struct Invoker
+struct invoker
 {
 	using ReturnType = std::vector<TReturnType>;
 
 	public:
-		static ReturnType Invoke(Delegate<TReturnType(TArgs...)> &delegate, TArgs... params)
+		static ReturnType invoke(Delegate<TReturnType(TArgs...)> &delegate, TArgs... params)
 		{
 			std::lock_guard<std::mutex> lock(delegate.mMutex);
 			ReturnType returnValues;
@@ -40,12 +40,12 @@ struct Invoker
 };
 
 template <typename... TArgs>
-struct Invoker<void, TArgs...>
+struct invoker<void, TArgs...>
 {
 	using ReturnType = void;
 
 	public:
-		static void Invoke(Delegate<void(TArgs...)> &delegate, TArgs... params)
+		static void invoke(Delegate<void(TArgs...)> &delegate, TArgs... params)
 		{
 			std::lock_guard<std::mutex> lock(delegate.mMutex);
 
@@ -60,10 +60,10 @@ struct Invoker<void, TArgs...>
 template<typename TReturnType, typename... TArgs>
 class Delegate<TReturnType(TArgs...)>
 {
-	using Invoker = DelegateImpl::Invoker<TReturnType, TArgs...>;
+	using invoker = DelegateImpl::invoker<TReturnType, TArgs...>;
 	using functionType = std::function<TReturnType(TArgs...)>;
 
-	friend Invoker;
+	friend invoker;
 
 	public:
 		Delegate() {}
@@ -81,24 +81,24 @@ class Delegate<TReturnType(TArgs...)>
 			return *this;
 		}
 
-		Delegate& Remove(const functionType &function)
+		Delegate& remove(const functionType &function)
 		{
 			std::lock_guard<std::mutex> lock(this->mMutex);
 
 			this->mFunctionList.remove_if([&](std::shared_ptr<functionType> &functionPtr)
 			{
-				return Hash(function) == Hash(*functionPtr);
+				return hash(function) == hash(*functionPtr);
 			});
 
 			return *this;
 		}
 
-		inline typename Invoker::ReturnType Invoke(TArgs... args)
+		inline typename invoker::ReturnType invoke(TArgs... args)
 		{
-			return Invoker::Invoke(*this, args...);
+			return invoker::invoke(*this, args...);
 		}
 
-		Delegate& Clear()
+		Delegate& clear()
 		{
 			std::lock_guard<std::mutex> lock(this->mMutex);
 
@@ -114,19 +114,19 @@ class Delegate<TReturnType(TArgs...)>
 
 		inline Delegate& operator -=(const functionType &function)
 		{
-			return Remove(function);
+			return remove(function);
 		}
 
-		inline typename Invoker::ReturnType operator ()(TArgs... args)
+		inline typename invoker::ReturnType operator ()(TArgs... args)
 		{
-			return Invoker::Invoke(*this, args...);
+			return invoker::invoke(*this, args...);
 		}
 
 	private:
 		std::mutex mMutex;
 		std::list<std::shared_ptr<functionType>> mFunctionList;
 
-		inline constexpr size_t Hash(const functionType &function) const
+		inline constexpr size_t hash(const functionType &function) const
 		{
 			return function.target_type().hash_code();
 		}
