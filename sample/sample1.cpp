@@ -11,7 +11,7 @@ using namespace EntitasPP;
 class DemoComponent : public IComponent
 {
 public:
-  void Reset(const std::string& name1, const std::string& name2)
+  void reset(const std::string& name1, const std::string& name2)
   {
     std::cout << "Created new entity: " << name1 << "," << name2 << std::endl;
   }
@@ -25,17 +25,17 @@ public:
     mPool = pool;
   }
 
-  void Initialize()
+  void initialize()
   {
-    mPool->CreateEntity()->Add<DemoComponent>("foo", "bar");
+    mPool->createEntity()->add<DemoComponent>("foo", "bar");
     std::cout << "DemoSystem initialized" << std::endl;
   }
 
-  void Execute()
+  void execute()
   {
-    mPool->CreateEntity()->Add<DemoComponent>("foo", "bar");
+    mPool->createEntity()->add<DemoComponent>("foo", "bar");
 
-    auto entitiesCount = mPool->GetGroup(Matcher_AllOf(DemoComponent))->Count();
+    auto entitiesCount = mPool->getGroup(Matcher_allOf(DemoComponent))->count();
     std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
 
     std::cout << "DemoSystem executed" << std::endl;
@@ -49,7 +49,7 @@ class Position : public IComponent
 {
 public:
   // You must provide at least ONE public "Reset" method with any parameters you want
-  void Reset(float px, float py, float pz)
+  void reset(float px, float py, float pz)
   {
     x = px;
     y = py;
@@ -65,7 +65,7 @@ public:
 class Move : public IComponent
 {
 public:
-  void Reset(Vec2 d, float s)
+  void reset(Vec2 d, float s)
   {
     direction = d;
     speed = s;
@@ -78,7 +78,7 @@ public:
 
 struct RenderComponent : public IComponent
 {
-    void Reset(Material m) { material = m; }
+    void reset(Material m) { material = m; }
     Material material;
 };
 
@@ -89,14 +89,14 @@ class MoveSystem : public IExecuteSystem, public ISetPoolSystem
 
     public:
         void SetPool(Pool* pool) {
-            _group = pool->GetGroup(Matcher_AllOf(Move, Position));
+            _group = pool->getGroup(Matcher_allOf(Move, Position));
         }
 
-        void Execute() {
-            for (auto &e : _group->GetEntities()) {
-                auto move = e->Get<Move>();
-                auto pos = e->Get<Position>();
-                e->Replace<Position>(pos->x, pos->y + move->speed, pos->z);
+        void execute() {
+            for (auto &e : _group->getEntities()) {
+                auto move = e->get<Move>();
+                auto pos = e->get<Position>();
+                e->replace<Position>(pos->x, pos->y + move->speed, pos->z);
             }
         }
 };
@@ -111,19 +111,19 @@ class RenderPositionSystem : public IReactiveSystem
 public:
     RenderPositionSystem()
     {
-        trigger = Matcher_AllOf(Position, RenderComponent)->OnEntityAdded();
-        // trigger.reset(Matcher_AllOf(Position, RenderComponent)->OnEntityAdded());
+        trigger = Matcher_allOf(Position, RenderComponent)->onEntityAdded();
+        // trigger.reset(Matcher_allOf(Position, RenderComponent)->onEntityAdded());
     }
 
-    void Execute(std::vector<EntityPtr> entities)
+    void execute(std::vector<EntityPtr> entities)
     {
         // Gets executed only if the observed group changed.
         // Changed entities are passed as an argument
         for (auto& e : entities)
         {
-            auto pos = e->Get<Position>();
+            auto pos = e->get<Position>();
             // NOTE: Unity-only example, but this maybe could be the code if Unity were compatible with C++
-            // e->Get<View>()->gameObject.transform.position = new Vector3(pos->x, pos->y, pos->z);
+            // e->get<View>()->gameObject.transform.position = new Vector3(pos->x, pos->y, pos->z);
         }
     }
 };
@@ -138,14 +138,14 @@ int main(const int argc, const char* argv[])
   auto systems = std::make_shared<SystemContainer>();
   auto pool = std::make_shared<Pool>();
 
-  systems->Add(pool->CreateSystem<DemoSystem>());
-  systems->Initialize();
+  systems->add(pool->createSystem<DemoSystem>());
+  systems->initialize();
 
   for(unsigned int i = 0; i < 2; ++i) {
-    systems->Execute();
+    systems->execute();
   }
 
-  auto entities = pool->GetEntities(Matcher_AllOf(RenderComponent, Position)); // *Some magic preprocessor involved*
+  auto entities = pool->getEntities(Matcher_allOf(RenderComponent, Position)); // *Some magic preprocessor involved*
   for (auto &e : entities) { // e is a shared_ptr of Entity
       // do something
   }

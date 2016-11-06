@@ -16,7 +16,7 @@ struct ComponentTypeId
 {
 	public:
 		template<typename T>
-		static const ComponentId Get()
+		static const ComponentId get()
 		{
 			static_assert((std::is_base_of<IComponent, T>::value && ! std::is_same<IComponent, T>::value),
 				"Class type must be derived from IComponent");
@@ -25,7 +25,7 @@ struct ComponentTypeId
 			return id;
 		}
 
-		static unsigned int Count()
+		static unsigned int count()
 		{
 			return mCounter;
 		}

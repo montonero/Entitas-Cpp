@@ -21,20 +21,20 @@ class Entity
 	public:
 		Entity(std::map<ComponentId, std::stack<IComponent*>>* componentPools);
 
-		template <typename T, typename... TArgs> inline auto Add(TArgs&&... args) -> EntityPtr;
-		template <typename T> inline auto Remove() -> EntityPtr;
-		template <typename T, typename... TArgs> inline auto Replace(TArgs&&... args) -> EntityPtr;
-		template <typename T> inline auto Refresh() -> EntityPtr;
-		template <typename T> inline auto Get() const -> T*;
-		template <typename T> inline auto Use() -> T*;
-		template <typename T> inline bool Has() const;
+		template <typename T, typename... TArgs> inline auto add(TArgs&&... args) -> EntityPtr;
+		template <typename T> inline auto remove() -> EntityPtr;
+		template <typename T, typename... TArgs> inline auto replace(TArgs&&... args) -> EntityPtr;
+		template <typename T> inline auto refresh() -> EntityPtr;
+		template <typename T> inline auto get() const -> T*;
+		template <typename T> inline auto use() -> T*;
+		template <typename T> inline bool has() const;
 
-		bool HasComponents(const std::vector<ComponentId>& indices) const;
-		bool HasAnyComponent(const std::vector<ComponentId>& indices) const;
-		auto GetComponentsCount() const -> unsigned int;
-		void RemoveAllComponents();
-		auto GetUuid() const -> const unsigned int;
-		bool IsEnabled();
+		bool hasComponents(const std::vector<ComponentId>& indices) const;
+		bool hasAnyComponent(const std::vector<ComponentId>& indices) const;
+		auto getComponentsCount() const -> unsigned int;
+		void removeAllComponents();
+		auto getUuid() const -> const unsigned int;
+		bool isEnabled();
 
 		bool operator ==(const EntityPtr& right) const;
 		bool operator ==(const Entity right) const;
@@ -46,25 +46,25 @@ class Entity
 		EntityChanged OnComponentAdded;
 		ComponentReplaced OnComponentReplaced;
 		EntityChanged OnComponentRemoved;
-		EntityReleased OnEntityReleased;
+		EntityReleased onEntityReleased;
 
 	protected:
-		void SetInstance(EntityPtr instance);
-		auto AddComponent(const ComponentId index, IComponent* component) -> EntityPtr;
-		auto RemoveComponent(const ComponentId index) -> EntityPtr;
-		auto ReplaceComponent(const ComponentId index, IComponent* component) -> EntityPtr;
-		auto GetComponent(const ComponentId index) const -> IComponent*;
-		bool HasComponent(const ComponentId index) const;
-		void Destroy();
+		void setInstance(EntityPtr instance);
+		auto addComponent(const ComponentId index, IComponent* component) -> EntityPtr;
+		auto removeComponent(const ComponentId index) -> EntityPtr;
+		auto replaceComponent(const ComponentId index, IComponent* component) -> EntityPtr;
+		auto getComponent(const ComponentId index) const -> IComponent*;
+		bool hasComponent(const ComponentId index) const;
+		void destroy();
 
-		template <typename T, typename... TArgs> inline auto CreateComponent(TArgs&&... args) -> IComponent*;
+		template <typename T, typename... TArgs> inline auto createComponent(TArgs&&... args) -> IComponent*;
 
 		unsigned int mUuid{0};
 		bool mIsEnabled = true;
 
 	private:
-		auto GetComponentPool(const ComponentId index) const -> std::stack<IComponent*>*;
-		void Replace(const ComponentId index, IComponent* replacement);
+		auto getComponentPool(const ComponentId index) const -> std::stack<IComponent*>*;
+		void replace(const ComponentId index, IComponent* replacement);
 
 		std::weak_ptr<Entity> mInstance;
 		std::map<ComponentId, IComponent*> mComponents;
@@ -72,9 +72,9 @@ class Entity
 };
 
 template <typename T, typename... TArgs>
-auto Entity::CreateComponent(TArgs&&... args) -> IComponent*
+auto Entity::createComponent(TArgs&&... args) -> IComponent*
 {
-	std::stack<IComponent*>* componentPool = GetComponentPool(ComponentTypeId::Get<T>());
+	std::stack<IComponent*>* componentPool = getComponentPool(ComponentTypeId::get<T>());
 	IComponent* component = nullptr;
 
 	if(componentPool->size() > 0)
@@ -87,52 +87,52 @@ auto Entity::CreateComponent(TArgs&&... args) -> IComponent*
 		component = new T();
 	}
 
-	(static_cast<T*>(component))->Reset(std::forward<TArgs>(args)...);
+	(static_cast<T*>(component))->reset(std::forward<TArgs>(args)...);
 
 	return component;
 }
 
 template <typename T, typename... TArgs>
-auto Entity::Add(TArgs&&... args) -> EntityPtr
+auto Entity::add(TArgs&&... args) -> EntityPtr
 {
-	return AddComponent(ComponentTypeId::Get<T>(), CreateComponent<T>(std::forward<TArgs>(args)...));
+	return addComponent(ComponentTypeId::get<T>(), createComponent<T>(std::forward<TArgs>(args)...));
 }
 
 template <typename T>
-auto Entity::Remove() -> EntityPtr
+auto Entity::remove() -> EntityPtr
 {
-	return RemoveComponent(ComponentTypeId::Get<T>());
+	return removeComponent(ComponentTypeId::get<T>());
 }
 
 template <typename T, typename... TArgs>
-auto Entity::Replace(TArgs&&... args) -> EntityPtr
+auto Entity::replace(TArgs&&... args) -> EntityPtr
 {
-	return ReplaceComponent(ComponentTypeId::Get<T>(), CreateComponent<T>(std::forward<TArgs>(args)...));
+	return replaceComponent(ComponentTypeId::get<T>(), createComponent<T>(std::forward<TArgs>(args)...));
 }
 
 template <typename T>
-auto Entity::Refresh() -> EntityPtr
+auto Entity::refresh() -> EntityPtr
 {
-	return ReplaceComponent(ComponentTypeId::Get<T>(), Get<T>());
+	return replaceComponent(ComponentTypeId::get<T>(), get<T>());
 }
 
 template<typename T>
-auto Entity::Get() const -> T*
+auto Entity::get() const -> T*
 {
-	return static_cast<T*>(GetComponent(ComponentTypeId::Get<T>()));
+	return static_cast<T*>(getComponent(ComponentTypeId::get<T>()));
 }
 
 template<typename T>
-auto Entity::Use() -> T*
+auto Entity::use() -> T*
 {
-	Refresh<T>();
-	return static_cast<T*>(GetComponent(ComponentTypeId::Get<T>()));
+	refresh<T>();
+	return static_cast<T*>(getComponent(ComponentTypeId::get<T>()));
 }
 
 template <typename T>
-bool Entity::Has() const
+bool Entity::has() const
 {
-	return HasComponent(ComponentTypeId::Get<T>());
+	return hasComponent(ComponentTypeId::get<T>());
 }
 }
 
@@ -143,7 +143,7 @@ struct hash<weak_ptr<EntitasPP::Entity>>
 {
 	std::size_t operator()(const weak_ptr<EntitasPP::Entity>& ptr) const
 	{
-		return hash<unsigned int>()(ptr.lock()->GetUuid());
+		return hash<unsigned int>()(ptr.lock()->getUuid());
 	}
 };
 

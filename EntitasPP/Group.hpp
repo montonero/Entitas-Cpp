@@ -19,35 +19,35 @@ class Group
 
 	public:
 		Group(const Matcher& matcher);
-		auto Count() const -> const unsigned int;
-		auto GetEntities() -> std::vector<EntityPtr>;
-		auto GetSingleEntity() const -> EntityPtr;
-		bool ContainsEntity(const EntityPtr& entity) const;
-		auto GetMatcher() const -> Matcher;
-		auto CreateObserver(const GroupEventType eventType) -> std::shared_ptr<GroupObserver>;
+		auto count() const -> const unsigned int;
+		auto getEntities() -> std::vector<EntityPtr>;
+		auto getSingleEntity() const -> EntityPtr;
+		bool containsEntity(const EntityPtr& entity) const;
+		auto getMatcher() const -> Matcher;
+		auto createObserver(const GroupEventType eventType) -> std::shared_ptr<GroupObserver>;
 
 		using GroupChanged = Delegate<void(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* component)>;
 		using GroupUpdated = Delegate<void(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)>;
 
-		GroupChanged OnEntityAdded;
-		GroupUpdated OnEntityUpdated;
-		GroupChanged OnEntityRemoved;
+		GroupChanged onEntityAdded;
+		GroupUpdated onEntityUpdated;
+		GroupChanged onEntityRemoved;
 
 	protected:
-		void SetInstance(std::shared_ptr<Group> instance);
-		auto HandleEntity(EntityPtr entity) -> GroupChanged*;
-		void HandleEntitySilently(EntityPtr entity);
-		void HandleEntity(EntityPtr entity, ComponentId index, IComponent* component);
-		void UpdateEntity(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
-		void RemoveAllEventHandlers();
+		void setInstance(std::shared_ptr<Group> instance);
+		auto handleEntity(EntityPtr entity) -> GroupChanged*;
+		void handleEntitySilently(EntityPtr entity);
+		void handleEntity(EntityPtr entity, ComponentId index, IComponent* component);
+		void updateEntity(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
+		void removeAllEventHandlers();
 
 	private:
-		bool AddEntitySilently(EntityPtr entity);
-		void AddEntity(EntityPtr entity, ComponentId index, IComponent* component);
-		auto AddEntity(EntityPtr entity) -> GroupChanged*;
-		bool RemoveEntitySilently(EntityPtr entity);
-		void RemoveEntity(EntityPtr entity, ComponentId index, IComponent* component);
-		auto RemoveEntity(EntityPtr entity) -> GroupChanged*;
+		bool addEntitySilently(EntityPtr entity);
+		void addEntity(EntityPtr entity, ComponentId index, IComponent* component);
+		auto addEntity(EntityPtr entity) -> GroupChanged*;
+		bool removeEntitySilently(EntityPtr entity);
+		void removeEntity(EntityPtr entity, ComponentId index, IComponent* component);
+		auto removeEntity(EntityPtr entity) -> GroupChanged*;
 
 		std::weak_ptr<Group> mInstance;
 		Matcher mMatcher;

@@ -11,7 +11,7 @@ using namespace EntitasPP;
 
 class DemoComponent : public IComponent {
 public:
-  void Reset(const std::string& name1, const std::string& name2) {
+  void reset(const std::string& name1, const std::string& name2) {
     std::cout << "Created new entity: " << name1 << "," << name2 << std::endl;
   }
 };
@@ -21,14 +21,14 @@ public:
   void SetPool(Pool* pool) {
     mPool = pool;
   }
-  void Initialize() {
-    mPool->CreateEntity()->Add<DemoComponent>("foo", "bar");
+  void initialize() {
+    mPool->createEntity()->add<DemoComponent>("foo", "bar");
     std::cout << "DemoSystem initialized" << std::endl;
   }
-  void Execute() {
-    mPool->CreateEntity()->Add<DemoComponent>("foo", "bar");
+  void execute() {
+    mPool->createEntity()->add<DemoComponent>("foo", "bar");
 
-    auto entitiesCount = mPool->GetGroup(Matcher_AllOf(DemoComponent))->Count();
+    auto entitiesCount = mPool->getGroup(Matcher_allOf(DemoComponent))->count();
     std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
 
     std::cout << "DemoSystem executed" << std::endl;
@@ -42,11 +42,11 @@ int main(const int argc, const char* argv[]) {
   auto systems = std::make_shared<SystemContainer>();
   auto pool = std::make_shared<Pool>();
 
-  systems->Add(pool->CreateSystem<DemoSystem>());
-  systems->Initialize();
+  systems->add(pool->createSystem<DemoSystem>());
+  systems->initialize();
 
   for(unsigned int i = 0; i < 2; ++i) {
-    systems->Execute();
+    systems->execute();
   }
 
   return 0;

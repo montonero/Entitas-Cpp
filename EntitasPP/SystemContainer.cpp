@@ -8,13 +8,13 @@
 
 namespace EntitasPP
 {
-auto SystemContainer::Add(std::shared_ptr<ISystem> system) -> SystemContainer*
+auto SystemContainer::add(std::shared_ptr<ISystem> system) -> SystemContainer*
 {
 	if(std::dynamic_pointer_cast<ReactiveSystem>(system) != nullptr)
 	{
-		if(std::dynamic_pointer_cast<IInitializeSystem>((std::dynamic_pointer_cast<ReactiveSystem>(system))->GetSubsystem()) != nullptr)
+		if(std::dynamic_pointer_cast<IInitializeSystem>((std::dynamic_pointer_cast<ReactiveSystem>(system))->getSubsystem()) != nullptr)
 		{
-			mInitializeSystems.push_back(std::dynamic_pointer_cast<IInitializeSystem>((std::dynamic_pointer_cast<ReactiveSystem>(system))->GetSubsystem()));
+			mInitializeSystems.push_back(std::dynamic_pointer_cast<IInitializeSystem>((std::dynamic_pointer_cast<ReactiveSystem>(system))->getSubsystem()));
 		}
 	}
 	else
@@ -38,74 +38,74 @@ auto SystemContainer::Add(std::shared_ptr<ISystem> system) -> SystemContainer*
 	return this;
 }
 
-void SystemContainer::Initialize()
+void SystemContainer::initialize()
 {
 	for(const auto &system : mInitializeSystems)
 	{
-		system->Initialize();
+		system->initialize();
 	}
 }
 
-void SystemContainer::Execute()
+void SystemContainer::execute()
 {
 	for(const auto &system : mExecuteSystems)
 	{
-		system->Execute();
+		system->execute();
 	}
 }
 
-void SystemContainer::FixedExecute()
+void SystemContainer::fixedExecute()
 {
 	for(const auto &system : mFixedExecuteSystems)
 	{
-		system->FixedExecute();
+		system->fixedExecute();
 	}
 }
 
-void SystemContainer::ActivateReactiveSystems()
+void SystemContainer::activateReactiveSystems()
 {
 	for(const auto &system : mExecuteSystems)
 	{
 		if(std::dynamic_pointer_cast<ReactiveSystem>(system) != nullptr)
 		{
-			(std::dynamic_pointer_cast<ReactiveSystem>(system))->Activate();
+			(std::dynamic_pointer_cast<ReactiveSystem>(system))->activate();
 		}
 
 		if(std::dynamic_pointer_cast<SystemContainer>(system) != nullptr)
 		{
-			(std::dynamic_pointer_cast<SystemContainer>(system))->ActivateReactiveSystems();
+			(std::dynamic_pointer_cast<SystemContainer>(system))->activateReactiveSystems();
 		}
 	}
 }
 
-void SystemContainer::DeactivateReactiveSystems()
+void SystemContainer::deactivateReactiveSystems()
 {
 	for(const auto &system : mExecuteSystems)
 	{
 		if(std::dynamic_pointer_cast<ReactiveSystem>(system) != nullptr)
 		{
-			(std::dynamic_pointer_cast<ReactiveSystem>(system))->Deactivate();
+			(std::dynamic_pointer_cast<ReactiveSystem>(system))->deactivate();
 		}
 
 		if(std::dynamic_pointer_cast<SystemContainer>(system) != nullptr)
 		{
-			(std::dynamic_pointer_cast<SystemContainer>(system))->DeactivateReactiveSystems();
+			(std::dynamic_pointer_cast<SystemContainer>(system))->deactivateReactiveSystems();
 		}
 	}
 }
 
-void SystemContainer::ClearReactiveSystems()
+void SystemContainer::clearReactiveSystems()
 {
 	for(const auto &system : mExecuteSystems)
 	{
 		if(std::dynamic_pointer_cast<ReactiveSystem>(system) != nullptr)
 		{
-			(std::dynamic_pointer_cast<ReactiveSystem>(system))->Clear();
+			(std::dynamic_pointer_cast<ReactiveSystem>(system))->clear();
 		}
 
 		if(std::dynamic_pointer_cast<SystemContainer>(system) != nullptr)
 		{
-			(std::dynamic_pointer_cast<SystemContainer>(system))->ClearReactiveSystems();
+			(std::dynamic_pointer_cast<SystemContainer>(system))->clearReactiveSystems();
 		}
 	}
 }

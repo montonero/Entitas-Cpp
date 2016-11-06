@@ -25,7 +25,7 @@ struct Invoker
 	using ReturnType = std::vector<TReturnType>;
 
 	public:
-		static ReturnType Invoke(Delegate<TReturnType(TArgs...)> &delegate, TArgs... params)
+		static ReturnType invoke(Delegate<TReturnType(TArgs...)> &delegate, TArgs... params)
 		{
 			std::lock_guard<std::mutex> lock(delegate.mMutex);
 			ReturnType returnValues;
@@ -45,7 +45,7 @@ struct Invoker<void, TArgs...>
 	using ReturnType = void;
 
 	public:
-		static void Invoke(Delegate<void(TArgs...)> &delegate, TArgs... params)
+		static void invoke(Delegate<void(TArgs...)> &delegate, TArgs... params)
 		{
 			std::lock_guard<std::mutex> lock(delegate.mMutex);
 
@@ -81,7 +81,7 @@ class Delegate<TReturnType(TArgs...)>
 			return *this;
 		}
 
-		Delegate& Remove(const functionType &function)
+		Delegate& remove(const functionType &function)
 		{
 			std::lock_guard<std::mutex> lock(this->mMutex);
 
@@ -93,12 +93,12 @@ class Delegate<TReturnType(TArgs...)>
 			return *this;
 		}
 
-		inline typename Invoker::ReturnType Invoke(TArgs... args)
+		inline typename Invoker::ReturnType invoke(TArgs... args)
 		{
-			return Invoker::Invoke(*this, args...);
+			return Invoker::invoke(*this, args...);
 		}
 
-		Delegate& Clear()
+		Delegate& clear()
 		{
 			std::lock_guard<std::mutex> lock(this->mMutex);
 
@@ -114,12 +114,12 @@ class Delegate<TReturnType(TArgs...)>
 
 		inline Delegate& operator -=(const functionType &function)
 		{
-			return Remove(function);
+			return remove(function);
 		}
 
 		inline typename Invoker::ReturnType operator ()(TArgs... args)
 		{
-			return Invoker::Invoke(*this, args...);
+			return Invoker::invoke(*this, args...);
 		}
 
 	private:

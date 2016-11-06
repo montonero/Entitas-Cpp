@@ -44,7 +44,7 @@ ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSyste
 	for(unsigned int i = 0; i < triggersLength; ++i)
 	{
 		auto trigger = triggers[i];
-		groups[i] = pool->GetGroup(trigger.trigger);
+		groups[i] = pool->getGroup(trigger.trigger);
 		eventTypes[i] = trigger.eventType;
 	}
 
@@ -53,41 +53,41 @@ ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSyste
 
 ReactiveSystem::~ReactiveSystem ()
 {
-	Deactivate();
+	deactivate();
 	delete mObserver;
 }
 
-auto ReactiveSystem::GetSubsystem() const -> std::shared_ptr<IReactiveExecuteSystem>
+auto ReactiveSystem::getSubsystem() const -> std::shared_ptr<IReactiveExecuteSystem>
 {
 	return mSubsystem;
 }
 
-void ReactiveSystem::Activate()
+void ReactiveSystem::activate()
 {
-	mObserver->Activate();
+	mObserver->activate();
 }
 
-void ReactiveSystem::Deactivate()
+void ReactiveSystem::deactivate()
 {
-	mObserver->Deactivate();
+	mObserver->deactivate();
 }
 
-void ReactiveSystem::Clear()
+void ReactiveSystem::clear()
 {
-	mObserver->ClearCollectedEntities();
+	mObserver->clearCollectedEntities();
 }
 
-void ReactiveSystem::Execute()
+void ReactiveSystem::execute()
 {
-	if(mObserver->GetCollectedEntities().size() != 0)
+	if(mObserver->getCollectedEntities().size() != 0)
 	{
-		if(! mEnsureComponents.IsEmpty())
+		if(! mEnsureComponents.isEmpty())
 		{
-			if(! mExcludeComponents.IsEmpty())
+			if(! mExcludeComponents.isEmpty())
 			{
-				for(const auto &e : mObserver->GetCollectedEntities())
+				for(const auto &e : mObserver->getCollectedEntities())
 				{
-					if(mEnsureComponents.Matches(e) && ! mExcludeComponents.Matches(e))
+					if(mEnsureComponents.matches(e) && ! mExcludeComponents.matches(e))
 					{
 						mEntityBuffer.push_back(e);
 					}
@@ -95,20 +95,20 @@ void ReactiveSystem::Execute()
 			}
 			else
 			{
-				for(const auto &e : mObserver->GetCollectedEntities())
+				for(const auto &e : mObserver->getCollectedEntities())
 				{
-					if(mEnsureComponents.Matches(e))
+					if(mEnsureComponents.matches(e))
 					{
 						mEntityBuffer.push_back(e);
 					}
 				}
 			}
 		}
-		else if(! mExcludeComponents.IsEmpty())
+		else if(! mExcludeComponents.isEmpty())
 		{
-			for(const auto &e : mObserver->GetCollectedEntities())
+			for(const auto &e : mObserver->getCollectedEntities())
 			{
-				if(! mExcludeComponents.Matches(e))
+				if(! mExcludeComponents.matches(e))
 				{
 					mEntityBuffer.push_back(e);
 				}
@@ -116,22 +116,22 @@ void ReactiveSystem::Execute()
 		}
 		else
 		{
-			for(const auto &e : mObserver->GetCollectedEntities())
+			for(const auto &e : mObserver->getCollectedEntities())
 			{
 				mEntityBuffer.push_back(e);
 			}
 		}
 
-		mObserver->ClearCollectedEntities();
+		mObserver->clearCollectedEntities();
 
 		if(mEntityBuffer.size() != 0)
 		{
-			mSubsystem->Execute(mEntityBuffer);
+			mSubsystem->execute(mEntityBuffer);
 			mEntityBuffer.clear();
 
 			if(mClearAfterExecute)
 			{
-				mObserver->ClearCollectedEntities();
+				mObserver->clearCollectedEntities();
 			}
 		}
 	}

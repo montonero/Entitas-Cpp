@@ -41,7 +41,7 @@ class IInitializeSystem
 	public:
 		virtual ~IInitializeSystem() = default;
 
-		virtual void Initialize() = 0;
+		virtual void initialize() = 0;
 };
 
 class IExecuteSystem : public ISystem
@@ -52,7 +52,7 @@ class IExecuteSystem : public ISystem
 	public:
 		virtual ~IExecuteSystem() = default;
 
-		virtual void Execute() = 0;
+		virtual void execute() = 0;
 };
 
 class IFixedExecuteSystem : public ISystem
@@ -63,7 +63,7 @@ class IFixedExecuteSystem : public ISystem
 	public:
 		virtual ~IFixedExecuteSystem() = default;
 
-		virtual void FixedExecute() = 0;
+		virtual void fixedExecute() = 0;
 };
 
 class IReactiveExecuteSystem : public ISystem
@@ -74,7 +74,7 @@ class IReactiveExecuteSystem : public ISystem
 	public:
 		virtual ~IReactiveExecuteSystem() = default;
 
-		virtual void Execute(std::vector<EntityPtr> entities) = 0;
+		virtual void execute(std::vector<EntityPtr> entities) = 0;
 };
 
 class IReactiveSystem : public IReactiveExecuteSystem
