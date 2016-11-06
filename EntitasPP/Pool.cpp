@@ -257,7 +257,7 @@ auto Pool::createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISys
 {
 	if(std::dynamic_pointer_cast<ISetPoolSystem>(system) != nullptr)
 	{
-		(std::dynamic_pointer_cast<ISetPoolSystem>(system)->SetPool(this));
+		(std::dynamic_pointer_cast<ISetPoolSystem>(system)->setPool(this));
 	}
 
 	if(std::dynamic_pointer_cast<IReactiveSystem>(system) != nullptr)

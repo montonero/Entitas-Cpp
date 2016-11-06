@@ -18,7 +18,7 @@ public:
 
 class DemoSystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem {
 public:
-  void SetPool(Pool* pool) {
+  void setPool(Pool* pool) {
     mPool = pool;
   }
   void initialize() {

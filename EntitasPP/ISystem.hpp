@@ -30,7 +30,7 @@ class ISetPoolSystem
 	public:
 		virtual ~ISetPoolSystem() = default;
 
-		virtual void SetPool(Pool* pool) = 0;
+		virtual void setPool(Pool* pool) = 0;
 };
 
 class IInitializeSystem

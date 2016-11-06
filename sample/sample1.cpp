@@ -20,7 +20,7 @@ public:
 class DemoSystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem
 {
 public:
-  void SetPool(Pool* pool)
+  void setPool(Pool* pool)
   {
     mPool = pool;
   }
@@ -88,7 +88,7 @@ class MoveSystem : public IExecuteSystem, public ISetPoolSystem
     std::shared_ptr<Group> _group;
 
     public:
-        void SetPool(Pool* pool) {
+        void setPool(Pool* pool) {
             _group = pool->getGroup(Matcher_allOf(Move, Position));
         }
 
