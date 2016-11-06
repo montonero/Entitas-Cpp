@@ -19,15 +19,15 @@ auto SystemContainer::add(std::shared_ptr<ISystem> system) -> SystemContainer*
 	}
 	else
 	{
-		if(std::dynamic_pointer_cast<IinitializeSystem>(system) != nullptr)
+		if(std::dynamic_pointer_cast<IInitializeSystem>(system) != nullptr)
 		{
-			mInitializeSystems.push_back(std::dynamic_pointer_cast<IinitializeSystem>(system));
+			mInitializeSystems.push_back(std::dynamic_pointer_cast<IInitializeSystem>(system));
 		}
 	}
 
-	if(std::dynamic_pointer_cast<IexecuteSystem>(system) != nullptr)
+	if(std::dynamic_pointer_cast<IExecuteSystem>(system) != nullptr)
 	{
-		mExecuteSystems.push_back(std::dynamic_pointer_cast<IexecuteSystem>(system));
+		mExecuteSystems.push_back(std::dynamic_pointer_cast<IExecuteSystem>(system));
 	}
 
 	if(std::dynamic_pointer_cast<IfixedExecuteSystem>(system) != nullptr)

@@ -33,24 +33,24 @@ class ISetPoolSystem
 		virtual void SetPool(Pool* pool) = 0;
 };
 
-class IinitializeSystem
+class IInitializeSystem
 {
 	protected:
-		IinitializeSystem() = default;
+		IInitializeSystem() = default;
 
 	public:
-		virtual ~IinitializeSystem() = default;
+		virtual ~IInitializeSystem() = default;
 
 		virtual void initialize() = 0;
 };
 
-class IexecuteSystem : public ISystem
+class IExecuteSystem : public ISystem
 {
 	protected:
-		IexecuteSystem() = default;
+		IExecuteSystem() = default;
 
 	public:
-		virtual ~IexecuteSystem() = default;
+		virtual ~IExecuteSystem() = default;
 
 		virtual void execute() = 0;
 };

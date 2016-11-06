@@ -20,7 +20,7 @@ class Delegate;
 namespace DelegateImpl
 {
 template <typename TReturnType, typename... TArgs>
-struct invoker
+struct Invoker
 {
 	using ReturnType = std::vector<TReturnType>;
 
@@ -40,7 +40,7 @@ struct invoker
 };
 
 template <typename... TArgs>
-struct invoker<void, TArgs...>
+struct Invoker<void, TArgs...>
 {
 	using ReturnType = void;
 
@@ -60,10 +60,10 @@ struct invoker<void, TArgs...>
 template<typename TReturnType, typename... TArgs>
 class Delegate<TReturnType(TArgs...)>
 {
-	using invoker = DelegateImpl::invoker<TReturnType, TArgs...>;
+	using Invoker = DelegateImpl::Invoker<TReturnType, TArgs...>;
 	using functionType = std::function<TReturnType(TArgs...)>;
 
-	friend invoker;
+	friend Invoker;
 
 	public:
 		Delegate() {}
@@ -117,7 +117,7 @@ class Delegate<TReturnType(TArgs...)>
 			return remove(function);
 		}
 
-		inline typename invoker::ReturnType operator ()(TArgs... args)
+		inline typename Invoker::ReturnType operator ()(TArgs... args)
 		{
 			return Invoker::invoke(*this, args...);
 		}
