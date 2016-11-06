@@ -30,9 +30,9 @@ auto SystemContainer::add(std::shared_ptr<ISystem> system) -> SystemContainer*
 		mExecuteSystems.push_back(std::dynamic_pointer_cast<IExecuteSystem>(system));
 	}
 
-	if(std::dynamic_pointer_cast<IfixedExecuteSystem>(system) != nullptr)
+	if(std::dynamic_pointer_cast<IFixedExecuteSystem>(system) != nullptr)
 	{
-		mFixedExecuteSystems.push_back(std::dynamic_pointer_cast<IfixedExecuteSystem>(system));
+		mFixedExecuteSystems.push_back(std::dynamic_pointer_cast<IFixedExecuteSystem>(system));
 	}
 
 	return this;

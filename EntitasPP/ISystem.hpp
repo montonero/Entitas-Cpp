@@ -55,13 +55,13 @@ class IExecuteSystem : public ISystem
 		virtual void execute() = 0;
 };
 
-class IfixedExecuteSystem : public ISystem
+class IFixedExecuteSystem : public ISystem
 {
 	protected:
-		IfixedExecuteSystem() = default;
+		IFixedExecuteSystem() = default;
 
 	public:
-		virtual ~IfixedExecuteSystem() = default;
+		virtual ~IFixedExecuteSystem() = default;
 
 		virtual void fixedExecute() = 0;
 };
@@ -111,9 +111,9 @@ class IExcludeComponents
 		Matcher excludeComponents;
 };
 
-class IclearReactiveSystem
+class IClearReactiveSystem
 {
 	protected:
-		IclearReactiveSystem() = default;
+		IClearReactiveSystem() = default;
 };
 }
