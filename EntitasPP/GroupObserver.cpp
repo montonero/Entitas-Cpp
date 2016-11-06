@@ -41,17 +41,17 @@ void GroupObserver::activate()
 		auto g = mGroups[i];
 		auto eventType = mEventTypes[i];
 
-		if(eventType == GroupEventType::OnEntityAdded)
+		if(eventType == GroupEventType::onEntityAdded)
 		{
 			g->onEntityAdded -= mAddEntityCache;
 			g->onEntityAdded += mAddEntityCache;
 		}
-		else if(eventType == GroupEventType::OnEntityRemoved)
+		else if(eventType == GroupEventType::onEntityRemoved)
 		{
 			g->onEntityRemoved -= mAddEntityCache;
 			g->onEntityRemoved += mAddEntityCache;
 		}
-		else if(eventType == GroupEventType::OnEntityAddedOrRemoved)
+		else if(eventType == GroupEventType::onEntityAddedOrRemoved)
 		{
 			g->onEntityAdded -= mAddEntityCache;
 			g->onEntityAdded += mAddEntityCache;

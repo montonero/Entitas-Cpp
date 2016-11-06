@@ -33,35 +33,35 @@ class ISetPoolSystem
 		virtual void SetPool(Pool* pool) = 0;
 };
 
-class IInitializeSystem
+class IinitializeSystem
 {
 	protected:
-		IInitializeSystem() = default;
+		IinitializeSystem() = default;
 
 	public:
-		virtual ~IInitializeSystem() = default;
+		virtual ~IinitializeSystem() = default;
 
 		virtual void initialize() = 0;
 };
 
-class IExecuteSystem : public ISystem
+class IexecuteSystem : public ISystem
 {
 	protected:
-		IExecuteSystem() = default;
+		IexecuteSystem() = default;
 
 	public:
-		virtual ~IExecuteSystem() = default;
+		virtual ~IexecuteSystem() = default;
 
 		virtual void execute() = 0;
 };
 
-class IFixedExecuteSystem : public ISystem
+class IfixedExecuteSystem : public ISystem
 {
 	protected:
-		IFixedExecuteSystem() = default;
+		IfixedExecuteSystem() = default;
 
 	public:
-		virtual ~IFixedExecuteSystem() = default;
+		virtual ~IfixedExecuteSystem() = default;
 
 		virtual void fixedExecute() = 0;
 };
@@ -111,9 +111,9 @@ class IExcludeComponents
 		Matcher excludeComponents;
 };
 
-class IClearReactiveSystem
+class IclearReactiveSystem
 {
 	protected:
-		IClearReactiveSystem() = default;
+		IclearReactiveSystem() = default;
 };
 }

@@ -32,7 +32,7 @@ ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSyste
 		mExcludeComponents = (std::dynamic_pointer_cast<IExcludeComponents>(subsystem))->excludeComponents;
 	}
 
-	if(std::dynamic_pointer_cast<IClearReactiveSystem>(subsystem) != nullptr)
+	if(std::dynamic_pointer_cast<IclearReactiveSystem>(subsystem) != nullptr)
 	{
 		mClearAfterExecute = true;
 	}

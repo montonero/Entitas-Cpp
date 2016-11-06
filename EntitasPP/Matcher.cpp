@@ -122,17 +122,17 @@ bool Matcher::compareIndices(const Matcher& matcher) const
 
 auto Matcher::onEntityAdded() -> const TriggerOnEvent
 {
-	return TriggerOnEvent(*this, GroupEventType::OnEntityAdded);
+	return TriggerOnEvent(*this, GroupEventType::onEntityAdded);
 }
 
 auto Matcher::onEntityRemoved() -> const TriggerOnEvent
 {
-	return TriggerOnEvent(*this, GroupEventType::OnEntityRemoved);
+	return TriggerOnEvent(*this, GroupEventType::onEntityRemoved);
 }
 
 auto Matcher::onEntityAddedOrRemoved() -> const TriggerOnEvent
 {
-	return TriggerOnEvent(*this, GroupEventType::OnEntityAddedOrRemoved);
+	return TriggerOnEvent(*this, GroupEventType::onEntityAddedOrRemoved);
 }
 
 bool Matcher::operator ==(const Matcher right) const

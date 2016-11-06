@@ -9,7 +9,7 @@
 
 namespace EntitasPP
 {
-class SystemContainer : public IInitializeSystem, public IExecuteSystem, public IFixedExecuteSystem
+class SystemContainer : public IinitializeSystem, public IexecuteSystem, public IfixedExecuteSystem
 {
 	public:
 		SystemContainer() = default;
@@ -26,9 +26,9 @@ class SystemContainer : public IInitializeSystem, public IExecuteSystem, public 
 		void clearReactiveSystems();
 
 	private:
-		std::vector<std::shared_ptr<IInitializeSystem>> mInitializeSystems;
-		std::vector<std::shared_ptr<IExecuteSystem>> mExecuteSystems;
-		std::vector<std::shared_ptr<IFixedExecuteSystem>> mFixedExecuteSystems;
+		std::vector<std::shared_ptr<IinitializeSystem>> mInitializeSystems;
+		std::vector<std::shared_ptr<IexecuteSystem>> mExecuteSystems;
+		std::vector<std::shared_ptr<IfixedExecuteSystem>> mFixedExecuteSystems;
 };
 
 template <typename T>

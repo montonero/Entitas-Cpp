@@ -20,7 +20,7 @@ class Delegate;
 namespace DelegateImpl
 {
 template <typename TReturnType, typename... TArgs>
-struct Invoker
+struct invoker
 {
 	using ReturnType = std::vector<TReturnType>;
 
@@ -40,7 +40,7 @@ struct Invoker
 };
 
 template <typename... TArgs>
-struct Invoker<void, TArgs...>
+struct invoker<void, TArgs...>
 {
 	using ReturnType = void;
 
@@ -60,10 +60,10 @@ struct Invoker<void, TArgs...>
 template<typename TReturnType, typename... TArgs>
 class Delegate<TReturnType(TArgs...)>
 {
-	using Invoker = DelegateImpl::Invoker<TReturnType, TArgs...>;
+	using invoker = DelegateImpl::invoker<TReturnType, TArgs...>;
 	using functionType = std::function<TReturnType(TArgs...)>;
 
-	friend Invoker;
+	friend invoker;
 
 	public:
 		Delegate() {}
@@ -87,7 +87,7 @@ class Delegate<TReturnType(TArgs...)>
 
 			this->mFunctionList.remove_if([&](std::shared_ptr<functionType> &functionPtr)
 			{
-				return Hash(function) == Hash(*functionPtr);
+				return hash(function) == hash(*functionPtr);
 			});
 
 			return *this;
@@ -117,7 +117,7 @@ class Delegate<TReturnType(TArgs...)>
 			return remove(function);
 		}
 
-		inline typename Invoker::ReturnType operator ()(TArgs... args)
+		inline typename invoker::ReturnType operator ()(TArgs... args)
 		{
 			return Invoker::invoke(*this, args...);
 		}
@@ -126,7 +126,7 @@ class Delegate<TReturnType(TArgs...)>
 		std::mutex mMutex;
 		std::list<std::shared_ptr<functionType>> mFunctionList;
 
-		inline constexpr size_t Hash(const functionType &function) const
+		inline constexpr size_t hash(const functionType &function) const
 		{
 			return function.target_type().hash_code();
 		}
