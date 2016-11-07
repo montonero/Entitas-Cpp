@@ -67,7 +67,7 @@ namespace entitas
         void replace(const ComponentId index, IComponent* replacement);
 
         std::weak_ptr<Entity> mInstance;
-        std::map<ComponentId, IComponent*> mComponents;
+        std::map<ComponentId, IComponent*> components_;
         std::map<ComponentId, std::stack<IComponent*>>* mComponentPools;
     };
 

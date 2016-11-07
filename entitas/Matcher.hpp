@@ -8,65 +8,65 @@
 
 namespace entitas
 {
-class Matcher;
-class TriggerOnEvent;
-typedef std::vector<Matcher> MatcherList;
+    class Matcher;
+    class TriggerOnEvent;
+    typedef std::vector<Matcher> MatcherList;
 
-class Matcher
-{
-	public:
-		Matcher() = default;
-		static auto allOf(const ComponentIdList indices) -> const Matcher;
-		static auto allOf(const MatcherList matchers) -> const Matcher;
-		static auto anyOf(const ComponentIdList indices) -> const Matcher;
-		static auto anyOf(const MatcherList matchers) -> const Matcher;
-		static auto noneOf(const ComponentIdList indices) -> const Matcher;
-		static auto noneOf(const MatcherList matchers) -> const Matcher;
+    class Matcher
+    {
+    public:
+        Matcher() = default;
+        static auto allOf(const ComponentIdList indices) -> const Matcher;
+        static auto allOf(const MatcherList matchers) -> const Matcher;
+        static auto anyOf(const ComponentIdList indices) -> const Matcher;
+        static auto anyOf(const MatcherList matchers) -> const Matcher;
+        static auto noneOf(const ComponentIdList indices) -> const Matcher;
+        static auto noneOf(const MatcherList matchers) -> const Matcher;
 
-		bool isEmpty() const;
-		bool matches(const EntityPtr& entity);
-		auto getIndices() -> const ComponentIdList;
-		auto getAllOfIndices() const -> const ComponentIdList;
-		auto getAnyOfIndices() const -> const ComponentIdList;
-		auto getNoneOfIndices() const -> const ComponentIdList;
+        bool isEmpty() const;
+        bool matches(const EntityPtr& entity);
+        auto getIndices() -> const ComponentIdList;
+        auto getAllOfIndices() const -> const ComponentIdList;
+        auto getAnyOfIndices() const -> const ComponentIdList;
+        auto getNoneOfIndices() const -> const ComponentIdList;
 
-		auto getHashCode() const -> unsigned int;
-		bool compareIndices(const Matcher& matcher) const;
+        auto getHashCode() const -> unsigned int;
+        bool compareIndices(const Matcher& matcher) const;
 
-		auto onEntityAdded() -> const TriggerOnEvent;
-		auto onEntityRemoved() -> const TriggerOnEvent;
-		auto onEntityAddedOrRemoved() -> const TriggerOnEvent;
+        auto onEntityAdded() -> const TriggerOnEvent;
+        auto onEntityRemoved() -> const TriggerOnEvent;
+        auto onEntityAddedOrRemoved() -> const TriggerOnEvent;
 
-		bool operator ==(const Matcher right) const;
+        bool operator ==(const Matcher right) const;
 
-	protected:
-		void calculateHash();
+    protected:
+        void calculateHash();
 
-		ComponentIdList mIndices;
-		ComponentIdList mAllOfIndices;
-		ComponentIdList mAnyOfIndices;
-		ComponentIdList mNoneOfIndices;
+        ComponentIdList mIndices;
+        ComponentIdList mAllOfIndices;
+        ComponentIdList mAnyOfIndices;
+        ComponentIdList mNoneOfIndices;
 
-	private:
-		auto applyHash(unsigned int hash, const ComponentIdList indices, int i1, int i2) const -> unsigned int;
-		auto mergeIndices() const -> ComponentIdList;
-		static auto mergeIndices(MatcherList matchers) -> ComponentIdList;
-		static auto distinctIndices(ComponentIdList indices) -> ComponentIdList;
+    private:
+        auto applyHash(unsigned int hash, const ComponentIdList indices, int i1, int i2) const -> unsigned int;
+        auto mergeIndices() const -> ComponentIdList;
+        static auto mergeIndices(MatcherList matchers) -> ComponentIdList;
+        static auto distinctIndices(ComponentIdList indices) -> ComponentIdList;
 
-		unsigned int mCachedHash{0};
-};
+        unsigned int mCachedHash{0};
+    };
 }
 
 namespace std
 {
-template <>
-struct hash<entitas::Matcher>
-{
+    template <>
+    struct hash<entitas::Matcher>
+    {
 	std::size_t operator()(const entitas::Matcher& matcher) const
 	{
-		return hash<unsigned int>()(matcher.getHashCode());
+            return hash<unsigned int>()(matcher.getHashCode());
 	}
-};
+    };
 }
 
 namespace
