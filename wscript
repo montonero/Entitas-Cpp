@@ -30,11 +30,11 @@ def build(ctx):
     # ctx.recurse(ctx.env.ws_client_dir)
 
     ctx.stlib(
-        source = ctx.path.ant_glob('EntitasPP/*.cpp'),
+        source = ctx.path.ant_glob('entitas/*.cpp'),
         target = 'entitas',
         cxxflags     = ['-std=c++14'],
-        includes = 'EntitasPP',
-        export_includes = '. EntitasPP',
+        includes = 'entitas',
+        export_includes = '. entitas',
     )
 
     s1 = ctx.path.ant_glob(['*.cpp'])

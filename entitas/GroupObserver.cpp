@@ -6,7 +6,7 @@
 #include "Group.hpp"
 #include <functional>
 
-namespace EntitasPP
+namespace entitas
 {
 GroupObserver::GroupObserver(std::shared_ptr<Group> group, const GroupEventType eventType)
 {

@@ -4,7 +4,7 @@
 
 #pragma once
 
-namespace EntitasPP
+namespace entitas
 {
 class IComponent
 {

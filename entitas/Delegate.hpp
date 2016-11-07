@@ -12,7 +12,7 @@
 #include <vector>
 #include <memory>
 
-namespace EntitasPP
+namespace entitas
 {
 template<typename>
 class Delegate;

@@ -7,7 +7,7 @@
 #include "Matcher.hpp"
 #include "GroupEventType.hpp"
 
-namespace EntitasPP
+namespace entitas
 {
     struct TriggerOnEvent
     {

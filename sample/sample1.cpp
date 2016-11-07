@@ -1,12 +1,12 @@
-#include "EntitasPP/SystemContainer.hpp"
-#include "EntitasPP/Matcher.hpp"
-#include "EntitasPP/Pool.hpp"
-#include "EntitasPP/ISystem.hpp"
+#include "entitas/SystemContainer.hpp"
+#include "entitas/Matcher.hpp"
+#include "entitas/Pool.hpp"
+#include "entitas/ISystem.hpp"
 #include <iostream>
 
 #include "Rectangle.h"
 
-using namespace EntitasPP;
+using namespace entitas;
 
 class DemoComponent : public IComponent
 {

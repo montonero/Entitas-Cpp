@@ -6,7 +6,7 @@
 #include "Pool.hpp"
 #include "TriggerOnEvent.hpp"
 
-namespace EntitasPP
+namespace entitas
 {
 ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveSystem> subsystem) :
 	ReactiveSystem(pool, subsystem, std::vector<TriggerOnEvent>(1, subsystem->trigger))

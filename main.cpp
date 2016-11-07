@@ -2,12 +2,12 @@
 // License: MIT License
 // MIT License web page: https://opensource.org/licenses/MIT
 
-#include "EntitasPP/SystemContainer.hpp"
-#include "EntitasPP/Matcher.hpp"
-#include "EntitasPP/Pool.hpp"
+#include "entitas/SystemContainer.hpp"
+#include "entitas/Matcher.hpp"
+#include "entitas/Pool.hpp"
 #include <iostream>
 
-using namespace EntitasPP;
+using namespace entitas;
 
 class DemoComponent : public IComponent {
 public:
