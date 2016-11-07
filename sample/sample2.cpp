@@ -4,6 +4,8 @@
 #include "entitas/ISystem.hpp"
 #include <iostream>
 
+#include "SDL.h"
+
 #include "Rectangle.h"
 
 using namespace entitas;
@@ -83,24 +85,50 @@ struct RenderComponent : public IComponent
 };
 
 
+/* -------------------------------------------------------------------------- */
+
 class MoveSystem : public IExecuteSystem, public ISetPoolSystem
 {
     std::shared_ptr<Group> _group;
 
-    public:
-        void setPool(Pool* pool) {
-            _group = pool->getGroup(Matcher_allOf(Move, Position));
-        }
+public:
+    void setPool(Pool* pool)
+    {
+        _group = pool->getGroup(Matcher_allOf(Move, Position));
+    }
 
-        void execute() {
-            for (auto &e : _group->getEntities()) {
-                auto move = e->get<Move>();
-                auto pos = e->get<Position>();
-                e->replace<Position>(pos->x, pos->y + move->speed, pos->z);
-            }
+    void execute()
+    {
+        for (auto &e : _group->getEntities())
+        {
+            auto move = e->get<Move>();
+            auto pos = e->get<Position>();
+            e->replace<Position>(pos->x, pos->y + move->speed, pos->z);
         }
+    }
 };
 
+/* -------------------------------------------------------------------------- */
+SDL_Rect toSdlRect(Rectangle r)
+{
+    SDL_Rect sr;
+    sr.x = r.position.x;
+    sr.y = r.position.y;
+    sr.w = r.size.x;
+    sr.h = r.size.y;
+    return sr;
+}
+
+
+void renderRect(SDL_Renderer* renderer, Rectangle& r)
+{
+    auto sr = toSdlRect(r);
+    SDL_SetRenderDrawColor(renderer, r.color.r, r.color.g, r.color.b, 255);
+    SDL_RenderFillRect(renderer, &sr);
+}  
+
+
+/* -------------------------------------------------------------------------- */
 
 /*
 class RenderPositionSystem : public IReactiveSystem
@@ -129,8 +157,67 @@ public:
 };
 */
 
+/* -------------------------------------------------------------------------- */
 
 
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 480
+
+
+int mainLoop()
+{
+
+    int done;
+    SDL_Event event;
+
+    /* initialize SDL */
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        printf("Could not initialize SDL\n");
+        return 1;
+    }
+
+    /* seed random number generator */
+    srand(time(NULL));
+
+    /* create window and renderer */
+    auto window = SDL_CreateWindow(NULL, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+    if (!window) 
+    {
+        // printf("Could not initialize Window\n");
+        printf("Could not create window: %s\n", SDL_GetError());
+        return 1;
+    }
+
+    auto renderer = SDL_CreateRenderer(window, -1, 0);
+    if (!renderer) 
+    {
+        printf("Could not create renderer\n");
+        return 1;
+    }
+
+    //thread t(readInput);
+
+    /* Enter render loop, waiting for user to quit */
+    done = 0;
+    while (!done)
+    {
+        while (SDL_PollEvent(&event)) 
+        {
+            if (event.type == SDL_QUIT) 
+            {
+                done = 1;
+            }
+        }
+        // string text;
+        // cin >> text;
+        // render(renderer, rs);
+        SDL_Delay(100);
+    }
+    return 0;
+}
+
+/* -------------------------------------------------------------------------- */
 
 
 int main(const int argc, const char* argv[])
@@ -150,5 +237,7 @@ int main(const int argc, const char* argv[])
       // do something
   }
 
+  mainLoop();
   return 0;
 }
+

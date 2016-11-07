@@ -84,9 +84,9 @@ def build(ctx):
         features='cxx cxxprogram',
         target='s2',
         cxxflags     = ['-std=c++14'],
-        # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
+        linkflags = [ '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
-        use =  ['entitas']
+        use =  ['entitas', 'SDL2']
     )
 
     if ctx.cmd != 'clean':
