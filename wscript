@@ -22,6 +22,25 @@ def configure(ctx):
     # ctx.recurse(ctx.env.ws_client_dir)
     ctx.load('compiler_c compiler_cxx')
 
+    ctx.check_cfg(
+        path='sdl2-config',
+        args='--cflags --libs',
+        package='',
+        uselib_store='SDL2')
+
+    # ctx.env.append_value('CCFLAGS', '-std=c++14 -Wall ')
+    ctx.check_cxx(
+        cxxflags=['-std=c++14', '-Wall'],
+        libs='SDL2',
+    )
+
+    ctx.check_cxx(lib='pthread',
+        cflags='-Wall',
+        uselib_store='pthread')
+        # uselib_store='pthread', mandatory=True)
+
+
+
 def build(ctx):
     # libs = ['SDL2', 'chibi_static_lib', 'BOOST', 'ws_client_lib', 'ws_retry_client']
     libs = []
@@ -48,7 +67,7 @@ def build(ctx):
         use =  ['entitas']
     )
 
-    s1 = ctx.path.ant_glob(['sample/*.cpp'])
+    s1 = ctx.path.ant_glob(['sample/sample1.cpp'])
     ctx.program(
         source = s1,
         features='cxx cxxprogram',
@@ -59,6 +78,16 @@ def build(ctx):
         use =  ['entitas']
     )
 
+    s2 = ctx.path.ant_glob(['sample/sample2.cpp'])
+    ctx.program(
+        source = s2,
+        features='cxx cxxprogram',
+        target='s2',
+        cxxflags     = ['-std=c++14'],
+        # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
+        # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
+        use =  ['entitas']
+    )
 
     if ctx.cmd != 'clean':
         from waflib import Logs
