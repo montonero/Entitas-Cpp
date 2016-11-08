@@ -14,121 +14,119 @@
 
 namespace entitas
 {
-template<typename>
-class Delegate;
+    template<typename>
+    class Delegate;
 
-namespace DelegateImpl
-{
-template <typename TReturnType, typename... TArgs>
-struct Invoker
-{
-	using ReturnType = std::vector<TReturnType>;
-
-	public:
-		static ReturnType invoke(Delegate<TReturnType(TArgs...)> &delegate, TArgs... params)
-		{
-			std::lock_guard<std::mutex> lock(delegate.mMutex);
-			ReturnType returnValues;
-
-			for (const auto &functionPtr : delegate.mFunctionList)
-			{
-				returnValues.push_back((*functionPtr)(params...));
-			}
-
-			return returnValues;
-		}
-};
-
-template <typename... TArgs>
-struct Invoker<void, TArgs...>
-{
-	using ReturnType = void;
+    namespace DelegateImpl
+    {
+        template <typename TReturnType, typename... TArgs>
+        struct Invoker
+        {
+            using ReturnType = std::vector<TReturnType>;
 
 	public:
-		static void invoke(Delegate<void(TArgs...)> &delegate, TArgs... params)
-		{
-			std::lock_guard<std::mutex> lock(delegate.mMutex);
+            static ReturnType invoke(Delegate<TReturnType(TArgs...)> &delegate, TArgs... params)
+            {
+                std::lock_guard<std::mutex> lock(delegate.mMutex);
+                ReturnType returnValues;
 
-			for (const auto &functionPtr : delegate.mFunctionList)
-			{
-				(*functionPtr)(params...);
-			}
-		}
-};
-}
+                for (const auto &functionPtr : delegate.mFunctionList)
+                {
+                    returnValues.push_back((*functionPtr)(params...));
+                }
 
-template<typename TReturnType, typename... TArgs>
-class Delegate<TReturnType(TArgs...)>
-{
+                return returnValues;
+            }
+        };
+
+        template <typename... TArgs>
+        struct Invoker<void, TArgs...>
+        {
+            using ReturnType = void;
+
+	public:
+            static void invoke(Delegate<void(TArgs...)> &delegate, TArgs... params)
+            {
+                std::lock_guard<std::mutex> lock(delegate.mMutex);
+
+                for (const auto &functionPtr : delegate.mFunctionList)
+                {
+                    (*functionPtr)(params...);
+                }
+            }
+        };
+    }
+
+    template<typename TReturnType, typename... TArgs>
+    class Delegate<TReturnType(TArgs...)>
+    {
 	using Invoker = DelegateImpl::Invoker<TReturnType, TArgs...>;
 	using functionType = std::function<TReturnType(TArgs...)>;
 
 	friend Invoker;
 
-	public:
-		Delegate() {}
-		~Delegate() {}
+    public:
+        Delegate() {}
+        ~Delegate() {}
 
-		Delegate(const Delegate&) = delete;
-		const Delegate& operator =(const Delegate&) = delete;
+        Delegate(const Delegate&) = delete;
+        const Delegate& operator =(const Delegate&) = delete;
 
-		Delegate& Connect(const functionType &function)
-		{
-			std::lock_guard<std::mutex> lock(this->mMutex);
+        Delegate& Connect(const functionType &function)
+        {
+            std::lock_guard<std::mutex> lock(mMutex);
 
-			this->mFunctionList.push_back(std::make_shared<functionType>(function));
+            mFunctionList.push_back(std::make_shared<functionType>(function));
 
-			return *this;
-		}
+            return *this;
+        }
 
-		Delegate& remove(const functionType &function)
-		{
-			std::lock_guard<std::mutex> lock(this->mMutex);
+        Delegate& remove(const functionType &function)
+        {
+            std::lock_guard<std::mutex> lock(mMutex);
 
-			this->mFunctionList.remove_if([&](std::shared_ptr<functionType> &functionPtr)
-			{
-				return hash(function) == hash(*functionPtr);
-			});
+            mFunctionList.remove_if([&](std::shared_ptr<functionType> &functionPtr)
+                                          {
+                                              return hash(function) == hash(*functionPtr);
+                                          });
 
-			return *this;
-		}
+            return *this;
+        }
 
-		inline typename Invoker::ReturnType invoke(TArgs... args)
-		{
-			return Invoker::invoke(*this, args...);
-		}
+        inline typename Invoker::ReturnType invoke(TArgs... args)
+        {
+            return Invoker::invoke(*this, args...);
+        }
 
-		Delegate& clear()
-		{
-			std::lock_guard<std::mutex> lock(this->mMutex);
+        Delegate& clear()
+        {
+            std::lock_guard<std::mutex> lock(mMutex);
+            mFunctionList.clear();
+            return *this;
+        }
 
-			this->mFunctionList.clear();
+        inline Delegate& operator +=(const functionType &function)
+        {
+            return Connect(function);
+        }
 
-			return *this;
-		}
+        inline Delegate& operator -=(const functionType &function)
+        {
+            return remove(function);
+        }
 
-		inline Delegate& operator +=(const functionType &function)
-		{
-			return Connect(function);
-		}
+        inline typename Invoker::ReturnType operator ()(TArgs... args)
+        {
+            return Invoker::invoke(*this, args...);
+        }
 
-		inline Delegate& operator -=(const functionType &function)
-		{
-			return remove(function);
-		}
+    private:
+        std::mutex mMutex;
+        std::list<std::shared_ptr<functionType>> mFunctionList;
 
-		inline typename Invoker::ReturnType operator ()(TArgs... args)
-		{
-			return Invoker::invoke(*this, args...);
-		}
-
-	private:
-		std::mutex mMutex;
-		std::list<std::shared_ptr<functionType>> mFunctionList;
-
-		inline constexpr size_t hash(const functionType &function) const
-		{
-			return function.target_type().hash_code();
-		}
-};
+        inline constexpr size_t hash(const functionType &function) const
+        {
+            return function.target_type().hash_code();
+        }
+    };
 }
