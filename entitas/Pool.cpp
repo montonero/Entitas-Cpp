@@ -10,56 +10,56 @@
 
 namespace entitas
 {
-Pool::Pool(const unsigned int startCreationIndex)
-{
+    Pool::Pool(const unsigned int startCreationIndex)
+    {
 	mCreationIndex = startCreationIndex;
 	mOnEntityReleasedCache = std::bind(&Pool::onEntityReleased, this, std::placeholders::_1);
-}
+    }
 
-Pool::~Pool()
-{
+    Pool::~Pool()
+    {
 	reset();
 
 	// TODO: Components don't get destroyed.
 
 	if(! mRetainedEntities.empty())
 	{
-		// Warning, some entities remain undestroyed in the pool destruction !"
+            // Warning, some entities remain undestroyed in the pool destruction !"
 	}
 
 	while(! mReusableEntities.empty())
 	{
-		delete mReusableEntities.top();
-		mReusableEntities.pop();
+            delete mReusableEntities.top();
+            mReusableEntities.pop();
 	}
 
 	for(auto &pair : mComponentPools)
 	{
-		auto componentPool = pair.second;
+            auto componentPool = pair.second;
 
-		while(! componentPool.empty())
-		{
-			delete componentPool.top();
-			componentPool.pop();
-		}
+            while(! componentPool.empty())
+            {
+                delete componentPool.top();
+                componentPool.pop();
+            }
 	}
-}
+    }
 
-auto Pool::createEntity() -> EntityPtr
-{
+    auto Pool::createEntity() -> EntityPtr
+    {
 	EntityPtr entity;
 
 	if(mReusableEntities.size() > 0)
 	{
-		entity = EntityPtr(mReusableEntities.top());
-		mReusableEntities.pop();
+            entity = EntityPtr(mReusableEntities.top());
+            mReusableEntities.pop();
 	}
 	else
 	{
-		entity = EntityPtr(new Entity(&mComponentPools), [](void* entity)
-		{
-			(static_cast<Entity*>(entity)->onEntityReleased(static_cast<Entity*>(entity)));
-		});
+            entity = EntityPtr(new Entity(&mComponentPools), [](Entity* entity)
+                               {
+                                   entity->onEntityReleased(entity);
+                               });
 	}
 
 	entity->setInstance(entity);
@@ -71,15 +71,15 @@ auto Pool::createEntity() -> EntityPtr
 
 	entity->OnComponentAdded += [this](EntityPtr entity, ComponentId index, IComponent* component)
 	{
-		updateGroupsComponentAddedOrRemoved(entity, index, component);
+            updateGroupsComponentAddedOrRemoved(entity, index, component);
 	};
 	entity->OnComponentRemoved += [this](EntityPtr entity, ComponentId index, IComponent* component)
 	{
-		updateGroupsComponentAddedOrRemoved(entity, index, component);
+            updateGroupsComponentAddedOrRemoved(entity, index, component);
 	};
 	entity->OnComponentReplaced += [this](EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
 	{
-		updateGroupsComponentReplaced(entity, index, previousComponent, newComponent);
+            updateGroupsComponentReplaced(entity, index, previousComponent, newComponent);
 	};
 
 	entity->onEntityReleased.clear();
@@ -88,20 +88,20 @@ auto Pool::createEntity() -> EntityPtr
 	onEntityCreated(this, entity);
 
 	return entity;
-}
+    }
 
-bool Pool::hasEntity(const EntityPtr& entity) const
-{
+    bool Pool::hasEntity(const EntityPtr& entity) const
+    {
 	return std::find(mEntities.begin(), mEntities.end(), std::weak_ptr<Entity>(entity)) != mEntities.end();
-}
+    }
 
-void Pool::destroyEntity(EntityPtr entity)
-{
+    void Pool::destroyEntity(EntityPtr entity)
+    {
 	auto removed = mEntities.erase(entity);
 
 	if (! removed)
 	{
-		throw std::runtime_error("Error, cannot destroy entity. Pool does not contain entity.");
+            throw std::runtime_error("Error, cannot destroy entity. Pool does not contain entity.");
 	}
 
 	mEntitiesCache.clear();
@@ -112,216 +112,216 @@ void Pool::destroyEntity(EntityPtr entity)
 
 	if (entity.use_count() == 1)
 	{
-		entity->onEntityReleased -= mOnEntityReleasedCache;
-		mReusableEntities.push(entity.get());
+            entity->onEntityReleased -= mOnEntityReleasedCache;
+            mReusableEntities.push(entity.get());
 	}
 	else
 	{
-		mRetainedEntities.insert(entity.get());
+            mRetainedEntities.insert(entity.get());
 	}
-}
+    }
 
-void Pool::destroyAllEntities()
-{
+    void Pool::destroyAllEntities()
+    {
 	{
-		auto entitiesTemp = std::vector<EntityPtr>(mEntities.begin(), mEntities.end());
+            auto entitiesTemp = std::vector<EntityPtr>(mEntities.begin(), mEntities.end());
 
-		while(! mEntities.empty())
-		{
-			destroyEntity(entitiesTemp.back());
-			entitiesTemp.pop_back();
-		}
+            while(! mEntities.empty())
+            {
+                destroyEntity(entitiesTemp.back());
+                entitiesTemp.pop_back();
+            }
 	}
 
 	mEntities.clear();
 
 	if (! mRetainedEntities.empty())
 	{
-		// Try calling Pool.clearGroups() and SystemContainer.clearReactiveSystems() before calling pool.destroyAllEntities() to avoid memory leaks
-		throw std::runtime_error("Error, pool detected retained entities although all entities got destroyed. Did you release all entities?");
+            // Try calling Pool.clearGroups() and SystemContainer.clearReactiveSystems() before calling pool.destroyAllEntities() to avoid memory leaks
+            throw std::runtime_error("Error, pool detected retained entities although all entities got destroyed. Did you release all entities?");
 	}
-}
+    }
 
-auto Pool::getEntities() -> std::vector<EntityPtr>
-{
+    auto Pool::getEntities() -> std::vector<EntityPtr>
+    {
 	if(mEntitiesCache.empty())
 	{
-		mEntitiesCache = std::vector<EntityPtr>(mEntities.begin(), mEntities.end());
+            mEntitiesCache = std::vector<EntityPtr>(mEntities.begin(), mEntities.end());
 	}
 
 	return mEntitiesCache;
-}
+    }
 
-auto Pool::getEntities(const Matcher matcher) -> std::vector<EntityPtr>
-{
+    auto Pool::getEntities(const Matcher matcher) -> std::vector<EntityPtr>
+    {
 	return getGroup(std::move(matcher))->getEntities();
-}
+    }
 
-auto Pool::getGroup(Matcher matcher) -> std::shared_ptr<Group>
-{
+    auto Pool::getGroup(Matcher matcher) -> std::shared_ptr<Group>
+    {
 	std::shared_ptr<Group> group = nullptr;
 
 	auto it = mGroups.find(matcher);
 
 	if (it == mGroups.end())
 	{
-		group = std::shared_ptr<Group>(new Group(matcher));
-		group->setInstance(group);
+            group = std::shared_ptr<Group>(new Group(matcher));
+            group->setInstance(group);
 
-		auto entities = getEntities();
+            auto entities = getEntities();
 
-		for (int i = 0, entitiesLength = entities.size(); i < entitiesLength; i++)
-		{
-			group->handleEntitySilently(entities[i]);
-		}
+            for (int i = 0, entitiesLength = entities.size(); i < entitiesLength; i++)
+            {
+                group->handleEntitySilently(entities[i]);
+            }
 
-		mGroups[group->getMatcher()] = group;
+            mGroups[group->getMatcher()] = group;
 
-		for (int i = 0, indicesLength = matcher.getIndices().size(); i < indicesLength; i++)
-		{
-			mGroupsForIndex[matcher.getIndices()[i]].push_back(group);
-		}
+            for (int i = 0, indicesLength = matcher.getIndices().size(); i < indicesLength; i++)
+            {
+                mGroupsForIndex[matcher.getIndices()[i]].push_back(group);
+            }
 
-		OnGroupCreated(this, group);
+            OnGroupCreated(this, group);
 	}
 	else
 	{
-		group = it->second;
+            group = it->second;
 	}
 
 	return group;
-}
+    }
 
-void Pool::clearGroups()
-{
+    void Pool::clearGroups()
+    {
 	for (const auto &it : mGroups)
 	{
-		it.second->removeAllEventHandlers();
-		OnGroupCleared(this, it.second);
+            it.second->removeAllEventHandlers();
+            OnGroupCleared(this, it.second);
 	}
 
 	mGroups.clear();
 
 	for (auto &pair : mGroupsForIndex)
 	{
-		pair.second.clear();
+            pair.second.clear();
 	}
 
 	mGroupsForIndex.clear();
-}
+    }
 
-void Pool::resetCreationIndex()
-{
+    void Pool::resetCreationIndex()
+    {
 	mCreationIndex = 0;
-}
+    }
 
-void Pool::clearComponentPool(const ComponentId index)
-{
+    void Pool::clearComponentPool(const ComponentId index)
+    {
 	while(! mComponentPools.at(index).empty())
 	{
-		mComponentPools.at(index).pop();
+            mComponentPools.at(index).pop();
 	}
-}
+    }
 
-void Pool::clearComponentPools()
-{
+    void Pool::clearComponentPools()
+    {
 	for(const auto &pair : mComponentPools)
 	{
-		clearComponentPool(pair.first);
+            clearComponentPool(pair.first);
 	}
-}
+    }
 
-void Pool::reset()
-{
+    void Pool::reset()
+    {
 	clearGroups();
 	destroyAllEntities();
 	resetCreationIndex();
-}
+    }
 
-auto Pool::getEntityCount() const -> unsigned int
-{
+    auto Pool::getEntityCount() const -> unsigned int
+    {
 	return mEntities.size();
-}
+    }
 
-auto Pool::getReusableEntitiesCount() const -> unsigned int
-{
+    auto Pool::getReusableEntitiesCount() const -> unsigned int
+    {
 	return mReusableEntities.size();
-}
+    }
 
-auto Pool::getRetainedEntitiesCount() const -> unsigned int
-{
+    auto Pool::getRetainedEntitiesCount() const -> unsigned int
+    {
 	return mRetainedEntities.size();
-}
+    }
 
-auto Pool::createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>
-{
+    auto Pool::createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>
+    {
 	if(std::dynamic_pointer_cast<ISetPoolSystem>(system) != nullptr)
 	{
-		(std::dynamic_pointer_cast<ISetPoolSystem>(system)->setPool(this));
+            (std::dynamic_pointer_cast<ISetPoolSystem>(system)->setPool(this));
 	}
 
 	if(std::dynamic_pointer_cast<IReactiveSystem>(system) != nullptr)
 	{
-		return std::shared_ptr<ReactiveSystem>(new ReactiveSystem(this, std::dynamic_pointer_cast<IReactiveSystem>(system)));
+            return std::shared_ptr<ReactiveSystem>(new ReactiveSystem(this, std::dynamic_pointer_cast<IReactiveSystem>(system)));
 	}
 
 	if(std::dynamic_pointer_cast<IMultiReactiveSystem>(system) != nullptr)
 	{
-		return std::shared_ptr<ReactiveSystem>(new ReactiveSystem(this, std::dynamic_pointer_cast<IMultiReactiveSystem>(system)));
+            return std::shared_ptr<ReactiveSystem>(new ReactiveSystem(this, std::dynamic_pointer_cast<IMultiReactiveSystem>(system)));
 	}
 
 	return system;
-}
+    }
 
-void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)
-{
+    void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)
+    {
 	if(mGroupsForIndex.find(index) == mGroupsForIndex.end())
 	{
-		return;
+            return;
 	}
 
 	auto groups = mGroupsForIndex[index];
 
 	if (groups.size() > 0)
 	{
-		auto events = std::vector<Group::GroupChanged*>();
+            auto events = std::vector<Group::GroupChanged*>();
 
-		for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i)
-		{
-			events.push_back(groups[i].lock()->handleEntity(entity));
-		}
+            for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i)
+            {
+                events.push_back(groups[i].lock()->handleEntity(entity));
+            }
 
-		for (int i = 0, eventsCount = events.size(); i < eventsCount; ++i)
-		{
-			(*events[i])(groups[i].lock(), entity, index, component);
-		}
+            for (int i = 0, eventsCount = events.size(); i < eventsCount; ++i)
+            {
+                (*events[i])(groups[i].lock(), entity, index, component);
+            }
 	}
-}
+    }
 
-void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
-{
+    void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
+    {
 	if(mGroupsForIndex.find(index) == mGroupsForIndex.end())
 	{
-		return;
+            return;
 	}
 
 	if (mGroupsForIndex[index].size() > 0)
 	{
-		for(const auto &g : mGroupsForIndex[index])
-		{
-			g.lock()->updateEntity(entity, index, previousComponent, newComponent);
-		}
+            for(const auto &g : mGroupsForIndex[index])
+            {
+                g.lock()->updateEntity(entity, index, previousComponent, newComponent);
+            }
 	}
-}
+    }
 
-void Pool::onEntityReleased(Entity* entity)
-{
+    void Pool::onEntityReleased(Entity* entity)
+    {
 	if (entity->mIsEnabled)
 	{
-		throw std::runtime_error("Error, cannot release entity. Entity is not destroyed yet.");
+            throw std::runtime_error("Error, cannot release entity. Entity is not destroyed yet.");
 	}
 
 	mRetainedEntities.erase(entity);
 	mReusableEntities.push(entity);
-}
+    }
 }
