@@ -51,7 +51,7 @@ def build(ctx):
     ctx.stlib(
         source = ctx.path.ant_glob('entitas/*.cpp'),
         target = 'entitas',
-        cxxflags     = ['-std=c++14'],
+        cxxflags     = ['-std=c++14', '-g'],
         includes = 'entitas',
         export_includes = '. entitas',
     )
@@ -72,7 +72,7 @@ def build(ctx):
         source = s1,
         features='cxx cxxprogram',
         target='s1',
-        cxxflags     = ['-std=c++14'],
+        cxxflags     = ['-std=c++14', '-g'],
         # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
         use =  ['entitas']
@@ -83,10 +83,10 @@ def build(ctx):
         source = s2,
         features='cxx cxxprogram',
         target='s2',
-        cxxflags     = ['-std=c++14'],
+        cxxflags     = ['-std=c++14', '-g'],
         linkflags = [ '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
-        use =  ['entitas', 'SDL2']
+        use =  ['entitas', 'SDL2', 'pthread']
     )
 
     if ctx.cmd != 'clean':

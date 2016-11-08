@@ -22,8 +22,16 @@ struct Color
 
 struct Material
 {
-  struct Color color;
+    struct Color color;
+    Material() = default;
+    Material(Color c) : color(c) {};
+    static Material black() { return Material(Color(0, 0, 0)); }
+    static Material blue() { return Material(Color(0, 0, 255)); }
+    static Material red() { return Material(Color(255, 0, 0)); }
+    static Material yellow() { return Material(Color(255, 255, 0)); }
 };
+
+
 
 struct Rectangle
 {

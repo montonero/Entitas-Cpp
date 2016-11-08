@@ -10,6 +10,8 @@
 
 using namespace entitas;
 
+/* -------------------------------------------------------------------------- */
+
 class DemoComponent : public IComponent
 {
 public:
@@ -46,6 +48,8 @@ public:
 private:
   Pool* mPool;
 };
+
+/* -------------------------------------------------------------------------- */
 
 class Position : public IComponent
 {
@@ -109,6 +113,68 @@ public:
 };
 
 /* -------------------------------------------------------------------------- */
+
+SDL_Renderer* gSdlRenderer;
+
+
+void renderMat(SDL_Renderer* renderer, Color c, Vec2 v)
+{
+    // auto sr = toSdlRect(r);
+    SDL_Rect sr;
+    sr.x = v.x;
+    sr.y = v.y;
+    sr.w = 100;
+    sr.h = 100;
+    SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, 255);
+    SDL_RenderFillRect(renderer, &sr);
+}  
+
+
+
+class MySystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem
+{
+public:
+    void setPool(Pool* pool)
+    {
+        pool_ = pool;
+        group_ = pool_->getGroup(Matcher_allOf(Position, RenderComponent));
+        std::cout << "MySystem::setPool called" << std::endl;
+    }
+
+    void initialize()
+    {
+        auto e = pool_->createEntity();
+        e->add<RenderComponent>(Material::black());
+        e->add<Position>(10, 10, 10);
+
+        std::cout << "MySystem initialized" << std::endl;
+    }
+
+    void execute()
+    {
+        // pool_->createEntity()->add<DemoComponent>("foo", "bar");
+        // pool_->createEntity()->add<DemoComponent>("foo", "bar");
+
+        // auto entitiesCount = pool_->getGroup(Matcher_allOf(DemoComponent))->count();
+        auto es = pool_->getGroup(Matcher_allOf(Position, RenderComponent))->getEntities();
+        for (auto &e : es)
+        {
+            auto mat = e->get<RenderComponent>();
+            auto pos = e->get<Position>();
+            renderMat(gSdlRenderer, mat->material.color, Vec2(pos->x, pos->y));
+        }
+        // std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
+
+        // std::cout << "DemoSystem executed" << std::endl;
+    }
+
+private:
+    Pool* pool_{nullptr};
+    std::shared_ptr<Group> group_;
+};
+
+/* -------------------------------------------------------------------------- */
+
 SDL_Rect toSdlRect(Rectangle r)
 {
     SDL_Rect sr;
@@ -167,6 +233,31 @@ public:
 int mainLoop()
 {
 
+    return 0;
+}
+
+/* -------------------------------------------------------------------------- */
+
+
+int main(const int argc, const char* argv[])
+{
+  auto systems = std::make_shared<SystemContainer>();
+  auto pool = std::make_shared<Pool>();
+
+  systems->add(pool->createSystem<DemoSystem>());
+  systems->add(pool->createSystem<MySystem>());
+  systems->initialize();
+
+  for(unsigned int i = 0; i < 2; ++i) {
+    systems->execute();
+  }
+
+  auto entities = pool->getEntities(Matcher_allOf(RenderComponent, Position)); // *Some magic preprocessor involved*
+  for (auto &e : entities) { // e is a shared_ptr of Entity
+      // do something
+  }
+
+/////
     int done;
     SDL_Event event;
 
@@ -195,7 +286,7 @@ int mainLoop()
         printf("Could not create renderer\n");
         return 1;
     }
-
+    gSdlRenderer = renderer;
     //thread t(readInput);
 
     /* Enter render loop, waiting for user to quit */
@@ -212,30 +303,10 @@ int mainLoop()
         // string text;
         // cin >> text;
         // render(renderer, rs);
+        systems->execute();
         SDL_Delay(100);
     }
-    return 0;
-}
 
-/* -------------------------------------------------------------------------- */
-
-
-int main(const int argc, const char* argv[])
-{
-  auto systems = std::make_shared<SystemContainer>();
-  auto pool = std::make_shared<Pool>();
-
-  systems->add(pool->createSystem<DemoSystem>());
-  systems->initialize();
-
-  for(unsigned int i = 0; i < 2; ++i) {
-    systems->execute();
-  }
-
-  auto entities = pool->getEntities(Matcher_allOf(RenderComponent, Position)); // *Some magic preprocessor involved*
-  for (auto &e : entities) { // e is a shared_ptr of Entity
-      // do something
-  }
 
   mainLoop();
   return 0;
