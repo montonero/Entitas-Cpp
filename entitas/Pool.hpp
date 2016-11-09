@@ -48,8 +48,9 @@ class Pool
 		PoolChanged onEntityCreated;
 		PoolChanged onEntityWillBeDestroyed;
 		PoolChanged onEntityDestroyed;
-		GroupChanged OnGroupCreated;
-		GroupChanged OnGroupCleared;
+
+		GroupChanged onGroupCreated;
+		GroupChanged onGroupCleared;
 
 	private:
 		void updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component);

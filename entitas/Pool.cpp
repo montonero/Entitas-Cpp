@@ -180,7 +180,7 @@ namespace entitas
 				mGroupsForIndex[matcher.getIndices()[i]].push_back(group);
 			}
 
-			OnGroupCreated(this, group);
+			onGroupCreated(this, group);
 		}
 		else
 		{
@@ -195,7 +195,7 @@ namespace entitas
 		for (const auto &it : mGroups)
 		{
 			it.second->removeAllEventHandlers();
-			OnGroupCleared(this, it.second);
+			onGroupCleared(this, it.second);
 		}
 
 		mGroups.clear();

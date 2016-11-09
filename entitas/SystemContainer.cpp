@@ -42,7 +42,7 @@ namespace entitas
     {
 		for(const auto &system : mInitializeSystems)
 		{
-				system->initialize();
+			system->initialize();
 		}
     }
 
@@ -50,7 +50,7 @@ namespace entitas
     {
 		for(const auto &system : mExecuteSystems)
 		{
-				system->execute();
+			system->execute();
 		}
     }
 
@@ -58,7 +58,7 @@ namespace entitas
     {
 		for(const auto &system : mFixedExecuteSystems)
 		{
-				system->fixedExecute();
+			system->fixedExecute();
 		}
     }
 
