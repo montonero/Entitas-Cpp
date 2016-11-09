@@ -17,14 +17,16 @@ namespace entitas
     template<typename>
     class Delegate;
 
-    namespace DelegateImpl
+	/* -------------------------------------------------------------------------- */
+    
+	namespace DelegateImpl
     {
         template <typename TReturnType, typename... TArgs>
         struct Invoker
         {
             using ReturnType = std::vector<TReturnType>;
 
-	public:
+		public:
             static ReturnType invoke(Delegate<TReturnType(TArgs...)> &delegate, TArgs... params)
             {
                 std::lock_guard<std::mutex> lock(delegate.mMutex);
@@ -38,13 +40,15 @@ namespace entitas
                 return returnValues;
             }
         };
+		
+		/* -------------------------------------------------------------------------- */
 
         template <typename... TArgs>
         struct Invoker<void, TArgs...>
         {
             using ReturnType = void;
 
-	public:
+		public:
             static void invoke(Delegate<void(TArgs...)> &delegate, TArgs... params)
             {
                 std::lock_guard<std::mutex> lock(delegate.mMutex);
@@ -57,14 +61,14 @@ namespace entitas
         };
     }
 
+	/* -------------------------------------------------------------------------- */
+
     template<typename TReturnType, typename... TArgs>
     class Delegate<TReturnType(TArgs...)>
     {
-	using Invoker = DelegateImpl::Invoker<TReturnType, TArgs...>;
-	using functionType = std::function<TReturnType(TArgs...)>;
-
-	friend Invoker;
-
+		using Invoker = DelegateImpl::Invoker<TReturnType, TArgs...>;
+		using functionType = std::function<TReturnType(TArgs...)>;
+		friend Invoker;
     public:
         Delegate() {}
         ~Delegate() {}
