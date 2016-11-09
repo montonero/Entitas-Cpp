@@ -45,9 +45,9 @@ namespace entitas
         using ComponentReplaced = Delegate<void(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)>;
         using EntityReleased = Delegate<void(Entity* entity)>;
 
-        EntityChanged OnComponentAdded;
-        ComponentReplaced OnComponentReplaced;
-        EntityChanged OnComponentRemoved;
+        EntityChanged onComponentAdded;
+        ComponentReplaced onComponentReplaced;
+        EntityChanged onComponentRemoved;
         EntityReleased onEntityReleased;
 
     protected:

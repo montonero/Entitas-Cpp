@@ -69,15 +69,15 @@ namespace entitas
 		mEntities.insert(entity);
 		mEntitiesCache.clear();
 
-		entity->OnComponentAdded += [this](EntityPtr entity, ComponentId index, IComponent* component)
+		entity->onComponentAdded += [this](EntityPtr entity, ComponentId index, IComponent* component)
 		{
 			updateGroupsComponentAddedOrRemoved(entity, index, component);
 		};
-		entity->OnComponentRemoved += [this](EntityPtr entity, ComponentId index, IComponent* component)
+		entity->onComponentRemoved += [this](EntityPtr entity, ComponentId index, IComponent* component)
 		{
 			updateGroupsComponentAddedOrRemoved(entity, index, component);
 		};
-		entity->OnComponentReplaced += [this](EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
+		entity->onComponentReplaced += [this](EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
 		{
 			updateGroupsComponentReplaced(entity, index, previousComponent, newComponent);
 		};

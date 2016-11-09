@@ -25,7 +25,7 @@ namespace entitas
 
 		components_[index] = component;
 
-		OnComponentAdded(mInstance.lock(), index, component);
+		onComponentAdded(mInstance.lock(), index, component);
 
 		return mInstance.lock();
     }
@@ -158,9 +158,9 @@ namespace entitas
     void Entity::destroy()
     {
 		removeAllComponents();
-		OnComponentAdded.clear();
-		OnComponentReplaced.clear();
-		OnComponentRemoved.clear();
+		onComponentAdded.clear();
+		onComponentReplaced.clear();
+		onComponentRemoved.clear();
 		enabled_ = false;
     }
 
@@ -175,7 +175,7 @@ namespace entitas
 
 	if(previousComponent == replacement)
 	{
-            OnComponentReplaced(mInstance.lock(), index, previousComponent, replacement);
+            onComponentReplaced(mInstance.lock(), index, previousComponent, replacement);
 	}
 	else
 	{
@@ -184,12 +184,12 @@ namespace entitas
             if(replacement == nullptr)
             {
                 components_.erase(index);
-                OnComponentRemoved(mInstance.lock(), index, previousComponent);
+                onComponentRemoved(mInstance.lock(), index, previousComponent);
             }
             else
             {
                 components_[index] = replacement;
-                OnComponentReplaced(mInstance.lock(), index, previousComponent, replacement);
+                onComponentReplaced(mInstance.lock(), index, previousComponent, replacement);
             }
 	}
     }
