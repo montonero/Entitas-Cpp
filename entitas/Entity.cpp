@@ -13,26 +13,26 @@ namespace entitas
 
     auto Entity::addComponent(const ComponentId index, IComponent* component) -> EntityPtr
     {
-	if (! mIsEnabled)
-	{
-            throw std::runtime_error("Error, cannot add component to entity, entity has already been destroyed.");
-	}
+		if (! enabled_)
+		{
+			throw std::runtime_error("Error, cannot add component to entity, entity has already been destroyed.");
+		}
 
-	if (hasComponent(index))
-	{
-            throw std::runtime_error("Error, cannot add component to entity, component already exists");
-	}
+		if (hasComponent(index))
+		{
+			throw std::runtime_error("Error, cannot add component to entity, component already exists");
+		}
 
-	components_[index] = component;
+		components_[index] = component;
 
-	OnComponentAdded(mInstance.lock(), index, component);
+		OnComponentAdded(mInstance.lock(), index, component);
 
-	return mInstance.lock();
+		return mInstance.lock();
     }
 
     auto Entity::removeComponent(const ComponentId index) -> EntityPtr
     {
-	if (! mIsEnabled)
+	if (! enabled_)
 	{
             throw std::runtime_error("Error, cannot remove component to entity, entity has already been destroyed.");
 	}
@@ -49,7 +49,7 @@ namespace entitas
 
     auto Entity::replaceComponent(const ComponentId index, IComponent* component) -> EntityPtr
     {
-	if (! mIsEnabled)
+	if (! enabled_)
 	{
             throw std::runtime_error("Error, cannot replace component to entity, entity has already been destroyed.");
 	}
@@ -132,12 +132,12 @@ namespace entitas
 
     auto Entity::getUuid() const -> const unsigned int
     {
-	return mUuid;
+	return uuid_;
     }
 
     bool Entity::isEnabled()
     {
-	return mIsEnabled;
+	return enabled_;
     }
 
     bool Entity::operator ==(const EntityPtr& right) const
@@ -157,11 +157,11 @@ namespace entitas
 
     void Entity::destroy()
     {
-	removeAllComponents();
-	OnComponentAdded.clear();
-	OnComponentReplaced.clear();
-	OnComponentRemoved.clear();
-	mIsEnabled = false;
+		removeAllComponents();
+		OnComponentAdded.clear();
+		OnComponentReplaced.clear();
+		OnComponentRemoved.clear();
+		enabled_ = false;
     }
 
     auto Entity::getComponentPool(const ComponentId index) const -> std::stack<IComponent*>*

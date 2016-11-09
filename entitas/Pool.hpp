@@ -16,7 +16,8 @@ class ISystem;
 class Pool
 {
 	public:
-		Pool(const unsigned int startCreationIndex = 1);
+		static const unsigned kStartCreationIndex = 1;
+		Pool(const unsigned int startCreationIndex = kStartCreationIndex);
 		~Pool();
 
 		auto createEntity() -> EntityPtr;
@@ -55,7 +56,7 @@ class Pool
 		void updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
 		void onEntityReleased(Entity* entity);
 
-		unsigned int mCreationIndex;
+		unsigned int creationIndex_;									//< Index that is used as uuid for Entities
 		std::unordered_set<EntityPtr> mEntities;
 		std::unordered_map<Matcher, std::shared_ptr<Group>> mGroups;
 		std::stack<Entity*> mReusableEntities;

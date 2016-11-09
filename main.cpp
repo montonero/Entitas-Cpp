@@ -134,7 +134,8 @@ private:
 
 /* -------------------------------------------------------------------------- */
 
-int main(const int argc, const char* argv[]) {
+int main(const int argc, const char* argv[])
+{
   auto systems = std::make_shared<SystemContainer>();
   auto pool = std::make_shared<Pool>();
 
@@ -142,7 +143,8 @@ int main(const int argc, const char* argv[]) {
   systems->add(pool->createSystem<MySystem>());
   systems->initialize();
 
-  for(unsigned int i = 0; i < 2; ++i) {
+  for(unsigned int i = 0; i < 2; ++i)
+  {
     systems->execute();
   }
 

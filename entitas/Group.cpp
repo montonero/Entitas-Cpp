@@ -9,6 +9,7 @@
 
 namespace entitas
 {
+
 Group::Group(const Matcher& matcher) : mMatcher(matcher)
 {
 }

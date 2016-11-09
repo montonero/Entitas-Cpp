@@ -14,6 +14,8 @@ namespace entitas
     class Entity;
     typedef std::shared_ptr<Entity> EntityPtr;
 
+	/* -------------------------------------------------------------------------- */
+
     class Entity
     {
 	friend class Pool;
@@ -59,8 +61,8 @@ namespace entitas
 
         template <typename T, typename... TArgs> inline auto createComponent(TArgs&&... args) -> IComponent*;
 
-        unsigned int mUuid{0};
-        bool mIsEnabled = true;
+        unsigned int uuid_{0};
+		bool enabled_{ true };
 
     private:
         auto getComponentPool(const ComponentId index) const -> std::stack<IComponent*>*;
@@ -71,43 +73,45 @@ namespace entitas
         std::map<ComponentId, std::stack<IComponent*>>* mComponentPools;
     };
 
+	/* -------------------------------------------------------------------------- */
+
     template <typename T, typename... TArgs>
     auto Entity::createComponent(TArgs&&... args) -> IComponent*
     {
-	std::stack<IComponent*>* componentPool = getComponentPool(ComponentTypeId::get<T>());
-	IComponent* component = nullptr;
+		std::stack<IComponent*>* componentPool = getComponentPool(ComponentTypeId::get<T>());
+		IComponent* component = nullptr;
 
-	if(componentPool->size() > 0)
-	{
-            component = componentPool->top();
-            componentPool->pop();
-	}
-	else
-	{
-            component = new T();
-	}
+		if(componentPool->size() > 0)
+		{
+			component = componentPool->top();
+			componentPool->pop();
+		}
+		else
+		{
+			component = new T();
+		}
 
-	(static_cast<T*>(component))->reset(std::forward<TArgs>(args)...);
+		(static_cast<T*>(component))->reset(std::forward<TArgs>(args)...);
 
-	return component;
+		return component;
     }
 
     template <typename T, typename... TArgs>
     auto Entity::add(TArgs&&... args) -> EntityPtr
     {
-	return addComponent(ComponentTypeId::get<T>(), createComponent<T>(std::forward<TArgs>(args)...));
+		return addComponent(ComponentTypeId::get<T>(), createComponent<T>(std::forward<TArgs>(args)...));
     }
 
     template <typename T>
     auto Entity::remove() -> EntityPtr
     {
-	return removeComponent(ComponentTypeId::get<T>());
+		return removeComponent(ComponentTypeId::get<T>());
     }
 
     template <typename T, typename... TArgs>
     auto Entity::replace(TArgs&&... args) -> EntityPtr
     {
-	return replaceComponent(ComponentTypeId::get<T>(), createComponent<T>(std::forward<TArgs>(args)...));
+		return replaceComponent(ComponentTypeId::get<T>(), createComponent<T>(std::forward<TArgs>(args)...));
     }
 
     template <typename T>

@@ -12,7 +12,7 @@ namespace entitas
 {
     Pool::Pool(const unsigned int startCreationIndex)
     {
-		mCreationIndex = startCreationIndex;
+		creationIndex_ = startCreationIndex;
 		mOnEntityReleasedCache = std::bind(&Pool::onEntityReleased, this, std::placeholders::_1);
     }
 
@@ -63,8 +63,8 @@ namespace entitas
 		}
 
 		entity->setInstance(entity);
-		entity->mIsEnabled = true;
-		entity->mUuid = mCreationIndex++;
+		entity->enabled_ = true;
+		entity->uuid_ = creationIndex_++;
 
 		mEntities.insert(entity);
 		mEntitiesCache.clear();
@@ -202,7 +202,7 @@ namespace entitas
 
 		for (auto &pair : mGroupsForIndex)
 		{
-				pair.second.clear();
+			pair.second.clear();
 		}
 
 		mGroupsForIndex.clear();
@@ -210,22 +210,22 @@ namespace entitas
 
     void Pool::resetCreationIndex()
     {
-	mCreationIndex = 0;
+		creationIndex_ = kStartCreationIndex;
     }
 
     void Pool::clearComponentPool(const ComponentId index)
     {
-	while(! mComponentPools.at(index).empty())
-	{
-            mComponentPools.at(index).pop();
-	}
+		while(! mComponentPools.at(index).empty())
+		{
+			mComponentPools.at(index).pop();
+		}
     }
 
     void Pool::clearComponentPools()
     {
 		for(const auto &pair : mComponentPools)
 		{
-				clearComponentPool(pair.first);
+			clearComponentPool(pair.first);
 		}
     }
 
@@ -314,7 +314,7 @@ namespace entitas
 
     void Pool::onEntityReleased(Entity* entity)
     {
-		if (entity->mIsEnabled)
+		if (entity->enabled_)
 		{
 			throw std::runtime_error("Error, cannot release entity. Entity is not destroyed yet.");
 		}
