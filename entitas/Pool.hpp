@@ -58,16 +58,19 @@ class Pool
 		void onEntityReleased(Entity* entity);
 
 		unsigned int creationIndex_;									//< Index that is used as uuid for Entities
-		std::unordered_set<EntityPtr> mEntities;
-		std::unordered_map<Matcher, std::shared_ptr<Group>> mGroups;
+		std::unordered_set<EntityPtr> entities_;
+		std::unordered_map<Matcher, std::shared_ptr<Group>> groups_;
 		std::stack<Entity*> mReusableEntities;
-		std::unordered_set<Entity*> mRetainedEntities;
+
+		std::unordered_set<Entity*> retainedEntities_;
 
 		std::map<ComponentId, std::stack<IComponent*>> mComponentPools;
-		std::map<ComponentId, std::vector<std::weak_ptr<Group>>> mGroupsForIndex;
+		/// ComponentId to corresponding groups map
+		/// Used to quickly find groups when modifying components
+		std::map<ComponentId, std::vector<std::weak_ptr<Group>>> groupsForIndex_;
 
-		std::vector<EntityPtr> mEntitiesCache;
-		std::function<void(Entity*)> mOnEntityReleasedCache;
+		std::vector<EntityPtr> entitiesCache_;
+		std::function<void(Entity*)> mOnEntityReleasedCache;	
 };
 
 template <typename T>

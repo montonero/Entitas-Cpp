@@ -16,7 +16,7 @@ namespace entitas
     {
     public:
         Matcher() = default;
-        static auto allOf(const ComponentIdList indices) -> const Matcher;
+        static Matcher allOf(const ComponentIdList indices);
         static auto allOf(const MatcherList matchers) -> const Matcher;
         static auto anyOf(const ComponentIdList indices) -> const Matcher;
         static auto anyOf(const MatcherList matchers) -> const Matcher;

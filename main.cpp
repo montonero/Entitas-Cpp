@@ -139,7 +139,7 @@ int main(const int argc, const char* argv[])
   auto systems = std::make_shared<SystemContainer>();
   auto pool = std::make_shared<Pool>();
 
-  //systems->add(pool->createSystem<DemoSystem>());
+  systems->add(pool->createSystem<DemoSystem>());
   systems->add(pool->createSystem<MySystem>());
   systems->initialize();
 

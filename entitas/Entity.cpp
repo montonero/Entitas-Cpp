@@ -8,7 +8,7 @@ namespace entitas
 {
     Entity::Entity(std::map<ComponentId, std::stack<IComponent*>>* componentPools)
     {
-	mComponentPools = componentPools;
+		mComponentPools = componentPools;
     }
 
     auto Entity::addComponent(const ComponentId index, IComponent* component) -> EntityPtr
@@ -32,89 +32,89 @@ namespace entitas
 
     auto Entity::removeComponent(const ComponentId index) -> EntityPtr
     {
-	if (! enabled_)
-	{
-            throw std::runtime_error("Error, cannot remove component to entity, entity has already been destroyed.");
-	}
+		if (! enabled_)
+		{
+			throw std::runtime_error("Error, cannot remove component to entity, entity has already been destroyed.");
+		}
 
-	if (! hasComponent(index))
-	{
-            throw std::runtime_error("Error, cannot remove component to entity, component not exists");
-	}
+		if (! hasComponent(index))
+		{
+			throw std::runtime_error("Error, cannot remove component to entity, component not exists");
+		}
 
-	replace(index, nullptr);
+		replace(index, nullptr);
 
-	return mInstance.lock();
+		return mInstance.lock();
     }
 
     auto Entity::replaceComponent(const ComponentId index, IComponent* component) -> EntityPtr
     {
-	if (! enabled_)
-	{
-            throw std::runtime_error("Error, cannot replace component to entity, entity has already been destroyed.");
-	}
+		if (! enabled_)
+		{
+			throw std::runtime_error("Error, cannot replace component to entity, entity has already been destroyed.");
+		}
 
-	if (hasComponent(index))
-	{
-            replace(index, component);
-	}
-	else if (component != nullptr)
-	{
-            addComponent(index, component);
-	}
+		if (hasComponent(index))
+		{
+			replace(index, component);
+		}
+		else if (component != nullptr)
+		{
+			addComponent(index, component);
+		}
 
-	return mInstance.lock();
+		return mInstance.lock();
     }
 
     auto Entity::getComponent(const ComponentId index) const -> IComponent*
     {
-	if (! hasComponent(index))
-	{
-            throw std::runtime_error("Error, cannot get component from entity, component not exists");
-	}
+		if (! hasComponent(index))
+		{
+			throw std::runtime_error("Error, cannot get component from entity, component does not exists");
+		}
 
-	return components_.at(index);
+		return components_.at(index);
     }
 
     bool Entity::hasComponent(const ComponentId index) const
     {
-	return (components_.find(index) != components_.end());
+		return (components_.find(index) != components_.end());
     }
 
     bool Entity::hasComponents(const std::vector<ComponentId>& indices) const
     {
-	for(const ComponentId &index : indices)
-	{
-            if (! hasComponent(index))
-            {
-                return false;
-            }
-	}
+		for(const ComponentId &index : indices)
+		{
+			if (! hasComponent(index))
+			{
+				return false;
+			}
+		}
 
-	return true;
+		return true;
     }
 
-    bool Entity::hasAnyComponent(const std::vector<ComponentId>& indices) const
-    {
-	for(const ComponentId &index : indices)
+	bool Entity::hasAnyComponent(const std::vector<ComponentId>& indices) const
 	{
-            if (hasComponent(index))
-            {
-                return true;
-            }
-	}
+		for(const ComponentId &index : indices)
+		{
+			if (hasComponent(index))
+			{
+				return true;
+			}
+		}
 
-	return false;
+		return false;
     }
 
     auto Entity::getComponentsCount() const -> unsigned int
     {
-	return components_.size();
+		return components_.size();
     }
 
     void Entity::removeAllComponents()
     {
-	{
+		{
             auto componentsIdTemp = std::vector<ComponentId>(components_.size());
 
             for(const auto &pair : components_)
@@ -127,32 +127,32 @@ namespace entitas
                 replace(componentsIdTemp.back(), nullptr);
                 componentsIdTemp.pop_back();
             }
-	}
+		}
     }
 
     auto Entity::getUuid() const -> const unsigned int
     {
-	return uuid_;
+		return uuid_;
     }
 
     bool Entity::isEnabled()
     {
-	return enabled_;
+		return enabled_;
     }
 
     bool Entity::operator ==(const EntityPtr& right) const
     {
-	return this->getUuid() == right->getUuid();
+		return this->getUuid() == right->getUuid();
     }
 
     bool Entity::operator ==(const Entity right) const
     {
-	return this->getUuid() == right.getUuid();
+		return this->getUuid() == right.getUuid();
     }
 
     void Entity::setInstance(EntityPtr instance)
     {
-	mInstance = std::weak_ptr<Entity>(instance);
+		mInstance = instance;
     }
 
     void Entity::destroy()
@@ -199,6 +199,6 @@ namespace std
 {
     bool operator ==(weak_ptr<entitas::Entity> left, weak_ptr<entitas::Entity> right)
     {
-	return left.lock().get() == right.lock().get();
+		return left.lock().get() == right.lock().get();
     }
 }

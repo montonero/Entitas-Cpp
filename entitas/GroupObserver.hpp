@@ -31,7 +31,7 @@ class GroupObserver
 		void addEntity(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* component);
 
 		std::unordered_set<EntityPtr> mCollectedEntities;
-		std::vector<std::shared_ptr<Group>> mGroups;
+		std::vector<std::shared_ptr<Group>> groups_;
 		std::vector<GroupEventType> mEventTypes;
 		std::function<void(std::shared_ptr<Group>, EntityPtr, ComponentId, IComponent*)> mAddEntityCache;
 };

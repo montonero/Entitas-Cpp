@@ -22,7 +22,7 @@ namespace entitas
 
 		// TODO: Components don't get destroyed.
 
-		if(! mRetainedEntities.empty())
+		if(! retainedEntities_.empty())
 		{
 				// Warning, some entities remain undestroyed in the pool destruction !"
 		}
@@ -66,8 +66,8 @@ namespace entitas
 		entity->enabled_ = true;
 		entity->uuid_ = creationIndex_++;
 
-		mEntities.insert(entity);
-		mEntitiesCache.clear();
+		entities_.insert(entity);
+		entitiesCache_.clear();
 
 		entity->onComponentAdded += [this](EntityPtr entity, ComponentId index, IComponent* component)
 		{
@@ -92,19 +92,19 @@ namespace entitas
 
     bool Pool::hasEntity(const EntityPtr& entity) const
     {
-		return std::find(mEntities.begin(), mEntities.end(), std::weak_ptr<Entity>(entity)) != mEntities.end();
+		return std::find(entities_.begin(), entities_.end(), std::weak_ptr<Entity>(entity)) != entities_.end();
     }
 
     void Pool::destroyEntity(EntityPtr entity)
     {
-		auto removed = mEntities.erase(entity);
+		auto removed = entities_.erase(entity);
 
 		if (! removed)
 		{
 			throw std::runtime_error("Error, cannot destroy entity. Pool does not contain entity.");
 		}
 
-		mEntitiesCache.clear();
+		entitiesCache_.clear();
 
 		onEntityWillBeDestroyed(this, entity);
 		entity->destroy();
@@ -117,25 +117,25 @@ namespace entitas
 		}
 		else
 		{
-			mRetainedEntities.insert(entity.get());
+			retainedEntities_.insert(entity.get());
 		}
     }
 
     void Pool::destroyAllEntities()
     {
 		{
-			auto entitiesTemp = std::vector<EntityPtr>(mEntities.begin(), mEntities.end());
+			auto entitiesTemp = std::vector<EntityPtr>(entities_.begin(), entities_.end());
 
-			while(! mEntities.empty())
+			while(! entities_.empty())
 			{
 				destroyEntity(entitiesTemp.back());
 				entitiesTemp.pop_back();
 			}
 		}
 
-		mEntities.clear();
+		entities_.clear();
 
-		if (! mRetainedEntities.empty())
+		if (! retainedEntities_.empty())
 		{
 			// Try calling Pool.clearGroups() and SystemContainer.clearReactiveSystems() before calling pool.destroyAllEntities() to avoid memory leaks
 			throw std::runtime_error("Error, pool detected retained entities although all entities got destroyed. Did you release all entities?");
@@ -144,12 +144,11 @@ namespace entitas
 
     auto Pool::getEntities() -> std::vector<EntityPtr>
     {
-		if(mEntitiesCache.empty())
+		if(entitiesCache_.empty())
 		{
-			mEntitiesCache = std::vector<EntityPtr>(mEntities.begin(), mEntities.end());
+			entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());
 		}
-
-		return mEntitiesCache;
+		return entitiesCache_;
     }
 
     auto Pool::getEntities(const Matcher matcher) -> std::vector<EntityPtr>
@@ -159,25 +158,25 @@ namespace entitas
 
     auto Pool::getGroup(Matcher matcher) -> std::shared_ptr<Group>
     {
-		std::shared_ptr<Group> group = nullptr;
-		auto it = mGroups.find(matcher);
-		if (it == mGroups.end())
+		std::shared_ptr<Group> group;
+		auto it = groups_.find(matcher);
+		if (it == groups_.end())
 		{
-			group = std::shared_ptr<Group>(new Group(matcher));
+			group.reset(new Group(matcher));
 			group->setInstance(group);
 
+			// 'Handle' all pool's entities
 			auto entities = getEntities();
-
 			for (int i = 0, entitiesLength = entities.size(); i < entitiesLength; i++)
 			{
 				group->handleEntitySilently(entities[i]);
 			}
 
-			mGroups[group->getMatcher()] = group;
+			groups_[group->getMatcher()] = group;
 
 			for (int i = 0, indicesLength = matcher.getIndices().size(); i < indicesLength; i++)
 			{
-				mGroupsForIndex[matcher.getIndices()[i]].push_back(group);
+				groupsForIndex_[matcher.getIndices()[i]].push_back(group);
 			}
 
 			onGroupCreated(this, group);
@@ -192,20 +191,20 @@ namespace entitas
 
     void Pool::clearGroups()
     {
-		for (const auto &it : mGroups)
+		for (const auto &it : groups_)
 		{
 			it.second->removeAllEventHandlers();
 			onGroupCleared(this, it.second);
 		}
 
-		mGroups.clear();
+		groups_.clear();
 
-		for (auto &pair : mGroupsForIndex)
+		for (auto &pair : groupsForIndex_)
 		{
 			pair.second.clear();
 		}
 
-		mGroupsForIndex.clear();
+		groupsForIndex_.clear();
     }
 
     void Pool::resetCreationIndex()
@@ -238,7 +237,7 @@ namespace entitas
 
     auto Pool::getEntityCount() const -> unsigned int
     {
-		return mEntities.size();
+		return entities_.size();
     }
 
     auto Pool::getReusableEntitiesCount() const -> unsigned int
@@ -248,37 +247,37 @@ namespace entitas
 
     auto Pool::getRetainedEntitiesCount() const -> unsigned int
     {
-	return mRetainedEntities.size();
+		return retainedEntities_.size();
     }
 
     auto Pool::createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>
     {
-	if(std::dynamic_pointer_cast<ISetPoolSystem>(system) != nullptr)
-	{
-            (std::dynamic_pointer_cast<ISetPoolSystem>(system)->setPool(this));
-	}
+		if(std::dynamic_pointer_cast<ISetPoolSystem>(system) != nullptr)
+		{
+			(std::dynamic_pointer_cast<ISetPoolSystem>(system)->setPool(this));
+		}
 
-	if(std::dynamic_pointer_cast<IReactiveSystem>(system) != nullptr)
-	{
-            return std::shared_ptr<ReactiveSystem>(new ReactiveSystem(this, std::dynamic_pointer_cast<IReactiveSystem>(system)));
-	}
+		if(std::dynamic_pointer_cast<IReactiveSystem>(system) != nullptr)
+		{
+			return std::shared_ptr<ReactiveSystem>(new ReactiveSystem(this, std::dynamic_pointer_cast<IReactiveSystem>(system)));
+		}
 
-	if(std::dynamic_pointer_cast<IMultiReactiveSystem>(system) != nullptr)
-	{
-            return std::shared_ptr<ReactiveSystem>(new ReactiveSystem(this, std::dynamic_pointer_cast<IMultiReactiveSystem>(system)));
-	}
+		if(std::dynamic_pointer_cast<IMultiReactiveSystem>(system) != nullptr)
+		{
+			return std::shared_ptr<ReactiveSystem>(new ReactiveSystem(this, std::dynamic_pointer_cast<IMultiReactiveSystem>(system)));
+		}
 
-	return system;
+		return system;
     }
 
     void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)
     {
-		if(mGroupsForIndex.find(index) == mGroupsForIndex.end())
+		if(groupsForIndex_.find(index) == groupsForIndex_.end())
 		{
 			return;
 		}
 
-		auto groups = mGroupsForIndex[index];
+		auto groups = groupsForIndex_[index];
 
 		if (groups.size() > 0)
 		{
@@ -298,14 +297,14 @@ namespace entitas
 
     void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
     {
-		if(mGroupsForIndex.find(index) == mGroupsForIndex.end())
+		if(groupsForIndex_.find(index) == groupsForIndex_.end())
 		{
 			return;
 		}
 
-		if (mGroupsForIndex[index].size() > 0)
+		if (groupsForIndex_[index].size() > 0)
 		{
-			for(const auto &g : mGroupsForIndex[index])
+			for(const auto &g : groupsForIndex_[index])
 			{
 				g.lock()->updateEntity(entity, index, previousComponent, newComponent);
 			}
@@ -319,7 +318,7 @@ namespace entitas
 			throw std::runtime_error("Error, cannot release entity. Entity is not destroyed yet.");
 		}
 
-		mRetainedEntities.erase(entity);
+		retainedEntities_.erase(entity);
 		mReusableEntities.push(entity);
     }
 }

@@ -10,14 +10,14 @@ namespace entitas
 {
 GroupObserver::GroupObserver(std::shared_ptr<Group> group, const GroupEventType eventType)
 {
-	mGroups.push_back(group);
+	groups_.push_back(group);
 	mEventTypes.push_back(eventType);
 	mAddEntityCache = std::bind(&GroupObserver::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
 }
 
 GroupObserver::GroupObserver(std::vector<std::shared_ptr<Group>> groups, std::vector<GroupEventType> eventTypes)
 {
-	mGroups = groups;
+	groups_ = groups;
 	mEventTypes = eventTypes;
 	mAddEntityCache = std::bind(&GroupObserver::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
 
@@ -36,9 +36,9 @@ GroupObserver::~GroupObserver()
 
 void GroupObserver::activate()
 {
-	for(unsigned int i = 0, groupCount = mGroups.size(); i < groupCount; ++i)
+	for(unsigned int i = 0, groupCount = groups_.size(); i < groupCount; ++i)
 	{
-		auto g = mGroups[i];
+		auto g = groups_[i];
 		auto eventType = mEventTypes[i];
 
 		if(eventType == GroupEventType::OnEntityAdded)
@@ -64,7 +64,7 @@ void GroupObserver::activate()
 
 void GroupObserver::deactivate()
 {
-	for(const auto &g : mGroups)
+	for(const auto &g : groups_)
 	{
 		g->onEntityAdded -= mAddEntityCache;
 		g->onEntityRemoved -= mAddEntityCache;

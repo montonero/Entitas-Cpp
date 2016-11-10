@@ -42,16 +42,16 @@ class Group
 		void removeAllEventHandlers();
 
 	private:
-		bool addEntitySilently(EntityPtr entity);
+		bool addEntitySilently(EntityPtr entity);                                      //< Returns true if a given entity was added
 		void addEntity(EntityPtr entity, ComponentId index, IComponent* component);
 		auto addEntity(EntityPtr entity) -> GroupChanged*;
-		bool removeEntitySilently(EntityPtr entity);
+		bool removeEntitySilently(EntityPtr entity);                                   //< Returns true if a given entity was removed
 		void removeEntity(EntityPtr entity, ComponentId index, IComponent* component);
 		auto removeEntity(EntityPtr entity) -> GroupChanged*;
 
 		std::weak_ptr<Group> mInstance;
 		Matcher mMatcher;
-		std::unordered_set<EntityPtr> mEntities;
-		std::vector<EntityPtr> mEntitiesCache;
+		std::unordered_set<EntityPtr> entities_;
+		std::vector<EntityPtr> entitiesCache_;
 };
 }

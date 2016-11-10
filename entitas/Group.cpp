@@ -16,17 +16,17 @@ Group::Group(const Matcher& matcher) : mMatcher(matcher)
 
 auto Group::count() const -> const unsigned int
 {
-	return mEntities.size();
+	return entities_.size();
 }
 
 auto Group::getEntities() -> std::vector<EntityPtr>
 {
-	if(mEntitiesCache.empty() && !mEntities.empty())
+	if(entitiesCache_.empty() && !entities_.empty())
 	{
-		mEntitiesCache = std::vector<EntityPtr>(mEntities.begin(), mEntities.end());
+		entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());
 	}
 
-	return mEntitiesCache;
+	return entitiesCache_;
 }
 
 auto Group::getSingleEntity() const -> EntityPtr
@@ -34,7 +34,7 @@ auto Group::getSingleEntity() const -> EntityPtr
 	auto c = count();
 	if(c == 1)
 	{
-		return *(mEntities.begin());
+		return *(entities_.begin());
 	}
 	else if(c == 0)
 	{
@@ -49,7 +49,7 @@ auto Group::getSingleEntity() const -> EntityPtr
 
 bool Group::containsEntity(const EntityPtr& entity) const
 {
-	return std::find(mEntities.begin(), mEntities.end(), entity) != mEntities.end();
+	return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
 }
 
 auto Group::getMatcher() const -> Matcher
@@ -64,7 +64,7 @@ auto Group::createObserver(const GroupEventType eventType) -> std::shared_ptr<Gr
 
 void Group::setInstance(std::shared_ptr<Group> instance)
 {
-	mInstance = std::weak_ptr<Group>(instance);
+	mInstance = instance;
 }
 
 auto Group::handleEntity(EntityPtr entity) -> GroupChanged*
@@ -115,9 +115,10 @@ void Group::removeAllEventHandlers()
 
 bool Group::addEntitySilently(EntityPtr entity)
 {
-	if(mEntities.insert(entity).second)
+	if(entities_.insert(entity).second)
 	{
-		mEntitiesCache.clear();
+		// Since entity was added we must update cache
+		entitiesCache_.clear();
 		return true;
 	}
 
@@ -139,12 +140,12 @@ auto Group::addEntity(EntityPtr entity) -> GroupChanged*
 
 bool Group::removeEntitySilently(EntityPtr entity)
 {
-	if(mEntities.erase(entity))
+	if(entities_.erase(entity))
 	{
-		mEntitiesCache.clear();
+		entitiesCache_.clear();
 		return true;
 	}
-
+	// No entities were removed
 	return false;
 }
 
