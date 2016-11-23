@@ -4,3 +4,5 @@ build/*
 
 *.user
 *.user.*
+.lock-waf_darwin_build
+*.log
