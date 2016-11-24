@@ -35,10 +35,8 @@ public:
   void execute()
   {
     mPool->createEntity()->add<DemoComponent>("foo", "bar");
-
     auto entitiesCount = mPool->getGroup(Matcher_allOf(DemoComponent))->count();
     std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
-
     std::cout << "DemoSystem executed" << std::endl;
   }
 
