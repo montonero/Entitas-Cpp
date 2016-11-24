@@ -7,15 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		78699A061DE5D0B200FB0EC9 /* ComponentTypeId.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 786999F11DE5D0B200FB0EC9 /* ComponentTypeId.cpp */; };
-		78699A071DE5D0B200FB0EC9 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 786999F41DE5D0B200FB0EC9 /* Entity.cpp */; };
-		78699A081DE5D0B200FB0EC9 /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 786999F61DE5D0B200FB0EC9 /* Group.cpp */; };
-		78699A091DE5D0B200FB0EC9 /* GroupObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 786999F91DE5D0B200FB0EC9 /* GroupObserver.cpp */; };
-		78699A0A1DE5D0B200FB0EC9 /* Matcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 786999FD1DE5D0B200FB0EC9 /* Matcher.cpp */; };
-		78699A0B1DE5D0B200FB0EC9 /* Pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 786999FF1DE5D0B200FB0EC9 /* Pool.cpp */; };
-		78699A0C1DE5D0B200FB0EC9 /* ReactiveSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78699A011DE5D0B200FB0EC9 /* ReactiveSystem.cpp */; };
-		78699A0D1DE5D0B200FB0EC9 /* SystemContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78699A031DE5D0B200FB0EC9 /* SystemContainer.cpp */; };
-		78699A0F1DE5D0BB00FB0EC9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78699A0E1DE5D0BB00FB0EC9 /* main.cpp */; };
+		893F357E1DE710B00001A83A /* ComponentTypeId.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35691DE710B00001A83A /* ComponentTypeId.cpp */; };
+		893F357F1DE710B00001A83A /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F356C1DE710B00001A83A /* Entity.cpp */; };
+		893F35801DE710B00001A83A /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F356E1DE710B00001A83A /* Group.cpp */; };
+		893F35811DE710B00001A83A /* GroupObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35711DE710B00001A83A /* GroupObserver.cpp */; };
+		893F35821DE710B00001A83A /* Matcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35751DE710B00001A83A /* Matcher.cpp */; };
+		893F35831DE710B00001A83A /* Pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35771DE710B00001A83A /* Pool.cpp */; };
+		893F35841DE710B00001A83A /* ReactiveSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35791DE710B00001A83A /* ReactiveSystem.cpp */; };
+		893F35851DE710B00001A83A /* SystemContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F357B1DE710B00001A83A /* SystemContainer.cpp */; };
+		893F35871DE710C50001A83A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35861DE710C50001A83A /* main.cpp */; };
+		893F35A81DE714AA0001A83A /* ComponentTypeId.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35931DE714AA0001A83A /* ComponentTypeId.cpp */; };
+		893F35A91DE714AA0001A83A /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35961DE714AA0001A83A /* Entity.cpp */; };
+		893F35AA1DE714AA0001A83A /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35981DE714AA0001A83A /* Group.cpp */; };
+		893F35AB1DE714AA0001A83A /* GroupObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F359B1DE714AA0001A83A /* GroupObserver.cpp */; };
+		893F35AC1DE714AA0001A83A /* Matcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F359F1DE714AA0001A83A /* Matcher.cpp */; };
+		893F35AD1DE714AA0001A83A /* Pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35A11DE714AA0001A83A /* Pool.cpp */; };
+		893F35AE1DE714AA0001A83A /* ReactiveSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35A31DE714AA0001A83A /* ReactiveSystem.cpp */; };
+		893F35AF1DE714AA0001A83A /* SystemContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35A51DE714AA0001A83A /* SystemContainer.cpp */; };
+		893F35B21DE714BD0001A83A /* sample1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35B11DE714BD0001A83A /* sample1.cpp */; };
+		893F35D41DE716190001A83A /* ComponentTypeId.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35BF1DE716190001A83A /* ComponentTypeId.cpp */; };
+		893F35D51DE716190001A83A /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35C21DE716190001A83A /* Entity.cpp */; };
+		893F35D61DE716190001A83A /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35C41DE716190001A83A /* Group.cpp */; };
+		893F35D71DE716190001A83A /* GroupObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35C71DE716190001A83A /* GroupObserver.cpp */; };
+		893F35D81DE716190001A83A /* Matcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35CB1DE716190001A83A /* Matcher.cpp */; };
+		893F35D91DE716190001A83A /* Pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35CD1DE716190001A83A /* Pool.cpp */; };
+		893F35DA1DE716190001A83A /* ReactiveSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35CF1DE716190001A83A /* ReactiveSystem.cpp */; };
+		893F35DB1DE716190001A83A /* SystemContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35D11DE716190001A83A /* SystemContainer.cpp */; };
+		893F35DE1DE716240001A83A /* sample2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35DD1DE716240001A83A /* sample2.cpp */; };
+		893F35E11DE717490001A83A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893F35E01DE717490001A83A /* SDL2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,32 +47,99 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		893F358A1DE7148A0001A83A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		893F35B51DE715FD0001A83A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		786999E71DE5D05900FB0EC9 /* entitas-demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "entitas-demo"; sourceTree = BUILT_PRODUCTS_DIR; };
-		786999F11DE5D0B200FB0EC9 /* ComponentTypeId.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ComponentTypeId.cpp; path = ../../../../entitas/ComponentTypeId.cpp; sourceTree = "<group>"; };
-		786999F21DE5D0B200FB0EC9 /* ComponentTypeId.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ComponentTypeId.hpp; path = ../../../../entitas/ComponentTypeId.hpp; sourceTree = "<group>"; };
-		786999F31DE5D0B200FB0EC9 /* Delegate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Delegate.hpp; path = ../../../../entitas/Delegate.hpp; sourceTree = "<group>"; };
-		786999F41DE5D0B200FB0EC9 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = ../../../../entitas/Entity.cpp; sourceTree = "<group>"; };
-		786999F51DE5D0B200FB0EC9 /* Entity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Entity.hpp; path = ../../../../entitas/Entity.hpp; sourceTree = "<group>"; };
-		786999F61DE5D0B200FB0EC9 /* Group.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Group.cpp; path = ../../../../entitas/Group.cpp; sourceTree = "<group>"; };
-		786999F71DE5D0B200FB0EC9 /* Group.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Group.hpp; path = ../../../../entitas/Group.hpp; sourceTree = "<group>"; };
-		786999F81DE5D0B200FB0EC9 /* GroupEventType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupEventType.hpp; path = ../../../../entitas/GroupEventType.hpp; sourceTree = "<group>"; };
-		786999F91DE5D0B200FB0EC9 /* GroupObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GroupObserver.cpp; path = ../../../../entitas/GroupObserver.cpp; sourceTree = "<group>"; };
-		786999FA1DE5D0B200FB0EC9 /* GroupObserver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupObserver.hpp; path = ../../../../entitas/GroupObserver.hpp; sourceTree = "<group>"; };
-		786999FB1DE5D0B200FB0EC9 /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = IComponent.hpp; path = ../../../../entitas/IComponent.hpp; sourceTree = "<group>"; };
-		786999FC1DE5D0B200FB0EC9 /* ISystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ISystem.hpp; path = ../../../../entitas/ISystem.hpp; sourceTree = "<group>"; };
-		786999FD1DE5D0B200FB0EC9 /* Matcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Matcher.cpp; path = ../../../../entitas/Matcher.cpp; sourceTree = "<group>"; };
-		786999FE1DE5D0B200FB0EC9 /* Matcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Matcher.hpp; path = ../../../../entitas/Matcher.hpp; sourceTree = "<group>"; };
-		786999FF1DE5D0B200FB0EC9 /* Pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Pool.cpp; path = ../../../../entitas/Pool.cpp; sourceTree = "<group>"; };
-		78699A001DE5D0B200FB0EC9 /* Pool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Pool.hpp; path = ../../../../entitas/Pool.hpp; sourceTree = "<group>"; };
-		78699A011DE5D0B200FB0EC9 /* ReactiveSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ReactiveSystem.cpp; path = ../../../../entitas/ReactiveSystem.cpp; sourceTree = "<group>"; };
-		78699A021DE5D0B200FB0EC9 /* ReactiveSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ReactiveSystem.hpp; path = ../../../../entitas/ReactiveSystem.hpp; sourceTree = "<group>"; };
-		78699A031DE5D0B200FB0EC9 /* SystemContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SystemContainer.cpp; path = ../../../../entitas/SystemContainer.cpp; sourceTree = "<group>"; };
-		78699A041DE5D0B200FB0EC9 /* SystemContainer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SystemContainer.hpp; path = ../../../../entitas/SystemContainer.hpp; sourceTree = "<group>"; };
-		78699A051DE5D0B200FB0EC9 /* TriggerOnEvent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TriggerOnEvent.hpp; path = ../../../../entitas/TriggerOnEvent.hpp; sourceTree = "<group>"; };
-		78699A0E1DE5D0BB00FB0EC9 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../../main.cpp; sourceTree = "<group>"; };
+		893F35691DE710B00001A83A /* ComponentTypeId.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ComponentTypeId.cpp; path = ../../../../entitas/ComponentTypeId.cpp; sourceTree = "<group>"; };
+		893F356A1DE710B00001A83A /* ComponentTypeId.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ComponentTypeId.hpp; path = ../../../../entitas/ComponentTypeId.hpp; sourceTree = "<group>"; };
+		893F356B1DE710B00001A83A /* Delegate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Delegate.hpp; path = ../../../../entitas/Delegate.hpp; sourceTree = "<group>"; };
+		893F356C1DE710B00001A83A /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = ../../../../entitas/Entity.cpp; sourceTree = "<group>"; };
+		893F356D1DE710B00001A83A /* Entity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Entity.hpp; path = ../../../../entitas/Entity.hpp; sourceTree = "<group>"; };
+		893F356E1DE710B00001A83A /* Group.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Group.cpp; path = ../../../../entitas/Group.cpp; sourceTree = "<group>"; };
+		893F356F1DE710B00001A83A /* Group.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Group.hpp; path = ../../../../entitas/Group.hpp; sourceTree = "<group>"; };
+		893F35701DE710B00001A83A /* GroupEventType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupEventType.hpp; path = ../../../../entitas/GroupEventType.hpp; sourceTree = "<group>"; };
+		893F35711DE710B00001A83A /* GroupObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GroupObserver.cpp; path = ../../../../entitas/GroupObserver.cpp; sourceTree = "<group>"; };
+		893F35721DE710B00001A83A /* GroupObserver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupObserver.hpp; path = ../../../../entitas/GroupObserver.hpp; sourceTree = "<group>"; };
+		893F35731DE710B00001A83A /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = IComponent.hpp; path = ../../../../entitas/IComponent.hpp; sourceTree = "<group>"; };
+		893F35741DE710B00001A83A /* ISystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ISystem.hpp; path = ../../../../entitas/ISystem.hpp; sourceTree = "<group>"; };
+		893F35751DE710B00001A83A /* Matcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Matcher.cpp; path = ../../../../entitas/Matcher.cpp; sourceTree = "<group>"; };
+		893F35761DE710B00001A83A /* Matcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Matcher.hpp; path = ../../../../entitas/Matcher.hpp; sourceTree = "<group>"; };
+		893F35771DE710B00001A83A /* Pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Pool.cpp; path = ../../../../entitas/Pool.cpp; sourceTree = "<group>"; };
+		893F35781DE710B00001A83A /* Pool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Pool.hpp; path = ../../../../entitas/Pool.hpp; sourceTree = "<group>"; };
+		893F35791DE710B00001A83A /* ReactiveSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ReactiveSystem.cpp; path = ../../../../entitas/ReactiveSystem.cpp; sourceTree = "<group>"; };
+		893F357A1DE710B00001A83A /* ReactiveSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ReactiveSystem.hpp; path = ../../../../entitas/ReactiveSystem.hpp; sourceTree = "<group>"; };
+		893F357B1DE710B00001A83A /* SystemContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SystemContainer.cpp; path = ../../../../entitas/SystemContainer.cpp; sourceTree = "<group>"; };
+		893F357C1DE710B00001A83A /* SystemContainer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SystemContainer.hpp; path = ../../../../entitas/SystemContainer.hpp; sourceTree = "<group>"; };
+		893F357D1DE710B00001A83A /* TriggerOnEvent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TriggerOnEvent.hpp; path = ../../../../entitas/TriggerOnEvent.hpp; sourceTree = "<group>"; };
+		893F35861DE710C50001A83A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../../main.cpp; sourceTree = "<group>"; };
+		893F358C1DE7148A0001A83A /* sample1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sample1; sourceTree = BUILT_PRODUCTS_DIR; };
+		893F35931DE714AA0001A83A /* ComponentTypeId.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ComponentTypeId.cpp; path = ../../../../entitas/ComponentTypeId.cpp; sourceTree = "<group>"; };
+		893F35941DE714AA0001A83A /* ComponentTypeId.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ComponentTypeId.hpp; path = ../../../../entitas/ComponentTypeId.hpp; sourceTree = "<group>"; };
+		893F35951DE714AA0001A83A /* Delegate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Delegate.hpp; path = ../../../../entitas/Delegate.hpp; sourceTree = "<group>"; };
+		893F35961DE714AA0001A83A /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = ../../../../entitas/Entity.cpp; sourceTree = "<group>"; };
+		893F35971DE714AA0001A83A /* Entity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Entity.hpp; path = ../../../../entitas/Entity.hpp; sourceTree = "<group>"; };
+		893F35981DE714AA0001A83A /* Group.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Group.cpp; path = ../../../../entitas/Group.cpp; sourceTree = "<group>"; };
+		893F35991DE714AA0001A83A /* Group.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Group.hpp; path = ../../../../entitas/Group.hpp; sourceTree = "<group>"; };
+		893F359A1DE714AA0001A83A /* GroupEventType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupEventType.hpp; path = ../../../../entitas/GroupEventType.hpp; sourceTree = "<group>"; };
+		893F359B1DE714AA0001A83A /* GroupObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GroupObserver.cpp; path = ../../../../entitas/GroupObserver.cpp; sourceTree = "<group>"; };
+		893F359C1DE714AA0001A83A /* GroupObserver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupObserver.hpp; path = ../../../../entitas/GroupObserver.hpp; sourceTree = "<group>"; };
+		893F359D1DE714AA0001A83A /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = IComponent.hpp; path = ../../../../entitas/IComponent.hpp; sourceTree = "<group>"; };
+		893F359E1DE714AA0001A83A /* ISystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ISystem.hpp; path = ../../../../entitas/ISystem.hpp; sourceTree = "<group>"; };
+		893F359F1DE714AA0001A83A /* Matcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Matcher.cpp; path = ../../../../entitas/Matcher.cpp; sourceTree = "<group>"; };
+		893F35A01DE714AA0001A83A /* Matcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Matcher.hpp; path = ../../../../entitas/Matcher.hpp; sourceTree = "<group>"; };
+		893F35A11DE714AA0001A83A /* Pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Pool.cpp; path = ../../../../entitas/Pool.cpp; sourceTree = "<group>"; };
+		893F35A21DE714AA0001A83A /* Pool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Pool.hpp; path = ../../../../entitas/Pool.hpp; sourceTree = "<group>"; };
+		893F35A31DE714AA0001A83A /* ReactiveSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ReactiveSystem.cpp; path = ../../../../entitas/ReactiveSystem.cpp; sourceTree = "<group>"; };
+		893F35A41DE714AA0001A83A /* ReactiveSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ReactiveSystem.hpp; path = ../../../../entitas/ReactiveSystem.hpp; sourceTree = "<group>"; };
+		893F35A51DE714AA0001A83A /* SystemContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SystemContainer.cpp; path = ../../../../entitas/SystemContainer.cpp; sourceTree = "<group>"; };
+		893F35A61DE714AA0001A83A /* SystemContainer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SystemContainer.hpp; path = ../../../../entitas/SystemContainer.hpp; sourceTree = "<group>"; };
+		893F35A71DE714AA0001A83A /* TriggerOnEvent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TriggerOnEvent.hpp; path = ../../../../entitas/TriggerOnEvent.hpp; sourceTree = "<group>"; };
+		893F35B01DE714BD0001A83A /* Rectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Rectangle.h; path = ../../../../sample/Rectangle.h; sourceTree = "<group>"; };
+		893F35B11DE714BD0001A83A /* sample1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sample1.cpp; path = ../../../../sample/sample1.cpp; sourceTree = "<group>"; };
+		893F35B71DE715FD0001A83A /* sample2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sample2; sourceTree = BUILT_PRODUCTS_DIR; };
+		893F35BF1DE716190001A83A /* ComponentTypeId.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentTypeId.cpp; sourceTree = "<group>"; };
+		893F35C01DE716190001A83A /* ComponentTypeId.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentTypeId.hpp; sourceTree = "<group>"; };
+		893F35C11DE716190001A83A /* Delegate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Delegate.hpp; sourceTree = "<group>"; };
+		893F35C21DE716190001A83A /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
+		893F35C31DE716190001A83A /* Entity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Entity.hpp; sourceTree = "<group>"; };
+		893F35C41DE716190001A83A /* Group.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Group.cpp; sourceTree = "<group>"; };
+		893F35C51DE716190001A83A /* Group.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Group.hpp; sourceTree = "<group>"; };
+		893F35C61DE716190001A83A /* GroupEventType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GroupEventType.hpp; sourceTree = "<group>"; };
+		893F35C71DE716190001A83A /* GroupObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GroupObserver.cpp; sourceTree = "<group>"; };
+		893F35C81DE716190001A83A /* GroupObserver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GroupObserver.hpp; sourceTree = "<group>"; };
+		893F35C91DE716190001A83A /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
+		893F35CA1DE716190001A83A /* ISystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ISystem.hpp; sourceTree = "<group>"; };
+		893F35CB1DE716190001A83A /* Matcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matcher.cpp; sourceTree = "<group>"; };
+		893F35CC1DE716190001A83A /* Matcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Matcher.hpp; sourceTree = "<group>"; };
+		893F35CD1DE716190001A83A /* Pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pool.cpp; sourceTree = "<group>"; };
+		893F35CE1DE716190001A83A /* Pool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pool.hpp; sourceTree = "<group>"; };
+		893F35CF1DE716190001A83A /* ReactiveSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReactiveSystem.cpp; sourceTree = "<group>"; };
+		893F35D01DE716190001A83A /* ReactiveSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ReactiveSystem.hpp; sourceTree = "<group>"; };
+		893F35D11DE716190001A83A /* SystemContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemContainer.cpp; sourceTree = "<group>"; };
+		893F35D21DE716190001A83A /* SystemContainer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SystemContainer.hpp; sourceTree = "<group>"; };
+		893F35D31DE716190001A83A /* TriggerOnEvent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TriggerOnEvent.hpp; sourceTree = "<group>"; };
+		893F35DC1DE716240001A83A /* Rectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Rectangle.h; path = ../../../../sample/Rectangle.h; sourceTree = "<group>"; };
+		893F35DD1DE716240001A83A /* sample2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sample2.cpp; path = ../../../../sample/sample2.cpp; sourceTree = "<group>"; };
+		893F35E01DE717490001A83A /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +150,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		893F35891DE7148A0001A83A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		893F35B41DE715FD0001A83A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				893F35E11DE717490001A83A /* SDL2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -71,7 +172,10 @@
 			isa = PBXGroup;
 			children = (
 				786999E91DE5D05900FB0EC9 /* entitas-demo */,
+				893F358D1DE7148A0001A83A /* sample1 */,
+				893F35B81DE715FD0001A83A /* sample2 */,
 				786999E81DE5D05900FB0EC9 /* Products */,
+				893F35DF1DE717490001A83A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,6 +183,8 @@
 			isa = PBXGroup;
 			children = (
 				786999E71DE5D05900FB0EC9 /* entitas-demo */,
+				893F358C1DE7148A0001A83A /* sample1 */,
+				893F35B71DE715FD0001A83A /* sample2 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,30 +192,107 @@
 		786999E91DE5D05900FB0EC9 /* entitas-demo */ = {
 			isa = PBXGroup;
 			children = (
-				78699A0E1DE5D0BB00FB0EC9 /* main.cpp */,
-				786999F11DE5D0B200FB0EC9 /* ComponentTypeId.cpp */,
-				786999F21DE5D0B200FB0EC9 /* ComponentTypeId.hpp */,
-				786999F31DE5D0B200FB0EC9 /* Delegate.hpp */,
-				786999F41DE5D0B200FB0EC9 /* Entity.cpp */,
-				786999F51DE5D0B200FB0EC9 /* Entity.hpp */,
-				786999F61DE5D0B200FB0EC9 /* Group.cpp */,
-				786999F71DE5D0B200FB0EC9 /* Group.hpp */,
-				786999F81DE5D0B200FB0EC9 /* GroupEventType.hpp */,
-				786999F91DE5D0B200FB0EC9 /* GroupObserver.cpp */,
-				786999FA1DE5D0B200FB0EC9 /* GroupObserver.hpp */,
-				786999FB1DE5D0B200FB0EC9 /* IComponent.hpp */,
-				786999FC1DE5D0B200FB0EC9 /* ISystem.hpp */,
-				786999FD1DE5D0B200FB0EC9 /* Matcher.cpp */,
-				786999FE1DE5D0B200FB0EC9 /* Matcher.hpp */,
-				786999FF1DE5D0B200FB0EC9 /* Pool.cpp */,
-				78699A001DE5D0B200FB0EC9 /* Pool.hpp */,
-				78699A011DE5D0B200FB0EC9 /* ReactiveSystem.cpp */,
-				78699A021DE5D0B200FB0EC9 /* ReactiveSystem.hpp */,
-				78699A031DE5D0B200FB0EC9 /* SystemContainer.cpp */,
-				78699A041DE5D0B200FB0EC9 /* SystemContainer.hpp */,
-				78699A051DE5D0B200FB0EC9 /* TriggerOnEvent.hpp */,
+				893F35861DE710C50001A83A /* main.cpp */,
+				893F35691DE710B00001A83A /* ComponentTypeId.cpp */,
+				893F356A1DE710B00001A83A /* ComponentTypeId.hpp */,
+				893F356B1DE710B00001A83A /* Delegate.hpp */,
+				893F356C1DE710B00001A83A /* Entity.cpp */,
+				893F356D1DE710B00001A83A /* Entity.hpp */,
+				893F356E1DE710B00001A83A /* Group.cpp */,
+				893F356F1DE710B00001A83A /* Group.hpp */,
+				893F35701DE710B00001A83A /* GroupEventType.hpp */,
+				893F35711DE710B00001A83A /* GroupObserver.cpp */,
+				893F35721DE710B00001A83A /* GroupObserver.hpp */,
+				893F35731DE710B00001A83A /* IComponent.hpp */,
+				893F35741DE710B00001A83A /* ISystem.hpp */,
+				893F35751DE710B00001A83A /* Matcher.cpp */,
+				893F35761DE710B00001A83A /* Matcher.hpp */,
+				893F35771DE710B00001A83A /* Pool.cpp */,
+				893F35781DE710B00001A83A /* Pool.hpp */,
+				893F35791DE710B00001A83A /* ReactiveSystem.cpp */,
+				893F357A1DE710B00001A83A /* ReactiveSystem.hpp */,
+				893F357B1DE710B00001A83A /* SystemContainer.cpp */,
+				893F357C1DE710B00001A83A /* SystemContainer.hpp */,
+				893F357D1DE710B00001A83A /* TriggerOnEvent.hpp */,
 			);
 			path = "entitas-demo";
+			sourceTree = "<group>";
+		};
+		893F358D1DE7148A0001A83A /* sample1 */ = {
+			isa = PBXGroup;
+			children = (
+				893F35B01DE714BD0001A83A /* Rectangle.h */,
+				893F35B11DE714BD0001A83A /* sample1.cpp */,
+				893F35931DE714AA0001A83A /* ComponentTypeId.cpp */,
+				893F35941DE714AA0001A83A /* ComponentTypeId.hpp */,
+				893F35951DE714AA0001A83A /* Delegate.hpp */,
+				893F35961DE714AA0001A83A /* Entity.cpp */,
+				893F35971DE714AA0001A83A /* Entity.hpp */,
+				893F35981DE714AA0001A83A /* Group.cpp */,
+				893F35991DE714AA0001A83A /* Group.hpp */,
+				893F359A1DE714AA0001A83A /* GroupEventType.hpp */,
+				893F359B1DE714AA0001A83A /* GroupObserver.cpp */,
+				893F359C1DE714AA0001A83A /* GroupObserver.hpp */,
+				893F359D1DE714AA0001A83A /* IComponent.hpp */,
+				893F359E1DE714AA0001A83A /* ISystem.hpp */,
+				893F359F1DE714AA0001A83A /* Matcher.cpp */,
+				893F35A01DE714AA0001A83A /* Matcher.hpp */,
+				893F35A11DE714AA0001A83A /* Pool.cpp */,
+				893F35A21DE714AA0001A83A /* Pool.hpp */,
+				893F35A31DE714AA0001A83A /* ReactiveSystem.cpp */,
+				893F35A41DE714AA0001A83A /* ReactiveSystem.hpp */,
+				893F35A51DE714AA0001A83A /* SystemContainer.cpp */,
+				893F35A61DE714AA0001A83A /* SystemContainer.hpp */,
+				893F35A71DE714AA0001A83A /* TriggerOnEvent.hpp */,
+			);
+			path = sample1;
+			sourceTree = "<group>";
+		};
+		893F35B81DE715FD0001A83A /* sample2 */ = {
+			isa = PBXGroup;
+			children = (
+				893F35DC1DE716240001A83A /* Rectangle.h */,
+				893F35DD1DE716240001A83A /* sample2.cpp */,
+				893F35BE1DE716190001A83A /* entitas */,
+			);
+			path = sample2;
+			sourceTree = "<group>";
+		};
+		893F35BE1DE716190001A83A /* entitas */ = {
+			isa = PBXGroup;
+			children = (
+				893F35BF1DE716190001A83A /* ComponentTypeId.cpp */,
+				893F35C01DE716190001A83A /* ComponentTypeId.hpp */,
+				893F35C11DE716190001A83A /* Delegate.hpp */,
+				893F35C21DE716190001A83A /* Entity.cpp */,
+				893F35C31DE716190001A83A /* Entity.hpp */,
+				893F35C41DE716190001A83A /* Group.cpp */,
+				893F35C51DE716190001A83A /* Group.hpp */,
+				893F35C61DE716190001A83A /* GroupEventType.hpp */,
+				893F35C71DE716190001A83A /* GroupObserver.cpp */,
+				893F35C81DE716190001A83A /* GroupObserver.hpp */,
+				893F35C91DE716190001A83A /* IComponent.hpp */,
+				893F35CA1DE716190001A83A /* ISystem.hpp */,
+				893F35CB1DE716190001A83A /* Matcher.cpp */,
+				893F35CC1DE716190001A83A /* Matcher.hpp */,
+				893F35CD1DE716190001A83A /* Pool.cpp */,
+				893F35CE1DE716190001A83A /* Pool.hpp */,
+				893F35CF1DE716190001A83A /* ReactiveSystem.cpp */,
+				893F35D01DE716190001A83A /* ReactiveSystem.hpp */,
+				893F35D11DE716190001A83A /* SystemContainer.cpp */,
+				893F35D21DE716190001A83A /* SystemContainer.hpp */,
+				893F35D31DE716190001A83A /* TriggerOnEvent.hpp */,
+			);
+			name = entitas;
+			path = ../../../../entitas;
+			sourceTree = "<group>";
+		};
+		893F35DF1DE717490001A83A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				893F35E01DE717490001A83A /* SDL2.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,6 +315,40 @@
 			productReference = 786999E71DE5D05900FB0EC9 /* entitas-demo */;
 			productType = "com.apple.product-type.tool";
 		};
+		893F358B1DE7148A0001A83A /* sample1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 893F35901DE7148A0001A83A /* Build configuration list for PBXNativeTarget "sample1" */;
+			buildPhases = (
+				893F35881DE7148A0001A83A /* Sources */,
+				893F35891DE7148A0001A83A /* Frameworks */,
+				893F358A1DE7148A0001A83A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sample1;
+			productName = sample1;
+			productReference = 893F358C1DE7148A0001A83A /* sample1 */;
+			productType = "com.apple.product-type.tool";
+		};
+		893F35B61DE715FD0001A83A /* sample2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 893F35BB1DE715FD0001A83A /* Build configuration list for PBXNativeTarget "sample2" */;
+			buildPhases = (
+				893F35B31DE715FD0001A83A /* Sources */,
+				893F35B41DE715FD0001A83A /* Frameworks */,
+				893F35B51DE715FD0001A83A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sample2;
+			productName = sample2;
+			productReference = 893F35B71DE715FD0001A83A /* sample2 */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -143,6 +360,16 @@
 				TargetAttributes = {
 					786999E61DE5D05800FB0EC9 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = Z5NG57QR3C;
+						ProvisioningStyle = Automatic;
+					};
+					893F358B1DE7148A0001A83A = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = Z5NG57QR3C;
+						ProvisioningStyle = Automatic;
+					};
+					893F35B61DE715FD0001A83A = {
+						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = Z5NG57QR3C;
 						ProvisioningStyle = Automatic;
 					};
@@ -161,6 +388,8 @@
 			projectRoot = "";
 			targets = (
 				786999E61DE5D05800FB0EC9 /* entitas-demo */,
+				893F358B1DE7148A0001A83A /* sample1 */,
+				893F35B61DE715FD0001A83A /* sample2 */,
 			);
 		};
 /* End PBXProject section */
@@ -170,15 +399,47 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78699A071DE5D0B200FB0EC9 /* Entity.cpp in Sources */,
-				78699A0A1DE5D0B200FB0EC9 /* Matcher.cpp in Sources */,
-				78699A0F1DE5D0BB00FB0EC9 /* main.cpp in Sources */,
-				78699A0C1DE5D0B200FB0EC9 /* ReactiveSystem.cpp in Sources */,
-				78699A081DE5D0B200FB0EC9 /* Group.cpp in Sources */,
-				78699A0D1DE5D0B200FB0EC9 /* SystemContainer.cpp in Sources */,
-				78699A0B1DE5D0B200FB0EC9 /* Pool.cpp in Sources */,
-				78699A061DE5D0B200FB0EC9 /* ComponentTypeId.cpp in Sources */,
-				78699A091DE5D0B200FB0EC9 /* GroupObserver.cpp in Sources */,
+				893F357F1DE710B00001A83A /* Entity.cpp in Sources */,
+				893F35821DE710B00001A83A /* Matcher.cpp in Sources */,
+				893F35871DE710C50001A83A /* main.cpp in Sources */,
+				893F35841DE710B00001A83A /* ReactiveSystem.cpp in Sources */,
+				893F35801DE710B00001A83A /* Group.cpp in Sources */,
+				893F35851DE710B00001A83A /* SystemContainer.cpp in Sources */,
+				893F35831DE710B00001A83A /* Pool.cpp in Sources */,
+				893F357E1DE710B00001A83A /* ComponentTypeId.cpp in Sources */,
+				893F35811DE710B00001A83A /* GroupObserver.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		893F35881DE7148A0001A83A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				893F35A91DE714AA0001A83A /* Entity.cpp in Sources */,
+				893F35AC1DE714AA0001A83A /* Matcher.cpp in Sources */,
+				893F35B21DE714BD0001A83A /* sample1.cpp in Sources */,
+				893F35AE1DE714AA0001A83A /* ReactiveSystem.cpp in Sources */,
+				893F35AA1DE714AA0001A83A /* Group.cpp in Sources */,
+				893F35AF1DE714AA0001A83A /* SystemContainer.cpp in Sources */,
+				893F35AD1DE714AA0001A83A /* Pool.cpp in Sources */,
+				893F35A81DE714AA0001A83A /* ComponentTypeId.cpp in Sources */,
+				893F35AB1DE714AA0001A83A /* GroupObserver.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		893F35B31DE715FD0001A83A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				893F35D51DE716190001A83A /* Entity.cpp in Sources */,
+				893F35D81DE716190001A83A /* Matcher.cpp in Sources */,
+				893F35DA1DE716190001A83A /* ReactiveSystem.cpp in Sources */,
+				893F35D61DE716190001A83A /* Group.cpp in Sources */,
+				893F35DB1DE716190001A83A /* SystemContainer.cpp in Sources */,
+				893F35D91DE716190001A83A /* Pool.cpp in Sources */,
+				893F35D41DE716190001A83A /* ComponentTypeId.cpp in Sources */,
+				893F35D71DE716190001A83A /* GroupObserver.cpp in Sources */,
+				893F35DE1DE716240001A83A /* sample2.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,10 +486,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../..";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../..";
 			};
 			name = Debug;
 		};
@@ -266,9 +529,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../..";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../..";
 			};
 			name = Release;
 		};
@@ -276,7 +541,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = Z5NG57QR3C;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../**";
 			};
 			name = Debug;
 		};
@@ -284,6 +551,48 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = Z5NG57QR3C;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../**";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../**";
+			};
+			name = Release;
+		};
+		893F35911DE7148A0001A83A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = Z5NG57QR3C;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		893F35921DE7148A0001A83A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = Z5NG57QR3C;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		893F35BC1DE715FD0001A83A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = Z5NG57QR3C;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		893F35BD1DE715FD0001A83A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = Z5NG57QR3C;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -305,6 +614,23 @@
 			buildConfigurations = (
 				786999EF1DE5D05900FB0EC9 /* Debug */,
 				786999F01DE5D05900FB0EC9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		893F35901DE7148A0001A83A /* Build configuration list for PBXNativeTarget "sample1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				893F35911DE7148A0001A83A /* Debug */,
+				893F35921DE7148A0001A83A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		893F35BB1DE715FD0001A83A /* Build configuration list for PBXNativeTarget "sample2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				893F35BC1DE715FD0001A83A /* Debug */,
+				893F35BD1DE715FD0001A83A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
