@@ -136,10 +136,10 @@ Color randomColor()
     using namespace std;
     static random_device rd;
     static mt19937 engineMt(rd());
-    static uniform_int_distribution<int> uniform_int(50, 254);
-    auto random_int = bind(uniform_int, engineMt);
+    uniform_int_distribution<int> uniform_int(50, 254);
+    //auto random_int = bind(uniform_int, engineMt);
     // static const unsigned sizeVec{ 10 };
-    Color c(random_int(), random_int(), random_int());
+    Color c(uniform_int(engineMt), uniform_int(engineMt), uniform_int(engineMt));
     return c;
 }
 
@@ -165,6 +165,16 @@ Vec2 randomVec2Size()
 }
 
 /* -------------------------------------------------------------------------- */
+//
+void addRandomEntity(Pool* pool)
+{
+    auto e = pool->createEntity();
+    e->add<RenderComponent>(randomColor());
+    // e->add<RenderComponent>(Material::yellow());
+    // e->add<Position>(100, 100, 10);
+    e->add<Position>(randomVec2Pos());
+        
+}
 
 
 class MySystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem
@@ -176,15 +186,10 @@ public:
         group_ = pool_->getGroup(Matcher_allOf(Position, RenderComponent));
         std::cout << "MySystem::setPool called" << std::endl;
     }
-
+    
     void initialize()
     {
-        auto e = pool_->createEntity();
-        e->add<RenderComponent>(randomColor());
-        // e->add<RenderComponent>(Material::yellow());
-        // e->add<Position>(100, 100, 10);
-        e->add<Position>(randomVec2Pos());
-
+        addRandomEntity(pool_);
         std::cout << "MySystem initialized" << std::endl;
     }
 
@@ -274,7 +279,8 @@ int main(const int argc, const char* argv[])
   auto pool = std::make_shared<Pool>();
 
   //systems->add(pool->createSystem<DemoSystem>());
-  systems->add(pool->createSystem<MySystem>());
+  auto mySystem = pool->createSystem<MySystem>();
+  systems->add(mySystem);
   systems->initialize();
 
   for(unsigned int i = 0; i < 2; ++i) {
@@ -328,6 +334,13 @@ int main(const int argc, const char* argv[])
             {
                 done = 1;
             }
+            if (event.type == SDL_KEYDOWN) 
+            {
+                std::cout << "Hello\n";
+                // ((MySystem*)mySystem)->addRandomEntity();
+                addRandomEntity(pool.get());
+            }
+
         }
         // string text;
         // cin >> text;
