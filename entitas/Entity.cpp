@@ -83,19 +83,25 @@ namespace entitas
 
     bool Entity::hasComponents(const std::vector<ComponentId>& indices) const
     {
-		for(const ComponentId &index : indices)
+        bool r2 = std::all_of(begin(indices), end(indices), [this](auto i){ return hasComponent(i);});
+        
+        for(const ComponentId &index : indices)
 		{
-			if (! hasComponent(index))
+			if (!hasComponent(index))
 			{
+                if (r2)
+                    throw std::runtime_error("all_off different");
 				return false;
 			}
 		}
+        
 
 		return true;
     }
 
 	bool Entity::hasAnyComponent(const std::vector<ComponentId>& indices) const
 	{
+        return std::any_of(begin(indices), end(indices), [this](auto i){return hasComponent(i);});
 		for(const ComponentId &index : indices)
 		{
 			if (hasComponent(index))

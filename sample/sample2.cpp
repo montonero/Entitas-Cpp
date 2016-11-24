@@ -127,12 +127,14 @@ void renderMat(SDL_Renderer* renderer, Color c, Vec2 v)
     SDL_Rect sr;
     sr.x = v.x;
     sr.y = v.y;
-    sr.w = 100;
-    sr.h = 100;
+    sr.w = 25;
+    sr.h = 25;
     SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, 255);
     SDL_RenderFillRect(renderer, &sr);
 }  
 
+
+/* -------------------------------------------------------------------------- */
 
 
 class MySystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem
@@ -148,8 +150,8 @@ public:
     void initialize()
     {
         auto e = pool_->createEntity();
-        e->add<RenderComponent>(Material::black());
-        e->add<Position>(10, 10, 10);
+        e->add<RenderComponent>(Material::yellow());
+        e->add<Position>(100, 100, 10);
 
         std::cout << "MySystem initialized" << std::endl;
     }
@@ -159,8 +161,8 @@ public:
         // pool_->createEntity()->add<DemoComponent>("foo", "bar");
         // pool_->createEntity()->add<DemoComponent>("foo", "bar");
 
-        // auto entitiesCount = pool_->getGroup(Matcher_allOf(DemoComponent))->count();
-        auto es = pool_->getGroup(Matcher_allOf(Position, RenderComponent))->getEntities();
+        //auto es = pool_->getGroup(Matcher_allOf(Position, RenderComponent))->getEntities();
+        auto es = group_->getEntities();
         for (auto &e : es)
         {
             auto mat = e->get<RenderComponent>();
@@ -248,7 +250,7 @@ int main(const int argc, const char* argv[])
   auto systems = std::make_shared<SystemContainer>();
   auto pool = std::make_shared<Pool>();
 
-  systems->add(pool->createSystem<DemoSystem>());
+  //systems->add(pool->createSystem<DemoSystem>());
   systems->add(pool->createSystem<MySystem>());
   systems->initialize();
 
@@ -306,8 +308,16 @@ int main(const int argc, const char* argv[])
         }
         // string text;
         // cin >> text;
-        // render(renderer, rs);
+        //render(renderer, rs);
+        // Set render color to red ( background will be rendered in this color )
+        SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
+        SDL_RenderClear( renderer );
+        
         systems->execute();
+        
+        // Render the rect to the screen
+        SDL_RenderPresent(renderer);
+        
         SDL_Delay(100);
     }
 

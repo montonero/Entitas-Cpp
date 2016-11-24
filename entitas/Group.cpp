@@ -10,7 +10,7 @@
 namespace entitas
 {
 
-Group::Group(const Matcher& matcher) : mMatcher(matcher)
+Group::Group(const Matcher& matcher) : matcher_(matcher)
 {
 }
 
@@ -54,7 +54,7 @@ bool Group::containsEntity(const EntityPtr& entity) const
 
 auto Group::getMatcher() const -> Matcher
 {
-	return mMatcher;
+	return matcher_;
 }
 
 auto Group::createObserver(const GroupEventType eventType) -> std::shared_ptr<GroupObserver>
@@ -69,12 +69,12 @@ void Group::setInstance(std::shared_ptr<Group> instance)
 
 auto Group::handleEntity(EntityPtr entity) -> GroupChanged*
 {
-	return mMatcher.matches(entity) ? addEntity(entity) : removeEntity(entity);
+	return matcher_.matches(entity) ? addEntity(entity) : removeEntity(entity);
 }
 
 void Group::handleEntitySilently(EntityPtr entity)
 {
-	if(mMatcher.matches(entity))
+	if(matcher_.matches(entity))
 	{
 		addEntitySilently(entity);
 	}
@@ -86,7 +86,7 @@ void Group::handleEntitySilently(EntityPtr entity)
 
 void Group::handleEntity(EntityPtr entity, ComponentId index, IComponent* component)
 {
-	if(mMatcher.matches(entity))
+	if(matcher_.matches(entity))
 	{
 		addEntity(entity, index, component);
 	}

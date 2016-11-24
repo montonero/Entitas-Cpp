@@ -50,7 +50,7 @@ class Group
 		auto removeEntity(EntityPtr entity) -> GroupChanged*;
 
 		std::weak_ptr<Group> mInstance;
-		Matcher mMatcher;
+		Matcher matcher_;
 		std::unordered_set<EntityPtr> entities_;
 		std::vector<EntityPtr> entitiesCache_;
 };

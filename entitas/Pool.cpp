@@ -277,21 +277,33 @@ namespace entitas
 			return;
 		}
 
+        // All groups that contain entities with a given component
 		auto groups = groupsForIndex_[index];
 
 		if (groups.size() > 0)
 		{
 			auto events = std::vector<Group::GroupChanged*>();
 
+            /*
 			for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i)
 			{
-				events.push_back(groups[i].lock()->handleEntity(entity));
+				(*groups[i].lock()->handleEntity(entity))(groups[i].lock(), entity, index, component);
+			}
+            */
+
+            
+			for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i)
+			{
+                auto cb = groups[i].lock()->handleEntity(entity);
+                if (cb)
+                    events.push_back(cb);
 			}
 
 			for (int i = 0, eventsCount = events.size(); i < eventsCount; ++i)
 			{
 				(*events[i])(groups[i].lock(), entity, index, component);
 			}
+            
 		}
     }
 

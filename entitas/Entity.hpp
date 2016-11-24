@@ -31,7 +31,9 @@ namespace entitas
         template <typename T> inline auto use() -> T*;
         template <typename T> inline bool has() const;
 
+        // Whether Entity has all of the components in the 'indices'
         bool hasComponents(const std::vector<ComponentId>& indices) const;
+        // Whether Entity has any of the components
         bool hasAnyComponent(const std::vector<ComponentId>& indices) const;
         auto getComponentsCount() const -> unsigned int;
         void removeAllComponents();
