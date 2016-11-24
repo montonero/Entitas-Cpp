@@ -3,6 +3,7 @@
 #include "entitas/Pool.hpp"
 #include "entitas/ISystem.hpp"
 #include <iostream>
+#include <random>
 
 #ifdef __APPLE__
     #include "SDL2/SDL.h"
@@ -11,6 +12,12 @@
 #endif
 
 #include "Rectangle.h"
+
+
+
+constexpr int kScreenWidth = 320;
+constexpr int kScreenHeight = 480;
+
 
 using namespace entitas;
 
@@ -58,17 +65,8 @@ private:
 class Position : public IComponent
 {
 public:
-  // You must provide at least ONE public "Reset" method with any parameters you want
-  void reset(float px, float py, float pz)
-  {
-    x = px;
-    y = py;
-    z = pz;
-  }
-
-  float x;
-  float y;
-  float z;
+    void reset(Vec2 v) { position_ = v; }
+    Vec2 position_;
 };
 
 
@@ -111,7 +109,7 @@ public:
         {
             auto move = e->get<Move>();
             auto pos = e->get<Position>();
-            e->replace<Position>(pos->x, pos->y + move->speed, pos->z);
+            // e->replace<Position>(pos->x, pos->y + move->speed, pos->z);
         }
     }
 };
@@ -133,6 +131,38 @@ void renderMat(SDL_Renderer* renderer, Color c, Vec2 v)
     SDL_RenderFillRect(renderer, &sr);
 }  
 
+Color randomColor()
+{
+    using namespace std;
+    static random_device rd;
+    static mt19937 engineMt(rd());
+    static uniform_int_distribution<int> uniform_int(50, 254);
+    auto random_int = bind(uniform_int, engineMt);
+    // static const unsigned sizeVec{ 10 };
+    Color c(random_int(), random_int(), random_int());
+    return c;
+}
+
+Vec2 randomVec2(int x, int y, int mx, int my)
+{
+    using namespace std;
+    static random_device rd;
+    static mt19937 engineMt(rd());
+    uniform_real_distribution<float> unifW(x, mx);    
+    uniform_real_distribution<float> unifH(y, my);
+    Vec2 v(unifW(engineMt), unifH(engineMt));
+    return v;
+}
+
+Vec2 randomVec2Pos()
+{
+    return randomVec2(0, 0, kScreenWidth, kScreenHeight);
+}
+
+Vec2 randomVec2Size()
+{
+    return randomVec2(20, 20, 80, 100);
+}
 
 /* -------------------------------------------------------------------------- */
 
@@ -150,28 +180,24 @@ public:
     void initialize()
     {
         auto e = pool_->createEntity();
-        e->add<RenderComponent>(Material::yellow());
-        e->add<Position>(100, 100, 10);
+        e->add<RenderComponent>(randomColor());
+        // e->add<RenderComponent>(Material::yellow());
+        // e->add<Position>(100, 100, 10);
+        e->add<Position>(randomVec2Pos());
 
         std::cout << "MySystem initialized" << std::endl;
     }
 
     void execute()
     {
-        // pool_->createEntity()->add<DemoComponent>("foo", "bar");
-        // pool_->createEntity()->add<DemoComponent>("foo", "bar");
-
-        //auto es = pool_->getGroup(Matcher_allOf(Position, RenderComponent))->getEntities();
         auto es = group_->getEntities();
         for (auto &e : es)
         {
             auto mat = e->get<RenderComponent>();
             auto pos = e->get<Position>();
-            renderMat(gSdlRenderer, mat->material.color, Vec2(pos->x, pos->y));
+            renderMat(gSdlRenderer, mat->material.color, pos->position_);
         }
         // std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
-
-        // std::cout << "DemoSystem executed" << std::endl;
     }
 
 private:
@@ -232,9 +258,6 @@ public:
 /* -------------------------------------------------------------------------- */
 
 
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 480
-
 
 int mainLoop()
 {
@@ -278,7 +301,7 @@ int main(const int argc, const char* argv[])
     srand(time(NULL));
 
     /* create window and renderer */
-    auto window = SDL_CreateWindow(NULL, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+    auto window = SDL_CreateWindow(NULL, 0, 0, kScreenWidth, kScreenHeight, SDL_WINDOW_OPENGL);
     if (!window) 
     {
         // printf("Could not initialize Window\n");
@@ -309,8 +332,8 @@ int main(const int argc, const char* argv[])
         // string text;
         // cin >> text;
         //render(renderer, rs);
-        // Set render color to red ( background will be rendered in this color )
-        SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
+
+        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
         SDL_RenderClear( renderer );
         
         systems->execute();
