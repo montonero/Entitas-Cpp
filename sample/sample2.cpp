@@ -74,6 +74,14 @@ public:
     Vec2 position_;
 };
 
+class Appearance : public IComponent
+{
+public:
+    void reset(Vec2 v) { size_ = v; }
+    Vec2 size_;
+};
+
+
 
 class Move : public IComponent
 {
@@ -124,14 +132,14 @@ public:
 SDL_Renderer* gSdlRenderer;
 
 
-void renderMat(SDL_Renderer* renderer, Color c, Vec2 v)
+void renderMat(SDL_Renderer* renderer, Color c, Vec2 v, Vec2 s)
 {
     // auto sr = toSdlRect(r);
     SDL_Rect sr;
     sr.x = v.x;
     sr.y = v.y;
-    sr.w = 25;
-    sr.h = 25;
+    sr.w = s.x;
+    sr.h = s.y;
     SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, 255);
     SDL_RenderFillRect(renderer, &sr);
 }  
@@ -178,7 +186,7 @@ void addRandomEntity(Pool* pool)
     // e->add<RenderComponent>(Material::yellow());
     // e->add<Position>(100, 100, 10);
     e->add<Position>(randomVec2Pos());
-        
+    e->add<Appearance>(randomVec2Size());
 }
 
 
@@ -205,7 +213,8 @@ public:
         {
             auto mat = e->get<RenderComponent>();
             auto pos = e->get<Position>();
-            renderMat(gSdlRenderer, mat->material.color, pos->position_);
+            auto appearance = e->get<Appearance>();
+            renderMat(gSdlRenderer, mat->material.color, pos->position_, appearance->size_);
         }
         // std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
     }
