@@ -86,6 +86,7 @@ def build(ctx):
         cxxflags     = ['-std=c++14', '-g'],
         linkflags = [ '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
+        defines = ['_SDL2'],
         use =  ['entitas', 'SDL2', 'pthread']
     )
 

@@ -6,7 +6,12 @@
 #include <random>
 
 #ifdef __APPLE__
-    #include "SDL2/SDL.h"
+    #ifdef _SDL2
+        // waf
+        #include "SDL.h"
+    #else
+        #include "SDL2/SDL.h"
+    #endif
 #else
     #include "SDL.h"
 #endif
