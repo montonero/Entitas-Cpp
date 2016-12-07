@@ -56,6 +56,11 @@ def build(ctx):
         export_includes = '. entitas',
     )
 
+    ctx.stlib(
+        source = ctx.path.ant_glob('external/
+        target = 'Box2D',
+        cxxflags     = ['-std=c++14', '-g'],
+
     s1 = ctx.path.ant_glob(['*.cpp'])
     ctx.program(
         source = s1,

@@ -81,7 +81,7 @@ public:
     Vec2 size_;
 };
 
-
+/* -------------------------------------------------------------------------- */
 
 class Move : public IComponent
 {
@@ -96,13 +96,13 @@ public:
   float speed {0.f};
 };
 
+/* -------------------------------------------------------------------------- */
 
 struct RenderComponent : public IComponent
 {
     void reset(Material m) { material = m; }
     Material material;
 };
-
 
 /* -------------------------------------------------------------------------- */
 
@@ -131,7 +131,6 @@ public:
 
 SDL_Renderer* gSdlRenderer;
 
-
 void renderMat(SDL_Renderer* renderer, Color c, Vec2 v, Vec2 s)
 {
     // auto sr = toSdlRect(r);
@@ -156,6 +155,8 @@ Color randomColor()
     return c;
 }
 
+/* -------------------------------------------------------------------------- */
+
 Vec2 randomVec2(int x, int y, int mx, int my)
 {
     using namespace std;
@@ -167,10 +168,14 @@ Vec2 randomVec2(int x, int y, int mx, int my)
     return v;
 }
 
+/* -------------------------------------------------------------------------- */
+
 Vec2 randomVec2Pos()
 {
     return randomVec2(0, 0, kScreenWidth, kScreenHeight);
 }
+
+/* -------------------------------------------------------------------------- */
 
 Vec2 randomVec2Size()
 {
