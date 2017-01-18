@@ -70,7 +70,7 @@ class Pool
 		std::map<ComponentId, std::vector<std::weak_ptr<Group>>> groupsForIndex_;
 
 		std::vector<EntityPtr> entitiesCache_;
-		std::function<void(Entity*)> mOnEntityReleasedCache;	
+		std::function<void(Entity*)> mOnEntityReleasedCache;
 };
 
 template <typename T>
