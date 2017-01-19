@@ -172,9 +172,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "addRandomEntity(Pool* pool)"
-            landmarkType = "9">
+            endingLineNumber = "170">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -189,7 +187,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "127"
             endingLineNumber = "127"
-            landmarkName = "renderMat(SDL_Renderer* renderer, Color c, Vec2 v)"
+            landmarkName = "execute()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -205,7 +203,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "137"
             endingLineNumber = "137"
-            landmarkName = "randomColor()"
+            landmarkName = "renderMat(SDL_Renderer* renderer, Color c, Vec2 v, Vec2 s)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
