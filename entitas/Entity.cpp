@@ -1,8 +1,9 @@
 // Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: MIT License
 // MIT License web page: https://opensource.org/licenses/MIT
-
+#include <algorithm>
 #include "Entity.hpp"
+
 
 namespace entitas
 {
@@ -84,7 +85,7 @@ namespace entitas
     bool Entity::hasComponents(const std::vector<ComponentId>& indices) const
     {
         bool r2 = std::all_of(begin(indices), end(indices), [this](auto i){ return hasComponent(i);});
-        
+
         for(const ComponentId &index : indices)
 		{
 			if (!hasComponent(index))
@@ -94,7 +95,7 @@ namespace entitas
 				return false;
 			}
 		}
-        
+
 
 		return true;
     }
