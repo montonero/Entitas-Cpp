@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 import sys
-import commands
+#import commands
 import os
 import os.path
 
@@ -20,6 +20,8 @@ def options(ctx):
 def configure(ctx):
     # ctx.env.ws_client_dir = os.path.abspath(os.path.join(ctx.path.parent.abspath(), 'client'))
     # ctx.recurse(ctx.env.ws_client_dir)
+    #ctx.find_program('clang++', var = 'CXX', mandatory = True)
+    #ctx.find_program('clang', var = 'CC', mandatory = True)
     ctx.load('compiler_c compiler_cxx')
 
     ctx.check_cfg(
@@ -30,7 +32,8 @@ def configure(ctx):
 
     # ctx.env.append_value('CCFLAGS', '-std=c++14 -Wall ')
     ctx.check_cxx(
-        cxxflags=['-std=c++14', '-Wall'],
+        #cxxflags=['-std=c++14', '-Wall'],
+        cxxflags=[ '-Wall'],
         libs='SDL2',
     )
 
@@ -51,7 +54,8 @@ def build(ctx):
     ctx.stlib(
         source = ctx.path.ant_glob('entitas/*.cpp'),
         target = 'entitas',
-        cxxflags     = ['-std=c++14', '-g'],
+        #cxxflags     = ['-std=c++1y', '-g', '-stdlib=libc++'],
+        cxxflags     = ['-std=c++1y', '-g'],
         includes = 'entitas',
         export_includes = '. entitas',
     )
@@ -63,28 +67,33 @@ def build(ctx):
         cxxflags     = ['-std=c++14', '-g'],
     """
 
+    """
     s1 = ctx.path.ant_glob(['*.cpp'])
     ctx.program(
         source = s1,
         features='cxx cxxprogram',
         target='demo',
-        cxxflags     = ['-std=c++14'],
+        cxxflags     = ['-std=c++1y', '-g'],
         # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
         use =  ['entitas']
     )
+    """
 
     s1 = ctx.path.ant_glob(['sample/sample1.cpp'])
     ctx.program(
         source = s1,
         features='cxx cxxprogram',
         target='s1',
-        cxxflags     = ['-std=c++14', '-g'],
+        cxxflags     = ['-std=c++1y', '-g'],
+        lib = ['m', 'c', 'pthread'],
+        #linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
         use =  ['entitas']
     )
 
+    """
     s2 = ctx.path.ant_glob(['sample/sample2.cpp'])
     ctx.program(
         source = s2,
@@ -96,7 +105,7 @@ def build(ctx):
         defines = ['_SDL2'],
         use =  ['entitas', 'SDL2', 'pthread']
     )
-
+    """
     if ctx.cmd != 'clean':
         from waflib import Logs
         ctx.logger = Logs.make_logger('test.log', 'build') # just to get a clean output
