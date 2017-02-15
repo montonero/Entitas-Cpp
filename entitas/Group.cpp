@@ -16,7 +16,7 @@ Group::Group(const Matcher& matcher) : matcher_(matcher)
 
 auto Group::count() const -> const unsigned int
 {
-	return entities_.size();
+	return static_cast<unsigned>(entities_.size());
 }
 
 auto Group::getEntities() -> std::vector<EntityPtr>

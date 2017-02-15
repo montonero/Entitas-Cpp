@@ -11,15 +11,15 @@ namespace entitas
 GroupObserver::GroupObserver(std::shared_ptr<Group> group, const GroupEventType eventType)
 {
 	groups_.push_back(group);
-	mEventTypes.push_back(eventType);
-	mAddEntityCache = std::bind(&GroupObserver::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+	eventTypes_.push_back(eventType);
+	addEntityCache_ = std::bind(&GroupObserver::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
 }
 
 GroupObserver::GroupObserver(std::vector<std::shared_ptr<Group>> groups, std::vector<GroupEventType> eventTypes)
 {
 	groups_ = groups;
-	mEventTypes = eventTypes;
-	mAddEntityCache = std::bind(&GroupObserver::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+	eventTypes_ = eventTypes;
+	addEntityCache_ = std::bind(&GroupObserver::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
 
 	if(groups.size() != eventTypes.size())
 	{
@@ -39,25 +39,25 @@ void GroupObserver::activate()
 	for(unsigned int i = 0, groupCount = groups_.size(); i < groupCount; ++i)
 	{
 		auto g = groups_[i];
-		auto eventType = mEventTypes[i];
+		auto eventType = eventTypes_[i];
 
 		if(eventType == GroupEventType::OnEntityAdded)
 		{
-			g->onEntityAdded -= mAddEntityCache;
-			g->onEntityAdded += mAddEntityCache;
+			g->onEntityAdded -= addEntityCache_;
+			g->onEntityAdded += addEntityCache_;
 		}
 		else if(eventType == GroupEventType::OnEntityRemoved)
 		{
-			g->onEntityRemoved -= mAddEntityCache;
-			g->onEntityRemoved += mAddEntityCache;
+			g->onEntityRemoved -= addEntityCache_;
+			g->onEntityRemoved += addEntityCache_;
 		}
 		else if(eventType == GroupEventType::OnEntityAddedOrRemoved)
 		{
-			g->onEntityAdded -= mAddEntityCache;
-			g->onEntityAdded += mAddEntityCache;
+			g->onEntityAdded -= addEntityCache_;
+			g->onEntityAdded += addEntityCache_;
 
-			g->onEntityRemoved -= mAddEntityCache;
-			g->onEntityRemoved += mAddEntityCache;
+			g->onEntityRemoved -= addEntityCache_;
+			g->onEntityRemoved += addEntityCache_;
 		}
 	}
 }
@@ -66,8 +66,8 @@ void GroupObserver::deactivate()
 {
 	for(const auto &g : groups_)
 	{
-		g->onEntityAdded -= mAddEntityCache;
-		g->onEntityRemoved -= mAddEntityCache;
+		g->onEntityAdded -= addEntityCache_;
+		g->onEntityRemoved -= addEntityCache_;
 	}
 
 	clearCollectedEntities();

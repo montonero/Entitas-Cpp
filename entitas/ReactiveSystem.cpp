@@ -37,7 +37,7 @@ ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSyste
 		mClearAfterExecute = true;
 	}
 
-	unsigned int triggersLength = triggers.size();
+	auto triggersLength = triggers.size();
 	auto groups = std::vector<std::shared_ptr<Group>>(triggersLength);
 	auto eventTypes = std::vector<GroupEventType>(triggersLength);
 

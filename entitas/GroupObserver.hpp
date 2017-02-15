@@ -32,7 +32,7 @@ class GroupObserver
 
 		std::unordered_set<EntityPtr> mCollectedEntities;
 		std::vector<std::shared_ptr<Group>> groups_;
-		std::vector<GroupEventType> mEventTypes;
-		std::function<void(std::shared_ptr<Group>, EntityPtr, ComponentId, IComponent*)> mAddEntityCache;
+		std::vector<GroupEventType> eventTypes_;
+		std::function<void(std::shared_ptr<Group>, EntityPtr, ComponentId, IComponent*)> addEntityCache_;
 };
 }

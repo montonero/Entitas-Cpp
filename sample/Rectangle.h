@@ -1,4 +1,6 @@
 
+#include <glm/vec3.hpp>
+
 struct Vec2
 {
   Vec2() = default;

@@ -109,7 +109,7 @@ namespace entitas
 			return false;
 		}
 
-		for(unsigned int i = 0, count = leftIndices.size(); i < count; ++i)
+        for(size_t i = 0, count = leftIndices.size(); i < count; ++i)
 		{
 			if(leftIndices[i] != rightIndices[i])
 			{
@@ -165,7 +165,7 @@ namespace entitas
 
     void Matcher::calculateHash()
     {
-		unsigned int hash = typeid(Matcher).hash_code();
+		unsigned int hash = (unsigned)typeid(Matcher).hash_code();
 
 		hash = applyHash(hash, mAllOfIndices, 3, 53);
 		hash = applyHash(hash, mAnyOfIndices, 307, 367);
@@ -178,7 +178,7 @@ namespace entitas
     {
 		if (indices.size() > 0)
 		{
-			for (int i = 0, indicesLength = indices.size(); i < indicesLength; i++)
+			for (size_t i = 0, indicesLength = indices.size(); i < indicesLength; i++)
 			{
 				hash ^= indices[i] * i1;
 			}

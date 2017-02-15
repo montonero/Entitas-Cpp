@@ -282,6 +282,7 @@ namespace entitas
 
 		if (groups.size() > 0)
 		{
+            // Collect all the events that need to be processed (e.g. onAdded
 			auto events = std::vector<Group::GroupChanged*>();
 
             /*

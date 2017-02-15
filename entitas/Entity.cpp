@@ -103,20 +103,11 @@ namespace entitas
 	bool Entity::hasAnyComponent(const std::vector<ComponentId>& indices) const
 	{
         return std::any_of(begin(indices), end(indices), [this](auto i){return hasComponent(i);});
-		for(const ComponentId &index : indices)
-		{
-			if (hasComponent(index))
-			{
-				return true;
-			}
-		}
-
-		return false;
     }
 
     auto Entity::getComponentsCount() const -> unsigned int
     {
-		return components_.size();
+		return static_cast<unsigned>(components_.size());
     }
 
     void Entity::removeAllComponents()

@@ -57,7 +57,7 @@ class Pool
 		void updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
 		void onEntityReleased(Entity* entity);
 
-		unsigned int creationIndex_;									//< Index that is used as uuid for Entities
+		unsigned int creationIndex_;									///< Index that is used as uuid for Entities
 		std::unordered_set<EntityPtr> entities_;
 		std::unordered_map<Matcher, std::shared_ptr<Group>> groups_;
 		std::stack<Entity*> mReusableEntities;
