@@ -2,24 +2,24 @@
 // License: MIT License
 // MIT License web page: https://opensource.org/licenses/MIT
 
-#include "GroupObserver.hpp"
+#include "Collector.hpp"
 #include "Group.hpp"
 #include <functional>
 
 namespace entitas
 {
-GroupObserver::GroupObserver(std::shared_ptr<Group> group, const GroupEventType eventType)
+Collector::Collector(std::shared_ptr<Group> group, const GroupEventType eventType)
 {
 	groups_.push_back(group);
 	eventTypes_.push_back(eventType);
-	addEntityCache_ = std::bind(&GroupObserver::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+	addEntityCache_ = std::bind(&Collector::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
 }
 
-GroupObserver::GroupObserver(std::vector<std::shared_ptr<Group>> groups, std::vector<GroupEventType> eventTypes)
+Collector::Collector(std::vector<std::shared_ptr<Group>> groups, std::vector<GroupEventType> eventTypes)
 {
 	groups_ = groups;
 	eventTypes_ = eventTypes;
-	addEntityCache_ = std::bind(&GroupObserver::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+	addEntityCache_ = std::bind(&Collector::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
 
 	if(groups.size() != eventTypes.size())
 	{
@@ -29,12 +29,12 @@ GroupObserver::GroupObserver(std::vector<std::shared_ptr<Group>> groups, std::ve
 	activate();
 }
 
-GroupObserver::~GroupObserver()
+Collector::~Collector()
 {
 	deactivate();
 }
 
-void GroupObserver::activate()
+void Collector::activate()
 {
 	for(unsigned int i = 0, groupCount = groups_.size(); i < groupCount; ++i)
 	{
@@ -62,7 +62,7 @@ void GroupObserver::activate()
 	}
 }
 
-void GroupObserver::deactivate()
+void Collector::deactivate()
 {
 	for(const auto &g : groups_)
 	{
@@ -73,18 +73,17 @@ void GroupObserver::deactivate()
 	clearCollectedEntities();
 }
 
-auto GroupObserver::getCollectedEntities() -> std::unordered_set<EntityPtr>
-{
-	return mCollectedEntities;
+Collector::CollectedEntities Collector::getCollectedEntities() {
+	return collectedEntities_;
 }
 
-void GroupObserver::clearCollectedEntities()
+void Collector::clearCollectedEntities()
 {
-	mCollectedEntities.clear();
+	collectedEntities_.clear();
 }
 
-void GroupObserver::addEntity(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* component)
+void Collector::addEntity(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* component)
 {
-	mCollectedEntities.insert(entity);
+	collectedEntities_.insert(entity);
 }
 }

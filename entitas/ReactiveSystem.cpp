@@ -48,7 +48,7 @@ ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSyste
 		eventTypes[i] = trigger.eventType;
 	}
 
-	mObserver = new GroupObserver(groups, eventTypes);
+	mObserver = new Collector(groups, eventTypes);
 }
 
 ReactiveSystem::~ReactiveSystem ()

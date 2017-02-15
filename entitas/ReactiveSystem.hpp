@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "GroupObserver.hpp"
+#include "Collector.hpp"
 #include "ISystem.hpp"
 
 namespace entitas
@@ -25,7 +25,7 @@ class ReactiveSystem : public IExecuteSystem
 
 	private:
 		std::shared_ptr<IReactiveExecuteSystem> mSubsystem;
-		GroupObserver* mObserver;
+		Collector* mObserver;
 		Matcher mEnsureComponents;
 		Matcher mExcludeComponents;
 		bool mClearAfterExecute{false};

@@ -28,7 +28,7 @@
 		893F35D41DE716190001A83A /* ComponentTypeId.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35BF1DE716190001A83A /* ComponentTypeId.cpp */; };
 		893F35D51DE716190001A83A /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35C21DE716190001A83A /* Entity.cpp */; };
 		893F35D61DE716190001A83A /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35C41DE716190001A83A /* Group.cpp */; };
-		893F35D71DE716190001A83A /* GroupObserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35C71DE716190001A83A /* GroupObserver.cpp */; };
+		893F35D71DE716190001A83A /* Collector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35C71DE716190001A83A /* Collector.cpp */; };
 		893F35D81DE716190001A83A /* Matcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35CB1DE716190001A83A /* Matcher.cpp */; };
 		893F35D91DE716190001A83A /* Pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35CD1DE716190001A83A /* Pool.cpp */; };
 		893F35DA1DE716190001A83A /* ReactiveSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35CF1DE716190001A83A /* ReactiveSystem.cpp */; };
@@ -124,8 +124,8 @@
 		893F35C41DE716190001A83A /* Group.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Group.cpp; sourceTree = "<group>"; };
 		893F35C51DE716190001A83A /* Group.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Group.hpp; sourceTree = "<group>"; };
 		893F35C61DE716190001A83A /* GroupEventType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GroupEventType.hpp; sourceTree = "<group>"; };
-		893F35C71DE716190001A83A /* GroupObserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GroupObserver.cpp; sourceTree = "<group>"; };
-		893F35C81DE716190001A83A /* GroupObserver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GroupObserver.hpp; sourceTree = "<group>"; };
+		893F35C71DE716190001A83A /* Collector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collector.cpp; sourceTree = "<group>"; };
+		893F35C81DE716190001A83A /* Collector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Collector.hpp; sourceTree = "<group>"; };
 		893F35C91DE716190001A83A /* IComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IComponent.hpp; sourceTree = "<group>"; };
 		893F35CA1DE716190001A83A /* ISystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ISystem.hpp; sourceTree = "<group>"; };
 		893F35CB1DE716190001A83A /* Matcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matcher.cpp; sourceTree = "<group>"; };
@@ -269,8 +269,8 @@
 				893F35C41DE716190001A83A /* Group.cpp */,
 				893F35C51DE716190001A83A /* Group.hpp */,
 				893F35C61DE716190001A83A /* GroupEventType.hpp */,
-				893F35C71DE716190001A83A /* GroupObserver.cpp */,
-				893F35C81DE716190001A83A /* GroupObserver.hpp */,
+				893F35C71DE716190001A83A /* Collector.cpp */,
+				893F35C81DE716190001A83A /* Collector.hpp */,
 				893F35C91DE716190001A83A /* IComponent.hpp */,
 				893F35CA1DE716190001A83A /* ISystem.hpp */,
 				893F35CB1DE716190001A83A /* Matcher.cpp */,
@@ -438,7 +438,7 @@
 				893F35DB1DE716190001A83A /* SystemContainer.cpp in Sources */,
 				893F35D91DE716190001A83A /* Pool.cpp in Sources */,
 				893F35D41DE716190001A83A /* ComponentTypeId.cpp in Sources */,
-				893F35D71DE716190001A83A /* GroupObserver.cpp in Sources */,
+				893F35D71DE716190001A83A /* Collector.cpp in Sources */,
 				893F35DE1DE716240001A83A /* sample2.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

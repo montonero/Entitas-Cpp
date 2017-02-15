@@ -4,7 +4,7 @@
 
 #include "Group.hpp"
 #include "Matcher.hpp"
-#include "GroupObserver.hpp"
+#include "Collector.hpp"
 #include <algorithm>
 
 namespace entitas
@@ -57,9 +57,9 @@ auto Group::getMatcher() const -> Matcher
 	return matcher_;
 }
 
-auto Group::createObserver(const GroupEventType eventType) -> std::shared_ptr<GroupObserver>
+auto Group::createObserver(const GroupEventType eventType) -> std::shared_ptr<Collector>
 {
-	return std::shared_ptr<GroupObserver>(new GroupObserver(mInstance.lock(), eventType));
+	return std::shared_ptr<Collector>(new Collector(mInstance.lock(), eventType));
 }
 
 void Group::setInstance(std::shared_ptr<Group> instance)

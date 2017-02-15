@@ -11,7 +11,7 @@
 
 namespace entitas
 {
-class GroupObserver;
+class Collector;
 
 class Group
 {
@@ -24,7 +24,7 @@ class Group
 		auto getSingleEntity() const -> EntityPtr;
 		bool containsEntity(const EntityPtr& entity) const;
 		auto getMatcher() const -> Matcher;
-		auto createObserver(const GroupEventType eventType) -> std::shared_ptr<GroupObserver>;
+		auto createObserver(const GroupEventType eventType) -> std::shared_ptr<Collector>;
 
 		using GroupChanged = Delegate<void(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* component)>;
 		using GroupUpdated = Delegate<void(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)>;
