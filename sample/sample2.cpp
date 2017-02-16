@@ -135,10 +135,10 @@ void renderMat(SDL_Renderer* renderer, Color c, Vec2 v, Vec2 s)
 {
     // auto sr = toSdlRect(r);
     SDL_Rect sr;
-    sr.x = v.x;
-    sr.y = v.y;
-    sr.w = s.x;
-    sr.h = s.y;
+    sr.x = v.x();
+    sr.y = v.y();
+    sr.w = s.x();
+    sr.h = s.y();
     SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, 255);
     SDL_RenderFillRect(renderer, &sr);
 }  
@@ -234,10 +234,10 @@ private:
 SDL_Rect toSdlRect(Rectangle r)
 {
     SDL_Rect sr;
-    sr.x = r.position.x;
-    sr.y = r.position.y;
-    sr.w = r.size.x;
-    sr.h = r.size.y;
+    sr.x = r.position.x();
+    sr.y = r.position.y();
+    sr.w = r.size.x();
+    sr.h = r.size.y();
     return sr;
 }
 

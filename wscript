@@ -3,6 +3,7 @@ import sys
 #import commands
 import os
 import os.path
+from os.path import join, abspath
 
 # the following two variables are used by the target "waf dist"
 VERSION='0.0.1'
@@ -30,7 +31,6 @@ def configure(ctx):
         package='',
         uselib_store='SDL2')
 
-    # ctx.env.append_value('CCFLAGS', '-std=c++14 -Wall ')
     ctx.check_cxx(
         #cxxflags=['-std=c++14', '-Wall'],
         cxxflags=[ '-Wall'],
@@ -46,7 +46,9 @@ def configure(ctx):
 
 def build(ctx):
     # libs = ['SDL2', 'chibi_static_lib', 'BOOST', 'ws_client_lib', 'ws_retry_client']
-    libs = ['entitas', 'glm']
+    libs = ['entitas', 'glm', 
+            'mathfu', 'vectorial'
+    ]
     # ctx.recurse('chibi')
     # ctx.recurse(ctx.env.ws_client_dir)
 
@@ -67,6 +69,18 @@ def build(ctx):
         export_includes=glm_node.abspath(),
         name='glm')
 
+    mathfu_node = external_node.find_node('mathfu')
+    mathfu_include_path = join(mathfu_node.abspath(), 'include')
+    ctx(includes=mathfu_include_path,
+        export_includes=mathfu_include_path,
+        name='mathfu')
+    
+    vectorial_node = mathfu_node.find_node('dependencies/vectorial')
+    print(vectorial_node.abspath())
+    vectorial_include_path = join(vectorial_node.abspath(), 'include')
+    ctx(includes=vectorial_include_path,
+        export_includes=vectorial_include_path,
+        name='vectorial')
 
     """
     ctx.stlib(
