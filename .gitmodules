@@ -1,3 +1,9 @@
 [submodule "external/glm"]
 	path = external/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "external/mathfu"]
+	path = external/mathfu
+	url = https://github.com/google/mathfu.git
+[submodule "external/Box2D"]
+	path = external/Box2D
+	url = https://github.com/erincatto/Box2D.git

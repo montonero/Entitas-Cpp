@@ -46,8 +46,7 @@ def configure(ctx):
 
 def build(ctx):
     # libs = ['SDL2', 'chibi_static_lib', 'BOOST', 'ws_client_lib', 'ws_retry_client']
-    libs = []
-
+    libs = ['entitas', 'glm']
     # ctx.recurse('chibi')
     # ctx.recurse(ctx.env.ws_client_dir)
 
@@ -59,6 +58,15 @@ def build(ctx):
         includes = 'entitas',
         export_includes = '. entitas',
     )
+
+    external_node = ctx.path.find_node('external')
+    # chibi_node = external_node.find_node('chibi')
+    glm_node = external_node.find_node('glm')
+
+    ctx(includes=glm_node.abspath(),
+        export_includes=glm_node.abspath(),
+        name='glm')
+
 
     """
     ctx.stlib(
@@ -90,10 +98,9 @@ def build(ctx):
         #linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
-        use =  ['entitas']
+        use = libs
     )
 
-    """
     s2 = ctx.path.ant_glob(['sample/sample2.cpp'])
     ctx.program(
         source = s2,
@@ -103,9 +110,9 @@ def build(ctx):
         linkflags = [ '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
         defines = ['_SDL2'],
-        use =  ['entitas', 'SDL2', 'pthread']
+        use =  libs + ['SDL2', 'pthread']
     )
-    """
+
     if ctx.cmd != 'clean':
         from waflib import Logs
         ctx.logger = Logs.make_logger('test.log', 'build') # just to get a clean output

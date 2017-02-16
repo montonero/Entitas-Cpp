@@ -183,7 +183,7 @@ Vec2 randomVec2Size()
 }
 
 /* -------------------------------------------------------------------------- */
-//
+// Random Entity with Color, Position and Size
 void addRandomEntity(Pool* pool)
 {
     auto e = pool->createEntity();
