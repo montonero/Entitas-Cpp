@@ -25,7 +25,7 @@ def configure(ctx):
     #ctx.find_program('clang', var = 'CC', mandatory = True)
     ctx.load('compiler_c compiler_cxx')
 
-    if sys.platform.find('win') > -1:
+    if sys.platform.startswith('win'):
         ctx.env.LIBPATH_SDL2   = [join("", 'stage/lib')]
         ctx.env.INCLUDES_SDL2  = [join("", 'boost')]
     else:
@@ -60,7 +60,7 @@ def build(ctx):
         source = ctx.path.ant_glob('entitas/*.cpp'),
         target = 'entitas',
         #cxxflags     = ['-std=c++1y', '-g', '-stdlib=libc++'],
-        cxxflags     = ['/std:c++latest', '-std=c++14', '-g'],
+        cxxflags     = ['-std=c++14', '-g'],
         includes = 'entitas',
         export_includes = '. entitas',
     )
