@@ -42,10 +42,10 @@ namespace entitas
     protected:
         void calculateHash();
 
-        ComponentIdList mIndices;
-        ComponentIdList mAllOfIndices;
-        ComponentIdList mAnyOfIndices;
-        ComponentIdList mNoneOfIndices;
+        ComponentIdList indices_;
+        ComponentIdList indicesAllOf_;
+        ComponentIdList indicesAnyOf_;
+        ComponentIdList indicesNoneOf_;
 
     private:
         auto applyHash(unsigned int hash, const ComponentIdList indices, int i1, int i2) const -> unsigned int;
@@ -82,6 +82,8 @@ namespace
 
 
 #define Matcher_allOf(...) (entitas::Matcher)entitas::Matcher::allOf(std::vector<entitas::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
+
+
 #define Matcher_anyOf(...) (entitas::Matcher)entitas::Matcher::anyOf(std::vector<entitas::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
 #define Matcher_noneOf(...) (entitas::Matcher)entitas::Matcher::noneOf(std::vector<entitas::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
 }

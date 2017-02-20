@@ -5,6 +5,10 @@
 #include <iostream>
 #include <random>
 
+#ifdef WIN32
+#include <string>
+#endif
+
 #ifdef __APPLE__
     #ifdef _SDL2
         // waf
@@ -113,7 +117,8 @@ class MoveSystem : public IExecuteSystem, public ISetPoolSystem
 public:
     void setPool(Pool* pool)
     {
-        _group = pool->getGroup(Matcher_allOf(Move, Position));
+		auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(Move), COMPONENT_GET_TYPE_ID(Position) });
+        _group = pool->getGroup(matcher);
     }
 
     void execute()
@@ -201,7 +206,9 @@ public:
     void setPool(Pool* pool)
     {
         pool_ = pool;
-        group_ = pool_->getGroup(Matcher_allOf(Position, RenderComponent));
+        //group_ = pool_->getGroup(Matcher_allOf(Position, RenderComponent));
+		auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
+		group_ = pool_->getGroup(matcher); 
         std::cout << "MySystem::setPool called" << std::endl;
     }
     
@@ -291,7 +298,7 @@ int mainLoop()
 
 /* -------------------------------------------------------------------------- */
 
-
+#undef main
 int main(const int argc, const char* argv[])
 {
   auto systems = std::make_shared<SystemContainer>();
@@ -306,7 +313,8 @@ int main(const int argc, const char* argv[])
     systems->execute();
   }
 
-  auto entities = pool->getEntities(Matcher_allOf(RenderComponent, Position)); // *Some magic preprocessor involved*
+  auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
+  auto entities = pool->getEntities(matcher); // *Some magic preprocessor involved*
   for (auto &e : entities) { // e is a shared_ptr of Entity
       // do something
   }

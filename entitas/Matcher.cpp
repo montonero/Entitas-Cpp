@@ -11,7 +11,7 @@ namespace entitas
 	Matcher Matcher::allOf(const ComponentIdList indices)
     {
 		Matcher matcher;
-		matcher.mAllOfIndices = distinctIndices(indices);
+		matcher.indicesAllOf_ = distinctIndices(indices);
 		matcher.calculateHash();
 
 		return matcher;
@@ -25,7 +25,7 @@ namespace entitas
     auto Matcher::anyOf(const ComponentIdList indices) -> const Matcher
     {
 		auto matcher = Matcher();
-		matcher.mAnyOfIndices = distinctIndices(indices);
+		matcher.indicesAnyOf_ = distinctIndices(indices);
 		matcher.calculateHash();
 
 		return matcher;
@@ -39,7 +39,7 @@ namespace entitas
     auto Matcher::noneOf(const ComponentIdList indices) -> const Matcher
     {
 		auto matcher = Matcher();
-		matcher.mNoneOfIndices = distinctIndices(indices);
+		matcher.indicesNoneOf_ = distinctIndices(indices);
 		matcher.calculateHash();
 
 		return matcher;
@@ -52,41 +52,41 @@ namespace entitas
 
     bool Matcher::isEmpty() const
     {
-		return (mAllOfIndices.empty() && mAnyOfIndices.empty() && mNoneOfIndices.empty());
+		return (indicesAllOf_.empty() && indicesAnyOf_.empty() && indicesNoneOf_.empty());
     }
 
     bool Matcher::matches(const EntityPtr& entity)
     {
-		auto matchesAllOf = mAllOfIndices.empty() || entity->hasComponents(mAllOfIndices);
-		auto matchesAnyOf = mAnyOfIndices.empty() || entity->hasAnyComponent(mAnyOfIndices);
-		auto matchesNoneOf = mNoneOfIndices.empty() || ! entity->hasAnyComponent(mNoneOfIndices);
+		auto matchesAllOf = indicesAllOf_.empty() || entity->hasComponents(indicesAllOf_);
+		auto matchesAnyOf = indicesAnyOf_.empty() || entity->hasAnyComponent(indicesAnyOf_);
+		auto matchesNoneOf = indicesNoneOf_.empty() || ! entity->hasAnyComponent(indicesNoneOf_);
 
 		return matchesAllOf && matchesAnyOf && matchesNoneOf;
     }
 
     auto Matcher::getIndices() -> const ComponentIdList
     {
-		if(mIndices.empty())
+		if(indices_.empty())
 		{
-			mIndices = mergeIndices();
+			indices_ = mergeIndices();
 		}
 
-		return mIndices;
+		return indices_;
     }
 
     auto Matcher::getAllOfIndices() const -> const ComponentIdList
     {
-		return mAllOfIndices;
+		return indicesAllOf_;
     }
 
     auto Matcher::getAnyOfIndices() const -> const ComponentIdList
     {
-		return mAnyOfIndices;
+		return indicesAnyOf_;
     }
 
     auto Matcher::getNoneOfIndices() const -> const ComponentIdList
     {
-		return mNoneOfIndices;
+		return indicesNoneOf_;
     }
 
     auto Matcher::getHashCode() const -> unsigned int
@@ -143,19 +143,19 @@ namespace entitas
     auto Matcher::mergeIndices() const -> ComponentIdList
     {
 		ComponentIdList indicesList;
-		indicesList.reserve(mAllOfIndices.size() + mAnyOfIndices.size() + mNoneOfIndices.size());
+		indicesList.reserve(indicesAllOf_.size() + indicesAnyOf_.size() + indicesNoneOf_.size());
 
-		for(const auto &id : mAllOfIndices)
+		for(const auto &id : indicesAllOf_)
 		{
 			indicesList.push_back(id);
 		}
 
-		for(const auto &id : mAnyOfIndices)
+		for(const auto &id : indicesAnyOf_)
 		{
 			indicesList.push_back(id);
 		}
 
-		for(const auto &id : mNoneOfIndices)
+		for(const auto &id : indicesNoneOf_)
 		{
 			indicesList.push_back(id);
 		}
@@ -167,9 +167,9 @@ namespace entitas
     {
 		unsigned int hash = (unsigned)typeid(Matcher).hash_code();
 
-		hash = applyHash(hash, mAllOfIndices, 3, 53);
-		hash = applyHash(hash, mAnyOfIndices, 307, 367);
-		hash = applyHash(hash, mNoneOfIndices, 647, 683);
+		hash = applyHash(hash, indicesAllOf_, 3, 53);
+		hash = applyHash(hash, indicesAnyOf_, 307, 367);
+		hash = applyHash(hash, indicesNoneOf_, 647, 683);
 
 		mCachedHash = hash;
     }
@@ -195,7 +195,7 @@ namespace entitas
 
 		for(auto &matcher : matchers)
 		{
-				totalIndices += matcher.getIndices().size();
+			totalIndices += matcher.getIndices().size();
 		}
 
 		auto indices = ComponentIdList();
@@ -203,10 +203,10 @@ namespace entitas
 
 		for(auto &matcher : matchers)
 		{
-				for(const auto &id : matcher.getIndices())
-				{
-					indices.push_back(id);
-				}
+			for(const auto &id : matcher.getIndices())
+			{
+				indices.push_back(id);
+			}
 		}
 
 		return indices;

@@ -92,7 +92,7 @@ class MoveSystem : public IExecuteSystem, public ISetPoolSystem
     public:
         void setPool(Pool* pool) {
             //_group = pool->getGroup(Matcher_allOf(Move, Position));
-			auto matcher = Matcher::allOf(std::vector<entitas::ComponentId>({ COMPONENT_GET_TYPE_ID(Move), COMPONENT_GET_TYPE_ID(Position) }));
+			auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(Move), COMPONENT_GET_TYPE_ID(Position) });
 			_group = pool->getGroup(matcher);
         }
 
