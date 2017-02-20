@@ -80,7 +80,7 @@ namespace
 #define GET_MACRO(_1, _2, _3, _4, _5, _6, NAME,...) NAME
 #define FOR_EACH(MODIFIER,...) GET_MACRO(__VA_ARGS__, FUNC_6, FUNC_5, FUNC_4, FUNC_3, FUNC_2, FUNC_1)(MODIFIER, __VA_ARGS__)
 
-#define COMPONENT_GET_TYPE_ID(COMPONENT_CLASS) entitas::ComponentTypeId::get<COMPONENT_CLASS>()
+
 #define Matcher_allOf(...) (entitas::Matcher)entitas::Matcher::allOf(std::vector<entitas::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
 #define Matcher_anyOf(...) (entitas::Matcher)entitas::Matcher::anyOf(std::vector<entitas::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))
 #define Matcher_noneOf(...) (entitas::Matcher)entitas::Matcher::noneOf(std::vector<entitas::ComponentId>({ FOR_EACH(COMPONENT_GET_TYPE_ID, __VA_ARGS__) }))

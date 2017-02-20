@@ -4,6 +4,8 @@
 #include "entitas/ISystem.hpp"
 #include <iostream>
 
+#include <string>
+
 #include "Rectangle.h"
 
 using namespace entitas;
@@ -89,7 +91,9 @@ class MoveSystem : public IExecuteSystem, public ISetPoolSystem
 
     public:
         void setPool(Pool* pool) {
-            _group = pool->getGroup(Matcher_allOf(Move, Position));
+            //_group = pool->getGroup(Matcher_allOf(Move, Position));
+			auto matcher = Matcher::allOf(std::vector<entitas::ComponentId>({ COMPONENT_GET_TYPE_ID(Move), COMPONENT_GET_TYPE_ID(Position) }));
+			_group = pool->getGroup(matcher);
         }
 
         void execute() {
@@ -145,10 +149,11 @@ int main(const int argc, const char* argv[])
     systems->execute();
   }
 
+#ifndef WIN32
   auto entities = pool->getEntities(Matcher_allOf(RenderComponent, Position)); // *Some magic preprocessor involved*
   for (auto &e : entities) { // e is a shared_ptr of Entity
       // do something
   }
-
+#endif
   return 0;
 }

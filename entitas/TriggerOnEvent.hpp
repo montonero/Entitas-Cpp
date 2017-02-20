@@ -9,7 +9,7 @@
 
 namespace entitas
 {
-    struct TriggerOnEvent
+    class TriggerOnEvent
     {
     public:
         TriggerOnEvent() = default;

@@ -25,28 +25,32 @@ def configure(ctx):
     #ctx.find_program('clang', var = 'CC', mandatory = True)
     ctx.load('compiler_c compiler_cxx')
 
-    ctx.check_cfg(
-        path='sdl2-config',
-        args='--cflags --libs',
-        package='',
-        uselib_store='SDL2')
+    if sys.platform.find('win') > -1:
+        ctx.env.LIBPATH_SDL2   = [join("", 'stage/lib')]
+        ctx.env.INCLUDES_SDL2  = [join("", 'boost')]
+    else:
+        ctx.check_cfg(
+            path='sdl2-config',
+            args='--cflags --libs',
+            package='',
+            uselib_store='SDL2')
 
-    ctx.check_cxx(
-        #cxxflags=['-std=c++14', '-Wall'],
-        cxxflags=[ '-Wall'],
-        libs='SDL2',
-    )
+        ctx.check_cxx(
+            #cxxflags=['-std=c++14', '-Wall'],
+            cxxflags=[ '-Wall'],
+            libs='SDL2',
+        )
 
-    ctx.check_cxx(lib='pthread',
-        cflags='-Wall',
-        uselib_store='pthread')
-        # uselib_store='pthread', mandatory=True)
+        ctx.check_cxx(lib='pthread',
+            cflags='-Wall',
+            uselib_store='pthread')
+            # uselib_store='pthread', mandatory=True)
 
 
 
 def build(ctx):
     # libs = ['SDL2', 'chibi_static_lib', 'BOOST', 'ws_client_lib', 'ws_retry_client']
-    libs = ['entitas', 'glm', 
+    libs = ['entitas', 'glm',
             'mathfu', 'vectorial'
     ]
     # ctx.recurse('chibi')
@@ -56,7 +60,7 @@ def build(ctx):
         source = ctx.path.ant_glob('entitas/*.cpp'),
         target = 'entitas',
         #cxxflags     = ['-std=c++1y', '-g', '-stdlib=libc++'],
-        cxxflags     = ['-std=c++1y', '-g'],
+        cxxflags     = ['/std:c++latest', '-std=c++14', '-g'],
         includes = 'entitas',
         export_includes = '. entitas',
     )
@@ -74,7 +78,7 @@ def build(ctx):
     ctx(includes=mathfu_include_path,
         export_includes=mathfu_include_path,
         name='mathfu')
-    
+
     vectorial_node = mathfu_node.find_node('dependencies/vectorial')
     print(vectorial_node.abspath())
     vectorial_include_path = join(vectorial_node.abspath(), 'include')
@@ -95,7 +99,7 @@ def build(ctx):
         source = s1,
         features='cxx cxxprogram',
         target='demo',
-        cxxflags     = ['-std=c++1y', '-g'],
+        cxxflags     = ['-std=c++14', '-g'],
         # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
         use =  ['entitas']
@@ -107,7 +111,7 @@ def build(ctx):
         source = s1,
         features='cxx cxxprogram',
         target='s1',
-        cxxflags     = ['-std=c++1y', '-g'],
+        cxxflags     = ['-std=c++14', '-g'],
         lib = ['m', 'c', 'pthread'],
         #linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
