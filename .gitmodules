@@ -7,3 +7,6 @@
 [submodule "external/Box2D"]
 	path = external/Box2D
 	url = https://github.com/erincatto/Box2D.git
+[submodule "external/SDLpp"]
+	path = external/SDLpp
+	url = git@github.com:montonero/SDLpp.git

@@ -7,32 +7,28 @@
 #include "IComponent.hpp"
 #include <vector>
 
-#define COMPONENT_GET_TYPE_ID(COMPONENT_CLASS) entitas::ComponentTypeId::get<COMPONENT_CLASS>()
+#define COMPONENT_GET_TYPE_ID(COMPONENT_CLASS) \
+    entitas::ComponentTypeId::get<COMPONENT_CLASS>()
 
-namespace entitas
-{
-    typedef unsigned int ComponentId;
-    typedef std::vector<ComponentId> ComponentIdList;
+namespace entitas {
+using ComponentId = unsigned int;
+using ComponentIdList = std::vector<ComponentId>;
 
-    struct ComponentTypeId
+struct ComponentTypeId {
+public:
+    template <typename T>
+    static const ComponentId get()
     {
-    public:
-        template<typename T>
-        static const ComponentId get()
-        {
-            static_assert((std::is_base_of<IComponent, T>::value && ! std::is_same<IComponent, T>::value),
-                          "Class type must be derived from IComponent");
+        static_assert((std::is_base_of<IComponent, T>::value && !std::is_same<IComponent, T>::value),
+            "Class type must be derived from IComponent");
 
-            static ComponentId id = counter_++;
-            return id;
-        }
+        static ComponentId id = counter_++;
+        return id;
+    }
 
-        static unsigned int count()
-        {
-            return counter_;
-        }
+    static size_t count() { return counter_; }
 
-    private:
-        static unsigned int counter_;
-    };
+private:
+    static size_t counter_;
+};
 }

@@ -6,5 +6,5 @@
 
 namespace entitas
 {
-unsigned int ComponentTypeId::counter_ = 0;
+size_t ComponentTypeId::counter_ = 0;
 }
