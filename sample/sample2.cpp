@@ -20,6 +20,8 @@
     #include "SDL.h"
 #endif
 
+#include <SDLpp.h>
+
 #include "Rectangle.h"
 
 
@@ -323,16 +325,19 @@ int main(const int argc, const char* argv[])
     int done;
     SDL_Event event;
 
-    /* initialize SDL */
+    /* initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         printf("Could not initialize SDL\n");
         return 1;
     }
-
+     */
+    sdl::Init();
+    
     /* seed random number generator */
     srand(time(NULL));
 
+#if 0
     /* create window and renderer */
     auto window = SDL_CreateWindow(NULL, 0, 0, kScreenWidth, kScreenHeight, SDL_WINDOW_OPENGL);
     if (!window) 
@@ -350,7 +355,10 @@ int main(const int argc, const char* argv[])
     }
     gSdlRenderer = renderer;
     //thread t(readInput);
-
+#endif
+    sdl::Window window{"Test window", 800, 600};
+    sdl::Renderer* renderer = window.CreateRenderer();
+    
     /* Enter render loop, waiting for user to quit */
     done = 0;
     while (!done)
