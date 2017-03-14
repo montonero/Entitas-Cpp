@@ -4,10 +4,20 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>SDLpp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>entitas-demo.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+		<key>entitas.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 		<key>sample1.xcscheme</key>
 		<dict>
@@ -22,6 +32,16 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>784711521E780E08003817CA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7847118D1E782367003817CA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>786999E61DE5D05800FB0EC9</key>
 		<dict>
 			<key>primary</key>
