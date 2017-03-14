@@ -43,6 +43,22 @@
 		784711A41E7825CC003817CA /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 784711A21E7825CC003817CA /* SDL2_image.framework */; };
 		784711A61E782716003817CA /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 784711A51E782716003817CA /* SDL2_ttf.framework */; };
 		784711A71E782716003817CA /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 784711A51E782716003817CA /* SDL2_ttf.framework */; };
+		893C6CDD1E78463900813F88 /* Clock.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CCD1E78463900813F88 /* Clock.h */; };
+		893C6CDE1E78463900813F88 /* Color.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CCE1E78463900813F88 /* Color.h */; };
+		893C6CDF1E78463900813F88 /* Duration.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CCF1E78463900813F88 /* Duration.h */; };
+		893C6CE01E78463900813F88 /* Font.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD01E78463900813F88 /* Font.h */; };
+		893C6CE11E78463900813F88 /* Mouse.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD11E78463900813F88 /* Mouse.h */; };
+		893C6CE21E78463900813F88 /* Renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD21E78463900813F88 /* Renderer.h */; };
+		893C6CE31E78463900813F88 /* SDLpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD31E78463900813F88 /* SDLpp.h */; };
+		893C6CE41E78463900813F88 /* Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD41E78463900813F88 /* Sprite.h */; };
+		893C6CE51E78463900813F88 /* Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD51E78463900813F88 /* Surface.h */; };
+		893C6CE61E78463900813F88 /* Text.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD61E78463900813F88 /* Text.h */; };
+		893C6CE71E78463900813F88 /* Texture.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD71E78463900813F88 /* Texture.h */; };
+		893C6CE81E78463900813F88 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD81E78463900813F88 /* Util.h */; };
+		893C6CE91E78463900813F88 /* Vector2.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CD91E78463900813F88 /* Vector2.h */; };
+		893C6CEA1E78463900813F88 /* Vector2f.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CDA1E78463900813F88 /* Vector2f.h */; };
+		893C6CEB1E78463900813F88 /* View.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CDB1E78463900813F88 /* View.h */; };
+		893C6CEC1E78463900813F88 /* Window.h in Headers */ = {isa = PBXBuildFile; fileRef = 893C6CDC1E78463900813F88 /* Window.h */; };
 		893F357E1DE710B00001A83A /* ComponentTypeId.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35691DE710B00001A83A /* ComponentTypeId.cpp */; };
 		893F357F1DE710B00001A83A /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F356C1DE710B00001A83A /* Entity.cpp */; };
 		893F35801DE710B00001A83A /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F356E1DE710B00001A83A /* Group.cpp */; };
@@ -131,6 +147,22 @@
 		784711A21E7825CC003817CA /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		784711A51E782716003817CA /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../../../../../Library/Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
 		786999E71DE5D05900FB0EC9 /* entitas-demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "entitas-demo"; sourceTree = BUILT_PRODUCTS_DIR; };
+		893C6CCD1E78463900813F88 /* Clock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Clock.h; path = ../../../external/SDLpp/include/Clock.h; sourceTree = "<group>"; };
+		893C6CCE1E78463900813F88 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Color.h; path = ../../../external/SDLpp/include/Color.h; sourceTree = "<group>"; };
+		893C6CCF1E78463900813F88 /* Duration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Duration.h; path = ../../../external/SDLpp/include/Duration.h; sourceTree = "<group>"; };
+		893C6CD01E78463900813F88 /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Font.h; path = ../../../external/SDLpp/include/Font.h; sourceTree = "<group>"; };
+		893C6CD11E78463900813F88 /* Mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mouse.h; path = ../../../external/SDLpp/include/Mouse.h; sourceTree = "<group>"; };
+		893C6CD21E78463900813F88 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Renderer.h; path = ../../../external/SDLpp/include/Renderer.h; sourceTree = "<group>"; };
+		893C6CD31E78463900813F88 /* SDLpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDLpp.h; path = ../../../external/SDLpp/include/SDLpp.h; sourceTree = "<group>"; };
+		893C6CD41E78463900813F88 /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sprite.h; path = ../../../external/SDLpp/include/Sprite.h; sourceTree = "<group>"; };
+		893C6CD51E78463900813F88 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Surface.h; path = ../../../external/SDLpp/include/Surface.h; sourceTree = "<group>"; };
+		893C6CD61E78463900813F88 /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Text.h; path = ../../../external/SDLpp/include/Text.h; sourceTree = "<group>"; };
+		893C6CD71E78463900813F88 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = ../../../external/SDLpp/include/Texture.h; sourceTree = "<group>"; };
+		893C6CD81E78463900813F88 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = ../../../external/SDLpp/include/Util.h; sourceTree = "<group>"; };
+		893C6CD91E78463900813F88 /* Vector2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vector2.h; path = ../../../external/SDLpp/include/Vector2.h; sourceTree = "<group>"; };
+		893C6CDA1E78463900813F88 /* Vector2f.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vector2f.h; path = ../../../external/SDLpp/include/Vector2f.h; sourceTree = "<group>"; };
+		893C6CDB1E78463900813F88 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = View.h; path = ../../../external/SDLpp/include/View.h; sourceTree = "<group>"; };
+		893C6CDC1E78463900813F88 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Window.h; path = ../../../external/SDLpp/include/Window.h; sourceTree = "<group>"; };
 		893F35691DE710B00001A83A /* ComponentTypeId.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ComponentTypeId.cpp; path = ../../../../entitas/ComponentTypeId.cpp; sourceTree = "<group>"; };
 		893F356A1DE710B00001A83A /* ComponentTypeId.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ComponentTypeId.hpp; path = ../../../../entitas/ComponentTypeId.hpp; sourceTree = "<group>"; };
 		893F356B1DE710B00001A83A /* Delegate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Delegate.hpp; path = ../../../../entitas/Delegate.hpp; sourceTree = "<group>"; };
@@ -265,6 +297,22 @@
 		784711921E78236D003817CA /* SDLpp */ = {
 			isa = PBXGroup;
 			children = (
+				893C6CCD1E78463900813F88 /* Clock.h */,
+				893C6CCE1E78463900813F88 /* Color.h */,
+				893C6CCF1E78463900813F88 /* Duration.h */,
+				893C6CD01E78463900813F88 /* Font.h */,
+				893C6CD11E78463900813F88 /* Mouse.h */,
+				893C6CD21E78463900813F88 /* Renderer.h */,
+				893C6CD31E78463900813F88 /* SDLpp.h */,
+				893C6CD41E78463900813F88 /* Sprite.h */,
+				893C6CD51E78463900813F88 /* Surface.h */,
+				893C6CD61E78463900813F88 /* Text.h */,
+				893C6CD71E78463900813F88 /* Texture.h */,
+				893C6CD81E78463900813F88 /* Util.h */,
+				893C6CD91E78463900813F88 /* Vector2.h */,
+				893C6CDA1E78463900813F88 /* Vector2f.h */,
+				893C6CDB1E78463900813F88 /* View.h */,
+				893C6CDC1E78463900813F88 /* Window.h */,
 				784711931E782387003817CA /* Clock.cpp */,
 				784711941E782387003817CA /* Renderer.cpp */,
 				784711951E782387003817CA /* Sprite.cpp */,
@@ -397,6 +445,22 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				893C6CDF1E78463900813F88 /* Duration.h in Headers */,
+				893C6CE21E78463900813F88 /* Renderer.h in Headers */,
+				893C6CE31E78463900813F88 /* SDLpp.h in Headers */,
+				893C6CE91E78463900813F88 /* Vector2.h in Headers */,
+				893C6CDE1E78463900813F88 /* Color.h in Headers */,
+				893C6CEA1E78463900813F88 /* Vector2f.h in Headers */,
+				893C6CEC1E78463900813F88 /* Window.h in Headers */,
+				893C6CDD1E78463900813F88 /* Clock.h in Headers */,
+				893C6CE61E78463900813F88 /* Text.h in Headers */,
+				893C6CE41E78463900813F88 /* Sprite.h in Headers */,
+				893C6CE71E78463900813F88 /* Texture.h in Headers */,
+				893C6CEB1E78463900813F88 /* View.h in Headers */,
+				893C6CE11E78463900813F88 /* Mouse.h in Headers */,
+				893C6CE01E78463900813F88 /* Font.h in Headers */,
+				893C6CE81E78463900813F88 /* Util.h in Headers */,
+				893C6CE51E78463900813F88 /* Surface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -718,6 +782,8 @@
 					"$(SRCROOT)/../../..",
 					"$(SRCROOT)/../../../external/glm",
 					"$(SRCROOT)/../../../external/SDLpp/include",
+					"$(SRCROOT)/../../../external/mathfu/include",
+					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -765,6 +831,8 @@
 					"$(SRCROOT)/../../..",
 					"$(SRCROOT)/../../../external/glm",
 					"$(SRCROOT)/../../../external/SDLpp/include",
+					"$(SRCROOT)/../../../external/mathfu/include",
+					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -859,6 +927,7 @@
 				784711561E780E09003817CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7847118F1E782367003817CA /* Build configuration list for PBXNativeTarget "SDLpp" */ = {
 			isa = XCConfigurationList;
@@ -867,6 +936,7 @@
 				784711911E782367003817CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		786999E21DE5D05800FB0EC9 /* Build configuration list for PBXProject "entitas-demo" */ = {
 			isa = XCConfigurationList;
