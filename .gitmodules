@@ -10,3 +10,6 @@
 [submodule "external/SDLpp"]
 	path = external/SDLpp
 	url = git@github.com:montonero/SDLpp.git
+[submodule "external/tinyheaders"]
+	path = external/tinyheaders
+	url = https://github.com/RandyGaul/tinyheaders.git
