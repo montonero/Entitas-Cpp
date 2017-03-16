@@ -125,19 +125,20 @@ public:
 
 /* -------------------------------------------------------------------------- */
 
-void renderMat(sdl::Renderer* renderer, Color c, Vec2 v, Vec2 s)
-{
-    // auto sr = toSdlRect(r);
-    SDL_Rect sr;
-    sr.x = v.x();
-    sr.y = v.y();
-    sr.w = s.x();
-    sr.h = s.y();
-    //sdl::MakeRect(<#int x#>, <#int y#>, <#int w#>, <#int h#>)
-    renderer->draw(sr, sdl::Color(c.r, c.g, c.b));
+void renderMat(sdl::Renderer* renderer, sdl::Color c, Vec2 v, Vec2 s)
+{ 
+    // SDL_Rect sr;
+    // sr.x = v.x();
+    // sr.y = v.y();
+    // sr.w = s.x();
+    // sr.h = s.y();
+
+    auto rect = sdl::makeRect(v, s);
+    // renderer->draw(rect, sdl::Color(c.r, c.g, c.b));
+    renderer->draw(rect, c);
 }
 
-Color randomColor()
+sdl::Color randomColor()
 {
     using namespace std;
     static random_device rd;
@@ -145,7 +146,7 @@ Color randomColor()
     uniform_int_distribution<int> uniform_int(50, 254);
     //auto random_int = bind(uniform_int, engineMt);
     // static const unsigned sizeVec{ 10 };
-    Color c(uniform_int(engineMt), uniform_int(engineMt), uniform_int(engineMt));
+    sdl::Color c(uniform_int(engineMt), uniform_int(engineMt), uniform_int(engineMt));
     return c;
 }
 
@@ -235,13 +236,6 @@ SDL_Rect toSdlRect(Rectangle r)
     sr.w = r.size.x();
     sr.h = r.size.y();
     return sr;
-}
-
-void renderRect(SDL_Renderer* renderer, Rectangle& r)
-{
-    auto sr = toSdlRect(r);
-    SDL_SetRenderDrawColor(renderer, r.color.r, r.color.g, r.color.b, 255);
-    SDL_RenderFillRect(renderer, &sr);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -357,9 +351,6 @@ int main(const int argc, const char* argv[])
                 addRandomEntity(pool.get());
             }
         }
-// string text;
-// cin >> text;
-//render(renderer, rs);
 
 #if 0
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
@@ -368,8 +359,8 @@ int main(const int argc, const char* argv[])
         renderer->clear(sdl::Colors::Black);
         systems->execute();
 
-        renderer->drawCircle({100, 100}, 50.f, sdl::Colors::Blue);
-        renderer->drawLine({0,0}, {100,100}, sdl::Colors::White);
+        renderer->drawCircle({ 100, 100 }, 50.f, sdl::Colors::Blue);
+        renderer->drawLine({ 0, 0 }, { 100, 100 }, sdl::Colors::White);
 
         // Render the rect to the screen
         // SDL_RenderPresent(renderer);
