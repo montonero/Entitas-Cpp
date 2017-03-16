@@ -15,8 +15,8 @@ out = 'build'
 
 def options(ctx):
     ctx.load('compiler_c compiler_cxx')
-    ctx.add_option('--boost-path', dest='boost_path', help='Boost path.')
-    ctx.add_option('--wspp-path', dest='wspp_path', help='Websocket++ path.')
+    # ctx.add_option('--boost-path', dest='boost_path', help='Boost path.')
+    # ctx.add_option('--wspp-path', dest='wspp_path', help='Websocket++ path.')
 
 def configure(ctx):
     # ctx.env.ws_client_dir = os.path.abspath(os.path.join(ctx.path.parent.abspath(), 'client'))
@@ -50,8 +50,8 @@ def configure(ctx):
 
 def build(ctx):
     # libs = ['SDL2', 'chibi_static_lib', 'BOOST', 'ws_client_lib', 'ws_retry_client']
-    libs = ['entitas', 'glm',
-            'mathfu', 'vectorial'
+    libs = ['entitas', 'SDLpp',
+            'mathfu', 'vectorial',
     ]
     # ctx.recurse('chibi')
     # ctx.recurse(ctx.env.ws_client_dir)
@@ -67,11 +67,8 @@ def build(ctx):
 
     external_node = ctx.path.find_node('external')
     # chibi_node = external_node.find_node('chibi')
-    glm_node = external_node.find_node('glm')
+    sdlpp_node = external_node.find_node('SDLpp')
 
-    ctx(includes=glm_node.abspath(),
-        export_includes=glm_node.abspath(),
-        name='glm')
 
     mathfu_node = external_node.find_node('mathfu')
     mathfu_include_path = join(mathfu_node.abspath(), 'include')
@@ -85,6 +82,9 @@ def build(ctx):
     ctx(includes=vectorial_include_path,
         export_includes=vectorial_include_path,
         name='vectorial')
+
+
+    ctx.recurse(sdlpp_node.abspath())
 
     """
     ctx.stlib(
@@ -128,7 +128,8 @@ def build(ctx):
         linkflags = [ '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
         defines = ['_SDL2'],
-        use =  libs + ['SDL2', 'pthread']
+        lib = ['SDL2_ttf', 'SDL2_image'],
+        use =  libs + ['SDL2', 'pthread'] 
     )
 
     if ctx.cmd != 'clean':
