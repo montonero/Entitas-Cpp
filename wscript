@@ -115,6 +115,23 @@ def build(ctx):
     )
     """
 
+    link_flags = ['-Wl', '-Wl,-rpath,.']
+
+    if ctx.env.emscripten:
+            s2 = ctx.path.ant_glob(['sample/sample2.cpp'])
+            ctx.program(
+                source = s2,
+                features='cxx cxxprogram',
+                target='s2',
+                cxxflags     = ['-std=c++14', '-g'],
+                linkflags = [ '-lm', '-lpthread', '-lc', '-lstdc++'],
+                # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
+                defines = ['_SDL2'],
+                lib = ['SDL2_ttf', 'SDL2_image'],
+                use =  libs + ['SDL2', 'pthread'] 
+            )
+
+
     s1 = ctx.path.ant_glob(['sample/sample1.cpp'])
     ctx.program(
         source = s1,
