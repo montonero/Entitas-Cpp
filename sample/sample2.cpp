@@ -282,9 +282,11 @@ void mainLoop(void* vctx)
     auto ctx = (MainLoopContext*) vctx;
 
     SDL_Event event;
-
+    std::cout << "Main loop entered.\n";
+    
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
+            std::cout << "Quitting\n";
             ctx->done = 1;
         }
         if (event.type == SDL_KEYDOWN) {
@@ -329,51 +331,30 @@ int main(const int argc, const char* argv[])
     //for(unsigned int i = 0; i < 2; ++i) {
     //  systems->execute();
     //}
-
+    
+    std::cout << "All systems initilized.\n";
+    
     auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
     auto entities = pool->getEntities(matcher); // *Some magic preprocessor involved*
+#if 0
     for (auto& e : entities) { // e is a shared_ptr of Entity
         // do something
     }
-
-    /////
-    /* initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        printf("Could not initialize SDL\n");
-        return 1;
-    }
-     */
+#endif
+    std::cout << "sdl::Init()\n";
     sdl::Init();
 
     /* seed random number generator */
     srand(time(NULL));
-
-#if 0
-    /* create window and renderer */
-    auto window = SDL_CreateWindow(NULL, 0, 0, kScreenWidth, kScreenHeight, SDL_WINDOW_OPENGL);
-    if (!window) 
-    {
-        // printf("Could not initialize Window\n");
-        printf("Could not create window: %s\n", SDL_GetError());
-        return 1;
-    }
-
-    auto renderer = SDL_CreateRenderer(window, -1, 0);
-    if (!renderer) 
-    {
-        printf("Could not create renderer\n");
-        return 1;
-    }
-    gSdlRenderer = renderer;
-    //thread t(readInput);
-#endif
+    std::cout << "sdl::Init() successfully!\n";
+    
     auto ctx = new MainLoopContext {
         sdl::Window{ "Test window", 800, 600 }, nullptr, 
-        std::move(systems), std::move(pool), mySystem,
+        systems, pool, mySystem,
         0
     };
-
+    std::cout << "Context created.\n";
+    
     ctx->renderer = ctx->window.CreateRenderer();
 
     ((MySystem*)mySystem.get())->setRenderer(*ctx->renderer);
@@ -386,7 +367,7 @@ int main(const int argc, const char* argv[])
             mainLoop(ctx);
             ctx->done = 0;
         }
-
+        std::cout << "Done.\n";
         delete ctx;
     #endif
 
