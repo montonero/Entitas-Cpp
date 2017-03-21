@@ -346,27 +346,9 @@ int main(const int argc, const char* argv[])
 
     /* seed random number generator */
     srand(time(NULL));
-<<<<<<< HEAD
 
-#if 0
-    /* create window and renderer */
-    auto window = SDL_CreateWindow(NULL, 0, 0, kScreenWidth, kScreenHeight, SDL_WINDOW_OPENGL);
-    if (!window) 
-    {
-        // printf("Could not initialize Window\n");
-        printf("Could not create window: %s\n", SDL_GetError());
-        return 1;
-    }
 
-    auto renderer = SDL_CreateRenderer(window, -1, 0);
-    if (!renderer) 
-    {
-        printf("Could not create renderer\n");
-        return 1;
-    }
-    gSdlRenderer = renderer;
-    //thread t(readInput);
-#endif
+    
     sdl::Window window{ "Test window", kScreenWidth, kScreenHeight };
     sdl::Renderer* renderer = window.CreateRenderer();
 
@@ -432,8 +414,8 @@ int main(const int argc, const char* argv[])
         // SDL_RenderPresent(renderer);
         renderer->Present();
         SDL_Delay(100);
-    }
+    
 
-    mainLoop();
+
     return 0;
 }
