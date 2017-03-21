@@ -13,7 +13,8 @@ namespace entitas
 {
     class Entity;
     typedef std::shared_ptr<Entity> EntityPtr;
-
+    using EntityPtrWeak = std::weak_ptr<Entity>;
+    using ComponentPools = std::map<ComponentId, std::stack<IComponent*>>;
 	/* -------------------------------------------------------------------------- */
 
     class Entity
@@ -21,7 +22,7 @@ namespace entitas
 	friend class Pool;
 
     public:
-        Entity(std::map<ComponentId, std::stack<IComponent*>>* componentPools);
+        Entity(ComponentPools& componentPools) : componentPools_{componentPools} {};
 
         template <typename T, typename... TArgs> inline auto add(TArgs&&... args) -> EntityPtr;
         template <typename T> inline auto remove() -> EntityPtr;
@@ -70,9 +71,10 @@ namespace entitas
         auto getComponentPool(const ComponentId index) const -> std::stack<IComponent*>*;
         void replace(const ComponentId index, IComponent* replacement);
 
-        std::weak_ptr<Entity> mInstance;
+        EntityPtrWeak mInstance;
         std::map<ComponentId, IComponent*> components_;
-        std::map<ComponentId, std::stack<IComponent*>>* mComponentPools;
+        
+        ComponentPools& componentPools_;
     };
 
 	/* -------------------------------------------------------------------------- */
@@ -145,13 +147,13 @@ namespace entitas
 namespace std
 {
     template <>
-    struct hash<weak_ptr<entitas::Entity>>
+    struct hash<typename entitas::EntityPtrWeak>
     {
-	std::size_t operator()(const weak_ptr<entitas::Entity>& ptr) const
+	std::size_t operator()(const entitas::EntityPtrWeak& ptr) const
 	{
             return hash<unsigned int>()(ptr.lock()->getUuid());
 	}
     };
 
-    bool operator ==(weak_ptr<entitas::Entity> left, weak_ptr<entitas::Entity> right);
+    bool operator ==(entitas::EntityPtrWeak left, entitas::EntityPtrWeak right);
 }

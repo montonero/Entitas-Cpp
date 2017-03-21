@@ -275,6 +275,8 @@ struct MainLoopContext {
     std::shared_ptr<ISystem>            mySystem;
 
     int             done{0};
+    std::shared_ptr<sdl::Sprite>            sprite;
+
 };
 
 void mainLoop(void* vctx)
@@ -282,7 +284,7 @@ void mainLoop(void* vctx)
     auto ctx = (MainLoopContext*) vctx;
 
     SDL_Event event;
-    std::cout << "Main loop entered.\n";
+    //std::cout << "Main loop entered.\n";
     
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
@@ -291,24 +293,37 @@ void mainLoop(void* vctx)
         }
         if (event.type == SDL_KEYDOWN) {
             std::cout << "Hello\n";
-            // ((MySystem*)mySystem)->addRandomEntity();
             addRandomEntity(ctx->pool.get());
         }
     }
-// string text;
-// cin >> text;
-//render(renderer, rs);
 
-#if 0
-    SDL_SetRenderDrawColor( ctx->renderer, 0, 0, 0, 255 );
-    SDL_RenderClear( ctx->renderer );
-#endif
     ctx->renderer->clear(sdl::Colors::Black);
     ctx->systems->execute();
 
     ctx->renderer->drawCircle({100, 100}, 50.f, sdl::Colors::Blue);
     ctx->renderer->drawLine({0,0}, {100,100}, sdl::Colors::White);
 
+    
+    // Construct a view
+    // sdl::View view{sdl::Vector2f{0.f, 0.f}, sdl::Vector2f{800.f, 600.f}};
+    sdl::View view{sdl::Vector2f{0.f, 0.f}, sdl::Vector2f{200.f, 150.f}};
+    auto renderer = ctx->renderer;
+    auto snowSprite = *ctx->sprite.get();
+    
+    renderer->SetView(view);
+    
+    renderer->Draw(snowSprite);
+    
+    view.Move({-100.f, -200.f});
+    renderer->SetView(view);
+    
+    renderer->Draw(snowSprite);
+    // snowSprite.scale(0.5f);
+    // view.Move({-400.f, -600.f});
+    // renderer->SetView(view);
+    // renderer->Draw(snowSprite);
+
+    
     // Render the rect to the screen
     // SDL_RenderPresent(ctx->renderer);
     ctx->renderer->Present();
@@ -347,75 +362,45 @@ int main(const int argc, const char* argv[])
     /* seed random number generator */
     srand(time(NULL));
 
-
     
-    sdl::Window window{ "Test window", kScreenWidth, kScreenHeight };
-    sdl::Renderer* renderer = window.CreateRenderer();
-
-    ((MySystem*)mySystem.get())->setRenderer(*renderer);
     std::cout << "sdl::Init() successfully!\n";
+    sdl::Window w{ "Test window", kScreenWidth, kScreenHeight };
+    auto renderer = w.CreateRenderer();
+    ((MySystem*)mySystem.get())->setRenderer(*renderer);
     
-    auto ctx = new MainLoopContext {
-        sdl::Window{ "Test window", 800, 600 }, nullptr, 
-        systems, pool, mySystem,
-        0
-    };
-    std::cout << "Context created.\n";
+
     
-    ctx->renderer = ctx->window.CreateRenderer();
+    //ctx->renderer = ctx->window.CreateRenderer();
+    //((MySystem*)mySystem.get())->setRenderer(*ctx->renderer);
 
-    ((MySystem*)mySystem.get())->setRenderer(*ctx->renderer);
-
-    // const std::string kAssetsFolder = "../assets/";
-    const std::string kAssetsFolder = "/Users/im/chew/c++/Entitas-Cpp/assets/";
+#ifdef __EMSCRIPTEN__
+    const std::string kAssetsFolder = "../assets/";
+#else
+    const std::string kAssetsFolder = "../assets/";
+#endif
     const std::string kAssetsTexturesFolder = kAssetsFolder + "textures/";
     auto texture = renderer->CreateTexture(kAssetsTexturesFolder + "tiles_snow/light.png");
     sdl::Sprite snowSprite(*texture);
     snowSprite.scale(2.0f);
+    
+    
+    auto ctx = new MainLoopContext {
+        std::move(w), renderer,
+        systems, pool, mySystem,
+        0, std::make_shared<sdl::Sprite>(std::move(snowSprite))
+    };
+    std::cout << "Context created.\n";
 
     /* Enter render loop, waiting for user to quit */
     #ifdef __EMSCRIPTEN__
         emscripten_set_main_loop_arg(mainLoop, (void*) ctx, 0, 0);
     #else
-        while (!ctx->done) {
+        while (ctx->done == 0) {
             mainLoop(ctx);
-            ctx->done = 0;
         }
         std::cout << "Done.\n";
         delete ctx;
     #endif
-
-
-        // Construct a view
-        // sdl::View view{sdl::Vector2f{0.f, 0.f}, sdl::Vector2f{800.f, 600.f}};
-        sdl::View view{sdl::Vector2f{0.f, 0.f}, sdl::Vector2f{200.f, 150.f}};
-
-        renderer->SetView(view);
-
-        renderer->clear(sdl::Colors::Black);
-        systems->execute();
-
-        renderer->drawCircle({ 100, 100 }, 50.f, sdl::Colors::Blue);
-        renderer->drawLine({ 0, 0 }, { 100, 100 }, sdl::Colors::White);
-
-        renderer->Draw(snowSprite);
-
-        view.Move({-100.f, -200.f});
-        renderer->SetView(view);
-      
-        renderer->Draw(snowSprite);
-        // snowSprite.scale(0.5f);
-        // view.Move({-400.f, -600.f});
-        // renderer->SetView(view);
-        // renderer->Draw(snowSprite);
-
-
-        // Render the rect to the screen
-        // SDL_RenderPresent(renderer);
-        renderer->Present();
-        SDL_Delay(100);
-    
-
 
     return 0;
 }

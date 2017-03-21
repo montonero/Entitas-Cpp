@@ -7,10 +7,10 @@
 
 namespace entitas
 {
-    Entity::Entity(std::map<ComponentId, std::stack<IComponent*>>* componentPools)
-    {
-		mComponentPools = componentPools;
-    }
+    //Entity::Entity(ComponentPools* componentPools)
+    //{
+	//	componentPools_ = componentPools;
+    //}
 
     auto Entity::addComponent(const ComponentId index, IComponent* component) -> EntityPtr
     {
@@ -84,20 +84,8 @@ namespace entitas
 
     bool Entity::hasComponents(const std::vector<ComponentId>& indices) const
     {
-        bool r2 = std::all_of(begin(indices), end(indices), [this](auto i){ return this->hasComponent(i); });
-
-        for(const ComponentId &index : indices)
-		{
-			if (!hasComponent(index))
-			{
-                if (r2)
-                    throw std::runtime_error("all_off different");
-				return false;
-			}
-		}
-
-
-		return true;
+        bool ret = std::all_of(begin(indices), end(indices), [this](auto i){ return this->hasComponent(i); });
+		return ret;
     }
 
 	bool Entity::hasAnyComponent(const std::vector<ComponentId>& indices) const
@@ -164,7 +152,7 @@ namespace entitas
 
     auto Entity::getComponentPool(const ComponentId index) const -> std::stack<IComponent*>*
     {
-	return &((*mComponentPools)[index]);
+	return &(componentPools_[index]);
     }
 
     void Entity::replace(const ComponentId index, IComponent* replacement)
@@ -195,7 +183,7 @@ namespace entitas
 
 namespace std
 {
-    bool operator ==(weak_ptr<entitas::Entity> left, weak_ptr<entitas::Entity> right)
+    bool operator ==(entitas::EntityPtrWeak left, entitas::EntityPtrWeak right)
     {
 		return left.lock().get() == right.lock().get();
     }

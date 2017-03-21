@@ -15,7 +15,7 @@ class ISystem;
 
 class Pool
 {
-	public:
+	public:    
 		static const unsigned kStartCreationIndex = 1;
 		Pool(const unsigned int startCreationIndex = kStartCreationIndex);
 		~Pool();
@@ -63,8 +63,9 @@ class Pool
 		std::stack<Entity*> mReusableEntities;
 
 		std::unordered_set<Entity*> retainedEntities_;
-
-		std::map<ComponentId, std::stack<IComponent*>> mComponentPools;
+    
+    
+		ComponentPools componentPools_;
 		/// ComponentId to corresponding groups map
 		/// Used to quickly find groups when modifying components
 		std::map<ComponentId, std::vector<std::weak_ptr<Group>>> groupsForIndex_;

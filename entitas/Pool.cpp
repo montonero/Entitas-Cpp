@@ -33,7 +33,7 @@ namespace entitas
 			mReusableEntities.pop();
 		}
 
-		for(auto &pair : mComponentPools)
+		for(auto &pair : componentPools_)
 		{
 			auto componentPool = pair.second;
 
@@ -56,7 +56,7 @@ namespace entitas
 		}
 		else
 		{
-			entity = EntityPtr(new Entity(&mComponentPools), [](Entity* entity)
+			entity = EntityPtr(new Entity(componentPools_), [](Entity* entity)
 								{
 									entity->onEntityReleased(entity);
 								});
@@ -214,15 +214,15 @@ namespace entitas
 
     void Pool::clearComponentPool(const ComponentId index)
     {
-		while(! mComponentPools.at(index).empty())
+		while(! componentPools_.at(index).empty())
 		{
-			mComponentPools.at(index).pop();
+			componentPools_.at(index).pop();
 		}
     }
 
     void Pool::clearComponentPools()
     {
-		for(const auto &pair : mComponentPools)
+		for(const auto &pair : componentPools_)
 		{
 			clearComponentPool(pair.first);
 		}
