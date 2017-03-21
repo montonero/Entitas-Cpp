@@ -3,162 +3,145 @@
 // MIT License web page: https://opensource.org/licenses/MIT
 
 #include "Group.hpp"
-#include "Matcher.hpp"
 #include "Collector.hpp"
+#include "Matcher.hpp"
 #include <algorithm>
 
-namespace entitas
-{
+namespace entitas {
 
-Group::Group(const Matcher& matcher) : matcher_(matcher)
+Group::Group(const Matcher& matcher)
+    : matcher_(matcher)
 {
 }
 
 auto Group::count() const -> unsigned int
 {
-	return static_cast<unsigned>(entities_.size());
+    return static_cast<unsigned>(entities_.size());
 }
 
 auto Group::getEntities() -> std::vector<EntityPtr>
 {
-	if(entitiesCache_.empty() && !entities_.empty())
-	{
-		entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());
-	}
+    if (entitiesCache_.empty() && !entities_.empty()) {
+        entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());
+    }
 
-	return entitiesCache_;
+    return entitiesCache_;
 }
 
 auto Group::getSingleEntity() const -> EntityPtr
 {
-	auto c = count();
-	if(c == 1)
-	{
-		return *(entities_.begin());
-	}
-	else if(c == 0)
-	{
-		return nullptr;
-	}
-	else
-	{
-		throw std::runtime_error("Error, cannot get the single entity from group. Group contains more than one entity.");
-	}
-	return nullptr;
+    auto c = count();
+    if (c == 1) {
+        return *(entities_.begin());
+    } else if (c == 0) {
+        return nullptr;
+    } else {
+        throw std::runtime_error("Error, cannot get the single entity from group. Group contains more than one entity.");
+    }
+    return nullptr;
 }
 
 bool Group::containsEntity(const EntityPtr& entity) const
 {
-	return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
+    return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
 }
 
 auto Group::getMatcher() const -> Matcher
 {
-	return matcher_;
+    return matcher_;
 }
 
-auto Group::createObserver(const GroupEventType eventType) -> std::shared_ptr<Collector>
+auto Group::createCollector(const GroupEventType eventType) -> std::shared_ptr<Collector>
 {
-	return std::shared_ptr<Collector>(new Collector(mInstance.lock(), eventType));
+    return std::shared_ptr<Collector>(new Collector(instance_.lock(), eventType));
 }
 
 void Group::setInstance(std::shared_ptr<Group> instance)
 {
-	mInstance = instance;
+    instance_ = instance;
 }
 
 auto Group::handleEntity(EntityPtr entity) -> GroupChanged*
 {
-	return matcher_.matches(entity) ? addEntity(entity) : removeEntity(entity);
+    return matcher_.matches(entity) ? addEntity(entity) : removeEntity(entity);
 }
 
 void Group::handleEntitySilently(EntityPtr entity)
 {
-	if(matcher_.matches(entity))
-	{
-		addEntitySilently(entity);
-	}
-	else
-	{
-		removeEntitySilently(entity);
-	}
+    if (matcher_.matches(entity)) {
+        addEntitySilently(entity);
+    } else {
+        removeEntitySilently(entity);
+    }
 }
 
 void Group::handleEntity(EntityPtr entity, ComponentId index, IComponent* component)
 {
-	if(matcher_.matches(entity))
-	{
-		addEntity(entity, index, component);
-	}
-	else
-	{
-		removeEntity(entity, index, component);
-	}
+    if (matcher_.matches(entity)) {
+        addEntity(entity, index, component);
+    } else {
+        removeEntity(entity, index, component);
+    }
 }
 
 void Group::updateEntity(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
 {
-	if(containsEntity(entity))
-	{
-		onEntityRemoved(mInstance.lock(), entity, index, previousComponent);
-		onEntityAdded(mInstance.lock(), entity, index, newComponent);
-		onEntityUpdated(mInstance.lock(), entity, index, previousComponent, newComponent);
-	}
+    if (containsEntity(entity)) {
+        onEntityRemoved(instance_.lock(), entity, index, previousComponent);
+        onEntityAdded(instance_.lock(), entity, index, newComponent);
+        onEntityUpdated(instance_.lock(), entity, index, previousComponent, newComponent);
+    }
 }
 
 void Group::removeAllEventHandlers()
 {
-	onEntityAdded.clear();
-	onEntityRemoved.clear();
-	onEntityUpdated.clear();
+    onEntityAdded.clear();
+    onEntityRemoved.clear();
+    onEntityUpdated.clear();
 }
 
 bool Group::addEntitySilently(EntityPtr entity)
 {
-	if(entities_.insert(entity).second)
-	{
-		// Since entity was added we must update cache
-		entitiesCache_.clear();
-		return true;
-	}
+    if (entities_.insert(entity).second) {
+        // Since entity was added we must update cache
+        entitiesCache_.clear();
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 void Group::addEntity(EntityPtr entity, ComponentId index, IComponent* component)
 {
-	if(addEntitySilently(entity))
-	{
-		onEntityAdded(mInstance.lock(), entity, index, component);
-	}
+    if (addEntitySilently(entity)) {
+        onEntityAdded(instance_.lock(), entity, index, component);
+    }
 }
 
 auto Group::addEntity(EntityPtr entity) -> GroupChanged*
 {
-	return addEntitySilently(entity) ? &onEntityAdded : nullptr;
+    return addEntitySilently(entity) ? &onEntityAdded : nullptr;
 }
 
 bool Group::removeEntitySilently(EntityPtr entity)
 {
-	if(entities_.erase(entity))
-	{
-		entitiesCache_.clear();
-		return true;
-	}
-	// No entities were removed
-	return false;
+    if (entities_.erase(entity)) {
+        entitiesCache_.clear();
+        return true;
+    }
+    // No entities were removed
+    return false;
 }
 
 void Group::removeEntity(EntityPtr entity, ComponentId index, IComponent* component)
 {
-	if(removeEntitySilently(entity))
-	{
-		onEntityRemoved(mInstance.lock(), entity, index, component);
-	}
+    if (removeEntitySilently(entity)) {
+        onEntityRemoved(instance_.lock(), entity, index, component);
+    }
 }
 
 auto Group::removeEntity(EntityPtr entity) -> GroupChanged*
 {
-	return removeEntitySilently(entity) ? &onEntityRemoved : nullptr;
+    return removeEntitySilently(entity) ? &onEntityRemoved : nullptr;
 }
 }

@@ -48,13 +48,13 @@ ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSyste
 		eventTypes[i] = trigger.eventType;
 	}
 
-	mObserver = new Collector(groups, eventTypes);
+	collector_ = new Collector(groups, eventTypes);
 }
 
 ReactiveSystem::~ReactiveSystem ()
 {
 	deactivate();
-	delete mObserver;
+	delete collector_;
 }
 
 auto ReactiveSystem::getSubsystem() const -> std::shared_ptr<IReactiveExecuteSystem>
@@ -64,28 +64,28 @@ auto ReactiveSystem::getSubsystem() const -> std::shared_ptr<IReactiveExecuteSys
 
 void ReactiveSystem::activate()
 {
-	mObserver->activate();
+	collector_->activate();
 }
 
 void ReactiveSystem::deactivate()
 {
-	mObserver->deactivate();
+	collector_->deactivate();
 }
 
 void ReactiveSystem::clear()
 {
-	mObserver->clearCollectedEntities();
+	collector_->clearCollectedEntities();
 }
 
 void ReactiveSystem::execute()
 {
-	if(mObserver->getCollectedEntities().size() != 0)
+	if(collector_->getCollectedEntities().size() != 0)
 	{
 		if(! mEnsureComponents.isEmpty())
 		{
 			if(! mExcludeComponents.isEmpty())
 			{
-				for(const auto &e : mObserver->getCollectedEntities())
+				for(const auto &e : collector_->getCollectedEntities())
 				{
 					if(mEnsureComponents.matches(e) && ! mExcludeComponents.matches(e))
 					{
@@ -95,7 +95,7 @@ void ReactiveSystem::execute()
 			}
 			else
 			{
-				for(const auto &e : mObserver->getCollectedEntities())
+				for(const auto &e : collector_->getCollectedEntities())
 				{
 					if(mEnsureComponents.matches(e))
 					{
@@ -106,7 +106,7 @@ void ReactiveSystem::execute()
 		}
 		else if(! mExcludeComponents.isEmpty())
 		{
-			for(const auto &e : mObserver->getCollectedEntities())
+			for(const auto &e : collector_->getCollectedEntities())
 			{
 				if(! mExcludeComponents.matches(e))
 				{
@@ -116,13 +116,13 @@ void ReactiveSystem::execute()
 		}
 		else
 		{
-			for(const auto &e : mObserver->getCollectedEntities())
+			for(const auto &e : collector_->getCollectedEntities())
 			{
 				mEntityBuffer.push_back(e);
 			}
 		}
 
-		mObserver->clearCollectedEntities();
+		collector_->clearCollectedEntities();
 
 		if(mEntityBuffer.size() != 0)
 		{
@@ -131,7 +131,7 @@ void ReactiveSystem::execute()
 
 			if(mClearAfterExecute)
 			{
-				mObserver->clearCollectedEntities();
+				collector_->clearCollectedEntities();
 			}
 		}
 	}

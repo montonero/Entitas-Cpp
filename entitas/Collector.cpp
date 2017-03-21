@@ -38,7 +38,7 @@ void Collector::activate()
 {
 	for(unsigned int i = 0, groupCount = groups_.size(); i < groupCount; ++i)
 	{
-		auto g = groups_[i];
+		auto& g = groups_[i];
 		auto eventType = eventTypes_[i];
 
 		if(eventType == GroupEventType::OnEntityAdded)

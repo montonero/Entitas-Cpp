@@ -259,6 +259,7 @@ namespace entitas
 
 		if(std::dynamic_pointer_cast<IReactiveSystem>(system) != nullptr)
 		{
+            // given system is used as a subsystem
 			return std::shared_ptr<ReactiveSystem>(new ReactiveSystem(this, std::dynamic_pointer_cast<IReactiveSystem>(system)));
 		}
 

@@ -32,7 +32,7 @@ namespace entitas
                 std::lock_guard<std::mutex> lock(delegate.mMutex);
                 ReturnType returnValues;
 
-                for (const auto &functionPtr : delegate.mFunctionList)
+                for (const auto &functionPtr : delegate.functionList_)
                 {
                     returnValues.push_back((*functionPtr)(params...));
                 }
@@ -53,7 +53,7 @@ namespace entitas
             {
                 std::lock_guard<std::mutex> lock(delegate.mMutex);
 
-                for (const auto &functionPtr : delegate.mFunctionList)
+                for (const auto &functionPtr : delegate.functionList_)
                 {
                     (*functionPtr)(params...);
                 }
@@ -80,7 +80,7 @@ namespace entitas
         {
             std::lock_guard<std::mutex> lock(mMutex);
 
-            mFunctionList.push_back(std::make_shared<functionType>(function));
+            functionList_.push_back(std::make_shared<functionType>(function));
 
             return *this;
         }
@@ -89,7 +89,8 @@ namespace entitas
         {
             std::lock_guard<std::mutex> lock(mMutex);
 
-            mFunctionList.remove_if([&](std::shared_ptr<functionType> &functionPtr)
+            std::remove_if(std::begin(functionList_), std::end(functionList_),
+                           [&](std::shared_ptr<functionType> &functionPtr)
                                           {
                                               return hash(function) == hash(*functionPtr);
                                           });
@@ -105,7 +106,7 @@ namespace entitas
         Delegate& clear()
         {
             std::lock_guard<std::mutex> lock(mMutex);
-            mFunctionList.clear();
+            functionList_.clear();
             return *this;
         }
 
@@ -126,7 +127,7 @@ namespace entitas
 
     private:
         std::mutex mMutex;
-        std::list<std::shared_ptr<functionType>> mFunctionList;
+        std::vector<std::shared_ptr<functionType>> functionList_;
 
         inline constexpr size_t hash(const functionType &function) const
         {
