@@ -19,7 +19,7 @@ class Group
 
 	public:
 		Group(const Matcher& matcher);
-		auto count() const -> const unsigned int;
+		auto count() const -> unsigned int;
 		auto getEntities() -> std::vector<EntityPtr>;
 		auto getSingleEntity() const -> EntityPtr;
 		bool containsEntity(const EntityPtr& entity) const;

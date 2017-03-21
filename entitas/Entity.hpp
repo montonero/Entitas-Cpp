@@ -37,7 +37,7 @@ namespace entitas
         bool hasAnyComponent(const std::vector<ComponentId>& indices) const;
         auto getComponentsCount() const -> unsigned int;
         void removeAllComponents();
-        auto getUuid() const -> const unsigned int;
+        auto getUuid() const -> unsigned int;
         bool isEnabled();
 
         bool operator ==(const EntityPtr& right) const;

@@ -84,7 +84,7 @@ namespace entitas
 
     bool Entity::hasComponents(const std::vector<ComponentId>& indices) const
     {
-        bool r2 = std::all_of(begin(indices), end(indices), [this](auto i){ return hasComponent(i);});
+        bool r2 = std::all_of(begin(indices), end(indices), [this](auto i){ return this->hasComponent(i); });
 
         for(const ComponentId &index : indices)
 		{
@@ -102,7 +102,7 @@ namespace entitas
 
 	bool Entity::hasAnyComponent(const std::vector<ComponentId>& indices) const
 	{
-        return std::any_of(begin(indices), end(indices), [this](auto i){return hasComponent(i);});
+        return std::any_of(begin(indices), end(indices), [this](auto i){return this->hasComponent(i);});
     }
 
     auto Entity::getComponentsCount() const -> unsigned int
@@ -128,7 +128,7 @@ namespace entitas
 		}
     }
 
-    auto Entity::getUuid() const -> const unsigned int
+    auto Entity::getUuid() const -> unsigned int
     {
 		return uuid_;
     }

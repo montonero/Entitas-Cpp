@@ -20,6 +20,10 @@
 #include "SDL.h"
 #endif
 
+#ifdef __EMSCRIPTEN__
+#   include <emscripten.h>
+#endif
+
 #include <SDLpp.h>
 
 #include "Rectangle.h"
@@ -275,10 +279,51 @@ public:
 
 /* -------------------------------------------------------------------------- */
 
-int mainLoop()
-{
+struct MainLoopContext {
+    sdl::Window     window;
+    sdl::Renderer*  renderer;
 
-    return 0;
+    std::shared_ptr<SystemContainer>    systems;
+    std::shared_ptr<Pool>               pool;
+    std::shared_ptr<ISystem>            mySystem;
+
+    int             done{0};
+};
+
+void mainLoop(void* vctx)
+{
+    auto ctx = (MainLoopContext*) vctx;
+
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            ctx->done = 1;
+        }
+        if (event.type == SDL_KEYDOWN) {
+            std::cout << "Hello\n";
+            // ((MySystem*)mySystem)->addRandomEntity();
+            addRandomEntity(ctx->pool.get());
+        }
+    }
+// string text;
+// cin >> text;
+//render(renderer, rs);
+
+#if 0
+    SDL_SetRenderDrawColor( ctx->renderer, 0, 0, 0, 255 );
+    SDL_RenderClear( ctx->renderer );
+#endif
+    ctx->renderer->clear(sdl::Colors::Black);
+    ctx->systems->execute();
+
+    ctx->renderer->drawCircle({100, 100}, 50.f, sdl::Colors::Blue);
+    ctx->renderer->drawLine({0,0}, {100,100}, sdl::Colors::White);
+
+    // Render the rect to the screen
+    // SDL_RenderPresent(ctx->renderer);
+    ctx->renderer->Present();
+    SDL_Delay(100);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -305,9 +350,6 @@ int main(const int argc, const char* argv[])
     }
 
     /////
-    int done;
-    SDL_Event event;
-
     /* initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -339,44 +381,27 @@ int main(const int argc, const char* argv[])
     gSdlRenderer = renderer;
     //thread t(readInput);
 #endif
-    sdl::Window window{ "Test window", 800, 600 };
-    sdl::Renderer* renderer = window.CreateRenderer();
+    auto ctx = new MainLoopContext {
+        sdl::Window{ "Test window", 800, 600 }, nullptr, 
+        std::move(systems), std::move(pool), mySystem,
+        1
+    };
 
-    ((MySystem*)mySystem.get())->setRenderer(*renderer);
+    ctx->renderer = ctx->window.CreateRenderer();
+
+    ((MySystem*)mySystem.get())->setRenderer(*ctx->renderer);
 
     /* Enter render loop, waiting for user to quit */
-    done = 0;
-    while (!done) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                done = 1;
-            }
-            if (event.type == SDL_KEYDOWN) {
-                std::cout << "Hello\n";
-                // ((MySystem*)mySystem)->addRandomEntity();
-                addRandomEntity(pool.get());
-            }
+    #ifdef __EMSCRIPTEN__
+        emscripten_set_main_loop_arg(mainLoop, (void*) ctx, 0, 0);
+    #else
+        while (!ctx->done) {
+            mainLoop(ctx);
+            ctx->done = 0;
         }
-// string text;
-// cin >> text;
-//render(renderer, rs);
 
-#if 0
-        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-        SDL_RenderClear( renderer );
-#endif
-        renderer->clear(sdl::Colors::Black);
-        systems->execute();
+        delete ctx;
+    #endif
 
-        renderer->drawCircle({100, 100}, 50.f, sdl::Colors::Blue);
-        renderer->drawLine({0,0}, {100,100}, sdl::Colors::White);
-
-        // Render the rect to the screen
-        // SDL_RenderPresent(renderer);
-        renderer->Present();
-        SDL_Delay(100);
-    }
-
-    mainLoop();
     return 0;
 }
