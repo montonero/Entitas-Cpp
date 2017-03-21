@@ -15,35 +15,44 @@ out = 'build'
 
 def options(ctx):
     ctx.load('compiler_c compiler_cxx')
-    # ctx.add_option('--boost-path', dest='boost_path', help='Boost path.')
-    # ctx.add_option('--wspp-path', dest='wspp_path', help='Websocket++ path.')
+    ctx.add_option('--emscripten', dest='emscripten', default=False, action='store_true', help='Build with emscripten.')
+    ctx.add_option('--android', dest='android', default=False, action='store_true', help='Build for Android.')
+
 
 def configure(ctx):
-    # ctx.env.ws_client_dir = os.path.abspath(os.path.join(ctx.path.parent.abspath(), 'client'))
-    # ctx.recurse(ctx.env.ws_client_dir)
-    #ctx.find_program('clang++', var = 'CXX', mandatory = True)
-    #ctx.find_program('clang', var = 'CC', mandatory = True)
-    ctx.load('compiler_c compiler_cxx')
+    ctx.env.emscripten = ctx.options.emscripten
+    ctx.env.android = ctx.options.android
 
-    if sys.platform.startswith('win'):
-        ctx.env.LIBPATH_SDL2   = [join("", 'stage/lib')]
-        ctx.env.INCLUDES_SDL2  = [join("", 'boost')]
+
+    if ctx.env.emscripten:
+	waf_dir = os.path.dirname(inspect.stack()[-1][1])
+	waf_extras_dir = os.path.join(waf_dir, 'waflib/extras')
+	ctx.load('c_emscripten', tooldir = waf_extras_dir)
+    elif ctx.env.android:
+        print("Android")
     else:
-        ctx.check_cfg(
-            path='sdl2-config',
-            args='--cflags --libs',
-            package='',
-            uselib_store='SDL2')
+        ctx.load('compiler_c compiler_cxx')
+        
 
-        ctx.check_cxx(
-            #cxxflags=['-std=c++14', '-Wall'],
-            cxxflags=[ '-Wall'],
-            libs='SDL2',
-        )
+        if sys.platform.startswith('win'):
+            ctx.env.LIBPATH_SDL2   = [join("", 'stage/lib')]
+            ctx.env.INCLUDES_SDL2  = [join("", 'boost')]
+        else:
+            ctx.check_cfg(
+                path='sdl2-config',
+                args='--cflags --libs',
+                package='',
+                uselib_store='SDL2')
 
-        ctx.check_cxx(lib='pthread',
-            cflags='-Wall',
-            uselib_store='pthread')
+            ctx.check_cxx(
+                #cxxflags=['-std=c++14', '-Wall'],
+                cxxflags=[ '-Wall'],
+                libs='SDL2',
+            )
+
+            ctx.check_cxx(lib='pthread',
+                          cflags='-Wall',
+                          uselib_store='pthread')
             # uselib_store='pthread', mandatory=True)
 
 
@@ -105,6 +114,23 @@ def build(ctx):
         use =  ['entitas']
     )
     """
+
+    link_flags = ['-Wl', '-Wl,-rpath,.']
+
+    if ctx.env.emscripten:
+            s2 = ctx.path.ant_glob(['sample/sample2.cpp'])
+            ctx.program(
+                source = s2,
+                features='cxx cxxprogram',
+                target='s2',
+                cxxflags     = ['-std=c++14', '-g'],
+                linkflags = [ '-lm', '-lpthread', '-lc', '-lstdc++'],
+                # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
+                defines = ['_SDL2'],
+                lib = ['SDL2_ttf', 'SDL2_image'],
+                use =  libs + ['SDL2', 'pthread'] 
+            )
+
 
     s1 = ctx.path.ant_glob(['sample/sample1.cpp'])
     ctx.program(
