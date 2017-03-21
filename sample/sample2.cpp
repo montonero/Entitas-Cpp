@@ -131,14 +131,7 @@ public:
 
 void renderMat(sdl::Renderer* renderer, sdl::Color c, const Vec2& v, const Vec2& s)
 { 
-    // SDL_Rect sr;
-    // sr.x = v.x();
-    // sr.y = v.y();
-    // sr.w = s.x();
-    // sr.h = s.y();
-
     auto rect = sdl::makeRect(v, s);
-    // renderer->draw(rect, sdl::Color(c.r, c.g, c.b));
     renderer->draw(rect, c);
 }
 
@@ -163,7 +156,7 @@ Vec2 randomVec2(int x, int y, int mx, int my)
     static mt19937 engineMt(rd());
     uniform_real_distribution<float> unifW(x, mx);
     uniform_real_distribution<float> unifH(y, my);
-    Vec2 v(unifW(engineMt), unifH(engineMt));
+    Vec2 v{unifW(engineMt), unifH(engineMt)};
     return v;
 }
 
