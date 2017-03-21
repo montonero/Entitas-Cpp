@@ -74,13 +74,13 @@ private:
 
 class Position : public IComponent {
 public:
-    void reset(Vec2 v) { position_ = v; }
+    void reset(Vec2&& v) { position_ = v; }
     Vec2 position_;
 };
 
 class Appearance : public IComponent {
 public:
-    void reset(Vec2 v) { size_ = v; }
+    void reset(Vec2&& v) { size_ = v; }
     Vec2 size_;
 };
 
@@ -129,7 +129,7 @@ public:
 
 /* -------------------------------------------------------------------------- */
 
-void renderMat(sdl::Renderer* renderer, sdl::Color c, Vec2 v, Vec2 s)
+void renderMat(sdl::Renderer* renderer, sdl::Color c, const Vec2& v, const Vec2& s)
 { 
     // SDL_Rect sr;
     // sr.x = v.x();
@@ -378,7 +378,7 @@ int main(const int argc, const char* argv[])
     auto ctx = new MainLoopContext {
         sdl::Window{ "Test window", 800, 600 }, nullptr, 
         std::move(systems), std::move(pool), mySystem,
-        1
+        0
     };
 
     ctx->renderer = ctx->window.CreateRenderer();
