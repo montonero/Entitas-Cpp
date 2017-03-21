@@ -20,6 +20,10 @@
 #include "SDL.h"
 #endif
 
+#ifdef __EMSCRIPTEN__
+#   include <emscripten.h>
+#endif
+
 #include <SDLpp.h>
 
 #include "Rectangle.h"
@@ -70,13 +74,13 @@ private:
 
 class Position : public IComponent {
 public:
-    void reset(Vec2 v) { position_ = v; }
+    void reset(Vec2&& v) { position_ = v; }
     Vec2 position_;
 };
 
 class Appearance : public IComponent {
 public:
-    void reset(Vec2 v) { size_ = v; }
+    void reset(Vec2&& v) { size_ = v; }
     Vec2 size_;
 };
 
@@ -125,16 +129,9 @@ public:
 
 /* -------------------------------------------------------------------------- */
 
-void renderMat(sdl::Renderer* renderer, sdl::Color c, Vec2 v, Vec2 s)
-{
-    // SDL_Rect sr;
-    // sr.x = v.x();
-    // sr.y = v.y();
-    // sr.w = s.x();
-    // sr.h = s.y();
-
+void renderMat(sdl::Renderer* renderer, sdl::Color c, const Vec2& v, const Vec2& s)
+{ 
     auto rect = sdl::makeRect(v, s);
-    // renderer->draw(rect, sdl::Color(c.r, c.g, c.b));
     renderer->draw(rect, c);
 }
 
@@ -159,7 +156,7 @@ Vec2 randomVec2(int x, int y, int mx, int my)
     static mt19937 engineMt(rd());
     uniform_real_distribution<float> unifW(x, mx);
     uniform_real_distribution<float> unifH(y, my);
-    Vec2 v(unifW(engineMt), unifH(engineMt));
+    Vec2 v{unifW(engineMt), unifH(engineMt)};
     return v;
 }
 
@@ -269,10 +266,53 @@ public:
 
 /* -------------------------------------------------------------------------- */
 
-int mainLoop()
-{
+struct MainLoopContext {
+    sdl::Window     window;
+    sdl::Renderer*  renderer;
 
-    return 0;
+    std::shared_ptr<SystemContainer>    systems;
+    std::shared_ptr<Pool>               pool;
+    std::shared_ptr<ISystem>            mySystem;
+
+    int             done{0};
+};
+
+void mainLoop(void* vctx)
+{
+    auto ctx = (MainLoopContext*) vctx;
+
+    SDL_Event event;
+    std::cout << "Main loop entered.\n";
+    
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            std::cout << "Quitting\n";
+            ctx->done = 1;
+        }
+        if (event.type == SDL_KEYDOWN) {
+            std::cout << "Hello\n";
+            // ((MySystem*)mySystem)->addRandomEntity();
+            addRandomEntity(ctx->pool.get());
+        }
+    }
+// string text;
+// cin >> text;
+//render(renderer, rs);
+
+#if 0
+    SDL_SetRenderDrawColor( ctx->renderer, 0, 0, 0, 255 );
+    SDL_RenderClear( ctx->renderer );
+#endif
+    ctx->renderer->clear(sdl::Colors::Black);
+    ctx->systems->execute();
+
+    ctx->renderer->drawCircle({100, 100}, 50.f, sdl::Colors::Blue);
+    ctx->renderer->drawLine({0,0}, {100,100}, sdl::Colors::White);
+
+    // Render the rect to the screen
+    // SDL_RenderPresent(ctx->renderer);
+    ctx->renderer->Present();
+    SDL_Delay(100);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -291,28 +331,22 @@ int main(const int argc, const char* argv[])
     //for(unsigned int i = 0; i < 2; ++i) {
     //  systems->execute();
     //}
-
+    
+    std::cout << "All systems initilized.\n";
+    
     auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
     auto entities = pool->getEntities(matcher); // *Some magic preprocessor involved*
+#if 0
     for (auto& e : entities) { // e is a shared_ptr of Entity
         // do something
     }
-
-    /////
-    int done;
-    SDL_Event event;
-
-    /* initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        printf("Could not initialize SDL\n");
-        return 1;
-    }
-     */
+#endif
+    std::cout << "sdl::Init()\n";
     sdl::Init();
 
     /* seed random number generator */
     srand(time(NULL));
+<<<<<<< HEAD
 
 #if 0
     /* create window and renderer */
@@ -337,6 +371,18 @@ int main(const int argc, const char* argv[])
     sdl::Renderer* renderer = window.CreateRenderer();
 
     ((MySystem*)mySystem.get())->setRenderer(*renderer);
+    std::cout << "sdl::Init() successfully!\n";
+    
+    auto ctx = new MainLoopContext {
+        sdl::Window{ "Test window", 800, 600 }, nullptr, 
+        systems, pool, mySystem,
+        0
+    };
+    std::cout << "Context created.\n";
+    
+    ctx->renderer = ctx->window.CreateRenderer();
+
+    ((MySystem*)mySystem.get())->setRenderer(*ctx->renderer);
 
     // const std::string kAssetsFolder = "../assets/";
     const std::string kAssetsFolder = "/Users/im/chew/c++/Entitas-Cpp/assets/";
@@ -346,23 +392,17 @@ int main(const int argc, const char* argv[])
     snowSprite.scale(2.0f);
 
     /* Enter render loop, waiting for user to quit */
-    done = 0;
-    while (!done) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                done = 1;
-            }
-            if (event.type == SDL_KEYDOWN) {
-                std::cout << "Hello\n";
-                // ((MySystem*)mySystem)->addRandomEntity();
-                addRandomEntity(pool.get());
-            }
+    #ifdef __EMSCRIPTEN__
+        emscripten_set_main_loop_arg(mainLoop, (void*) ctx, 0, 0);
+    #else
+        while (!ctx->done) {
+            mainLoop(ctx);
+            ctx->done = 0;
         }
+        std::cout << "Done.\n";
+        delete ctx;
+    #endif
 
-#if 0
-        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-        SDL_RenderClear( renderer );
-#endif
 
         // Construct a view
         // sdl::View view{sdl::Vector2f{0.f, 0.f}, sdl::Vector2f{800.f, 600.f}};

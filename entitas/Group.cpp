@@ -14,7 +14,7 @@ Group::Group(const Matcher& matcher) : matcher_(matcher)
 {
 }
 
-auto Group::count() const -> const unsigned int
+auto Group::count() const -> unsigned int
 {
 	return static_cast<unsigned>(entities_.size());
 }

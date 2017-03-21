@@ -6,6 +6,7 @@
 
 #include "IComponent.hpp"
 #include <vector>
+#include <cstddef>
 
 #define COMPONENT_GET_TYPE_ID(COMPONENT_CLASS) \
     entitas::ComponentTypeId::get<COMPONENT_CLASS>()
@@ -17,7 +18,7 @@ using ComponentIdList = std::vector<ComponentId>;
 struct ComponentTypeId {
 public:
     template <typename T>
-    static const ComponentId get()
+    static ComponentId get()
     {
         static_assert((std::is_base_of<IComponent, T>::value && !std::is_same<IComponent, T>::value),
             "Class type must be derived from IComponent");
