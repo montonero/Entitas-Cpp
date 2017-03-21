@@ -24,8 +24,8 @@
 
 #include "Rectangle.h"
 
-constexpr int kScreenWidth = 320;
-constexpr int kScreenHeight = 480;
+constexpr int kScreenWidth = 600;
+constexpr int kScreenHeight = 1000;
 
 using namespace entitas;
 
@@ -126,7 +126,7 @@ public:
 /* -------------------------------------------------------------------------- */
 
 void renderMat(sdl::Renderer* renderer, sdl::Color c, Vec2 v, Vec2 s)
-{ 
+{
     // SDL_Rect sr;
     // sr.x = v.x();
     // sr.y = v.y();
@@ -333,10 +333,17 @@ int main(const int argc, const char* argv[])
     gSdlRenderer = renderer;
     //thread t(readInput);
 #endif
-    sdl::Window window{ "Test window", 800, 600 };
+    sdl::Window window{ "Test window", kScreenWidth, kScreenHeight };
     sdl::Renderer* renderer = window.CreateRenderer();
 
     ((MySystem*)mySystem.get())->setRenderer(*renderer);
+
+    // const std::string kAssetsFolder = "../assets/";
+    const std::string kAssetsFolder = "/Users/im/chew/c++/Entitas-Cpp/assets/";
+    const std::string kAssetsTexturesFolder = kAssetsFolder + "textures/";
+    auto texture = renderer->CreateTexture(kAssetsTexturesFolder + "tiles_snow/light.png");
+    sdl::Sprite snowSprite(*texture);
+    snowSprite.scale(2.0f);
 
     /* Enter render loop, waiting for user to quit */
     done = 0;
@@ -356,11 +363,30 @@ int main(const int argc, const char* argv[])
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
         SDL_RenderClear( renderer );
 #endif
+
+        // Construct a view
+        // sdl::View view{sdl::Vector2f{0.f, 0.f}, sdl::Vector2f{800.f, 600.f}};
+        sdl::View view{sdl::Vector2f{0.f, 0.f}, sdl::Vector2f{200.f, 150.f}};
+
+        renderer->SetView(view);
+
         renderer->clear(sdl::Colors::Black);
         systems->execute();
 
         renderer->drawCircle({ 100, 100 }, 50.f, sdl::Colors::Blue);
         renderer->drawLine({ 0, 0 }, { 100, 100 }, sdl::Colors::White);
+
+        renderer->Draw(snowSprite);
+
+        view.Move({-100.f, -200.f});
+        renderer->SetView(view);
+      
+        renderer->Draw(snowSprite);
+        // snowSprite.scale(0.5f);
+        // view.Move({-400.f, -600.f});
+        // renderer->SetView(view);
+        // renderer->Draw(snowSprite);
+
 
         // Render the rect to the screen
         // SDL_RenderPresent(renderer);

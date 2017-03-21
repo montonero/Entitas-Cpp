@@ -201,7 +201,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "137"
             endingLineNumber = "137"
-            landmarkName = "renderMat(sdl::Renderer* renderer, Color c, Vec2 v, Vec2 s)"
+            landmarkName = "renderMat(sdl::Renderer* renderer, sdl::Color c, Vec2 v, Vec2 s)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -251,6 +251,54 @@
             endingLineNumber = "367"
             landmarkName = "main(const int argc, const char* argv[])"
             landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../external/SDLpp/src/Sprite.cpp"
+            timestampString = "511377509.547074"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "Sprite::Draw(Texture &amp;texture)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../sample/sample2.cpp"
+            timestampString = "511377619.606803"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "379"
+            endingLineNumber = "379"
+            landmarkName = "main(const int argc, const char* argv[])"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../external/SDLpp/src/Sprite.cpp"
+            timestampString = "511380355.956177"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "Sprite::Draw(const View &amp;view)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
