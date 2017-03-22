@@ -4,22 +4,21 @@
 
 #pragma once
 
-#include "Matcher.hpp"
 #include "GroupEventType.hpp"
+#include "Matcher.hpp"
 
-namespace entitas
-{
-    class TriggerOnEvent
+namespace entitas {
+/// Holds Matcher and event type
+class TriggerOnEvent {
+public:
+    TriggerOnEvent() = default;
+    TriggerOnEvent(const Matcher trigger, const GroupEventType eventType)
     {
-    public:
-        TriggerOnEvent() = default;
-        TriggerOnEvent(const Matcher trigger, const GroupEventType eventType)
-        {
-            this->trigger = trigger;
-            this->eventType = eventType;
-        }
+        this->trigger = trigger;
+        this->eventType = eventType;
+    }
 
-        Matcher trigger;
-        GroupEventType eventType;
-    };
+    Matcher trigger;
+    GroupEventType eventType;
+};
 }

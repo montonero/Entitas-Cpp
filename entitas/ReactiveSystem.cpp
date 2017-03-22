@@ -9,7 +9,7 @@
 namespace entitas
 {
 ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveSystem> subsystem) :
-	ReactiveSystem(pool, subsystem, std::vector<TriggerOnEvent>(1, subsystem->trigger))
+    ReactiveSystem(pool, subsystem, std::vector<TriggerOnEvent>{subsystem->trigger})
 {
 }
 
@@ -38,7 +38,7 @@ ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSyste
 	}
 
 	auto triggersLength = triggers.size();
-	auto groups = std::vector<std::shared_ptr<Group>>(triggersLength);
+	auto groups = std::vector<Group::SharedPtr>(triggersLength);
 	auto eventTypes = std::vector<GroupEventType>(triggersLength);
 
 	for(unsigned int i = 0; i < triggersLength; ++i)

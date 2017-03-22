@@ -53,7 +53,8 @@ auto Group::getMatcher() const -> Matcher
 
 auto Group::createCollector(const GroupEventType eventType) -> std::shared_ptr<Collector>
 {
-    return std::shared_ptr<Collector>(new Collector(instance_.lock(), eventType));
+    //return std::shared_ptr<Collector>(new Collector(instance_.lock(), eventType));
+    return std::make_shared<Collector>(instance_.lock(), eventType);
 }
 
 void Group::setInstance(std::shared_ptr<Group> instance)

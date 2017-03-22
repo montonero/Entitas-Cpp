@@ -74,7 +74,7 @@ class IReactiveExecuteSystem : public ISystem
 	public:
 		virtual ~IReactiveExecuteSystem() = default;
 
-		virtual void execute(std::vector<EntityPtr> entities) = 0;
+		virtual void execute(std::vector<EntityPtr>& entities) = 0;
 };
 
 class IReactiveSystem : public IReactiveExecuteSystem

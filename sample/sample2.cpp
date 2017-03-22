@@ -110,7 +110,7 @@ struct RenderComponent : public IComponent {
 /* -------------------------------------------------------------------------- */
 
 class MoveSystem : public IExecuteSystem, public ISetPoolSystem {
-    std::shared_ptr<Group> _group;
+    Group::SharedPtr _group;
 
 public:
     void setPool(Pool* pool)
@@ -130,7 +130,7 @@ public:
 };
 
 class RenderPositionSystem : public IReactiveSystem {
-    TriggerOnEvent trigger;
+    //TriggerOnEvent trigger;
 
 public:
     RenderPositionSystem()
@@ -140,7 +140,7 @@ public:
         trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) })).onEntityAdded();
     }
 
-    void execute(std::vector<EntityPtr> entities)
+    void execute(std::vector<EntityPtr>& entities) override
     {
         // Gets executed only if the observed group changed.
         // Changed entities are passed as an argument
@@ -222,6 +222,7 @@ public:
         group_ = pool_->getGroup(matcher);
         collector_ = group_->createCollector(GroupEventType::OnEntityAdded);
         collector_->activate();
+        collector_->activate();
         std::cout << "MySystem::setPool called" << std::endl;
     }
 
@@ -252,7 +253,7 @@ public:
 private:
     sdl::Renderer* renderer_{ nullptr };
     Pool* pool_{ nullptr };
-    std::shared_ptr<Group> group_;
+    Group::SharedPtr group_;
     // test
     std::shared_ptr<Collector> collector_;
 };

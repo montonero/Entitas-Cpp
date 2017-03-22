@@ -6,34 +6,46 @@
 
 #include "ComponentTypeId.hpp"
 #include "Entity.hpp"
+#include "Group.hpp"
 #include "GroupEventType.hpp"
 #include <functional>
 #include <unordered_set>
 #include <vector>
 
 namespace entitas {
-class Group;
 
+class Indexed {
+public:
+    Indexed()
+        : index_(s_index++)
+    {
+    }
+    size_t index() const { return index_; }
+
+protected:
+    const size_t index_;
+    static size_t s_index;
+};
 
 /*
-The Entity Collector provides an easy way to react to changes in a group over time. Let's say you want to collect and process all the entities where a PositionComponent was added or replaced.
+      The Entity Collector provides an easy way to react to changes in a group over time. Let's say you want to collect and process all the entities where a PositionComponent was added or replaced.
 
-auto group = pool->GetGroup(Matcher_AllOf(Position));
-auto collector = group->CreateCollector(GroupEventType::OnEntityAdded);
+      auto group = pool->GetGroup(Matcher_AllOf(Position));
+      auto collector = group->CreateCollector(GroupEventType::OnEntityAdded);
 */
 
 /// A Collector can observe one or more groups from the same context
 /// and collects changed entities based on the specified groupEvent.
-class Collector {
+class Collector : public Indexed {
 public:
     using CollectedEntities = std::unordered_set<EntityPtr>;
     /// Creates a Collector and will collect changed entities
     /// based on the specified eventType.
-    Collector(std::shared_ptr<Group> group, const GroupEventType eventType);
+    Collector(Group::SharedPtr group, const GroupEventType eventType);
 
     /// Creates a Collector and will collect changed entities
     /// based on the specified eventTypes.
-    Collector(std::vector<std::shared_ptr<Group>> groups, std::vector<GroupEventType> eventTypes);
+    Collector(std::vector<Group::SharedPtr> groups, std::vector<GroupEventType> eventTypes);
     ~Collector();
 
     void activate();
@@ -48,11 +60,12 @@ public:
     void clearCollectedEntities();
 
 private:
-    void addEntity(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* component);
-
+    void addEntity(Group::SharedPtr group, EntityPtr entity, ComponentId index, IComponent* component);
+    /// We store collected entities here
     CollectedEntities collectedEntities_;
-    std::vector<std::shared_ptr<Group>> groups_;
+    std::vector<Group::SharedPtr> groups_;
     std::vector<GroupEventType> eventTypes_;
-    std::function<void(std::shared_ptr<Group>, EntityPtr, ComponentId, IComponent*)> addEntityCache_;
+    /// This is a callback that will be called by group and will save changes in 'collectedEntities_'
+    std::function<void(Group::SharedPtr, EntityPtr, ComponentId, IComponent*)> addEntityCache_;
 };
 }

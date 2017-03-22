@@ -11,11 +11,13 @@
 
 namespace entitas {
 class Collector;
-
+    //using GroupPtr = std::shared_ptr<Group>;
+    
 class Group {
     friend class Pool;
 
 public:
+    using SharedPtr = std::shared_ptr<Group>;
     Group(const Matcher& matcher);
     auto count() const -> unsigned int;
     auto getEntities() -> std::vector<EntityPtr>;
@@ -24,15 +26,15 @@ public:
     auto getMatcher() const -> Matcher;
     auto createCollector(const GroupEventType eventType) -> std::shared_ptr<Collector>;
 
-    using GroupChanged = Delegate<void(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* component)>;
-    using GroupUpdated = Delegate<void(std::shared_ptr<Group> group, EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)>;
+    using GroupChanged = Delegate<void(SharedPtr group, EntityPtr entity, ComponentId index, IComponent* component)>;
+    using GroupUpdated = Delegate<void(SharedPtr group, EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)>;
 
     GroupChanged onEntityAdded;
     GroupUpdated onEntityUpdated;
     GroupChanged onEntityRemoved;
 
 protected:
-    void setInstance(std::shared_ptr<Group> instance);
+    void setInstance(SharedPtr instance);
     auto handleEntity(EntityPtr entity) -> GroupChanged*;
     void handleEntitySilently(EntityPtr entity);
     void handleEntity(EntityPtr entity, ComponentId index, IComponent* component);
