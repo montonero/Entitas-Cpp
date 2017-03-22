@@ -20,7 +20,7 @@ public:
     using SharedPtr = std::shared_ptr<Group>;
     Group(const Matcher& matcher);
     auto count() const -> unsigned int;
-    auto getEntities() -> std::vector<EntityPtr>;
+    auto getEntities() -> const std::vector<EntityPtr>&;
     auto getSingleEntity() const -> EntityPtr;
     bool containsEntity(const EntityPtr& entity) const;
     auto getMatcher() const -> Matcher;
@@ -35,7 +35,9 @@ public:
 
 protected:
     void setInstance(SharedPtr instance);
+    // Returns callback
     auto handleEntity(EntityPtr entity) -> GroupChanged*;
+    // Does not call callback
     void handleEntitySilently(EntityPtr entity);
     void handleEntity(EntityPtr entity, ComponentId index, IComponent* component);
     void updateEntity(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);

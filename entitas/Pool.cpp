@@ -7,6 +7,7 @@
 #include "ISystem.hpp"
 #include "ReactiveSystem.hpp"
 #include <algorithm>
+#include <assert.h>
 
 namespace entitas {
 Pool::Pool(const unsigned int startCreationIndex)
@@ -60,27 +61,33 @@ auto Pool::createEntity() -> EntityPtr
     entities_.insert(entity);
     entitiesCache_.clear();
 
-    entity->onComponentAdded += [this](EntityPtr entity, ComponentId index, IComponent* component) {
-        updateGroupsComponentAddedOrRemoved(entity, index, component);
-    };
-    entity->onComponentRemoved += [this](EntityPtr entity, ComponentId index, IComponent* component) {
-        updateGroupsComponentAddedOrRemoved(entity, index, component);
-    };
-    entity->onComponentReplaced += [this](EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent) {
-        updateGroupsComponentReplaced(entity, index, previousComponent, newComponent);
-    };
+    entity->onComponentAdded += { entity->uuid_,
+        [this](EntityPtr entity, ComponentId index, IComponent* component) {
+            updateGroupsComponentAddedOrRemoved(entity, index, component);
+        } };
+    entity->onComponentRemoved += { entity->uuid_,
+        [this](EntityPtr entity, ComponentId index, IComponent* component) {
+            updateGroupsComponentAddedOrRemoved(entity, index, component);
+        } };
+    entity->onComponentReplaced += { entity->uuid_,
+        [this](EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent) {
+            updateGroupsComponentReplaced(entity, index, previousComponent, newComponent);
+        } };
 
     entity->onEntityReleased.clear();
-    entity->onEntityReleased += onEntityReleasedCache_;
+    entity->onEntityReleased += { entity->uuid_, onEntityReleasedCache_ };
 
     onEntityCreated(this, entity);
 
+    assert(hasEntity(entity));
     return entity;
 }
 
 bool Pool::hasEntity(const EntityPtr& entity) const
 {
-    return std::find(entities_.begin(), entities_.end(), std::weak_ptr<Entity>(entity)) != entities_.end();
+    //return std::find(entities_.begin(), entities_.end(), std::weak_ptr<Entity>(entity)) != entities_.end();
+    return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
+
 }
 
 void Pool::destroyEntity(EntityPtr entity)
@@ -98,7 +105,7 @@ void Pool::destroyEntity(EntityPtr entity)
     onEntityDestroyed(this, entity);
 
     if (entity.use_count() == 1) {
-        entity->onEntityReleased -= onEntityReleasedCache_;
+        entity->onEntityReleased -= { entity->uuid_, onEntityReleasedCache_ };
         mReusableEntities.push(entity.get());
     } else {
         retainedEntities_.insert(entity.get());
@@ -124,7 +131,7 @@ void Pool::destroyAllEntities()
     }
 }
 
-auto Pool::getEntities() -> std::vector<EntityPtr>
+auto Pool::getEntities() -> const std::vector<EntityPtr>&
 {
     if (entitiesCache_.empty()) {
         entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());
@@ -132,7 +139,7 @@ auto Pool::getEntities() -> std::vector<EntityPtr>
     return entitiesCache_;
 }
 
-auto Pool::getEntities(const Matcher matcher) -> std::vector<EntityPtr>
+auto Pool::getEntities(const Matcher matcher) -> const std::vector<EntityPtr>&
 {
     return getGroup(std::move(matcher))->getEntities();
 }
@@ -146,10 +153,8 @@ auto Pool::getGroup(Matcher matcher) -> Group::SharedPtr
         group->setInstance(group);
 
         // 'Handle' all pool's entities
-        auto entities = getEntities();
-        for (int i = 0, entitiesLength = entities.size(); i < entitiesLength; i++) {
-            group->handleEntitySilently(entities[i]);
-        }
+        auto& entities = getEntities();
+        std::for_each(std::begin(entities), std::end(entities), [=,&group](auto& e){ group->handleEntitySilently(e); });
 
         groups_[group->getMatcher()] = group;
 
@@ -251,23 +256,11 @@ void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId ind
 
     if (groups.size() > 0) {
         // Collect all the events that need to be processed (e.g. onAdded
-        auto events = std::vector<Group::GroupChanged*>();
-
-        /*
-			for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i)
-			{
-				(*groups[i].lock()->handleEntity(entity))(groups[i].lock(), entity, index, component);
-			}
-            */
-
         for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i) {
-            auto cb = groups[i].lock()->handleEntity(entity);
+            auto g = groups[i].lock();
+            auto cb = g->handleEntity(entity);
             if (cb)
-                events.push_back(cb);
-        }
-
-        for (int i = 0, eventsCount = events.size(); i < eventsCount; ++i) {
-            (*events[i])(groups[i].lock(), entity, index, component);
+                (*cb)(g, entity, index, component);
         }
     }
 }

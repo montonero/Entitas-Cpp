@@ -54,8 +54,8 @@ public:
     /// Returns all collected entities.
     /// Call collector.ClearCollectedEntities()
     /// once you processed all entities.
-    CollectedEntities getCollectedEntities();
-    CollectedEntities collectedEntities() { return getCollectedEntities(); }
+    const CollectedEntities& getCollectedEntities() const;
+    const CollectedEntities& collectedEntities() const { return getCollectedEntities(); }
 
     void clearCollectedEntities();
 

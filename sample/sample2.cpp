@@ -206,10 +206,11 @@ void addRandomEntity(Pool* pool)
 {
     auto e = pool->createEntity();
     e->add<RenderComponent>(randomColor());
-    // e->add<RenderComponent>(Material::yellow());
-    // e->add<Position>(100, 100, 10);
     e->add<Position>(randomVec2Pos());
     e->add<Appearance>(randomVec2Size());
+    
+    auto r = pool->hasEntity(e);
+    std::cout << r;
 }
 
 class MySystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem {
@@ -246,6 +247,7 @@ public:
         {
             std::cout << "ent";
         }
+        collector_->clearCollectedEntities();
     }
 
     void setRenderer(sdl::Renderer& r) { renderer_ = &r; }
@@ -383,7 +385,7 @@ int main(const int argc, const char* argv[])
     std::cout << "All systems initilized.\n";
 
     auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
-    auto entities = pool->getEntities(matcher); // *Some magic preprocessor involved*
+    auto entities = pool->getEntities(matcher);
 #if 0
     for (auto& e : entities) { // e is a shared_ptr of Entity
         // do something

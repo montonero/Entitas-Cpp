@@ -39,17 +39,17 @@ void Collector::activate()
         auto eventType = eventTypes_[i];
 
         if (eventType == GroupEventType::OnEntityAdded) {
-            g->onEntityAdded -= addEntityCache_;
-            g->onEntityAdded += addEntityCache_;
+            g->onEntityAdded -= {index(), addEntityCache_};
+            g->onEntityAdded += {index(), addEntityCache_};
         } else if (eventType == GroupEventType::OnEntityRemoved) {
-            g->onEntityRemoved -= addEntityCache_;
-            g->onEntityRemoved += addEntityCache_;
+            g->onEntityRemoved -= {index(), addEntityCache_};
+            g->onEntityRemoved += {index(), addEntityCache_};
         } else if (eventType == GroupEventType::OnEntityAddedOrRemoved) {
-            g->onEntityAdded -= addEntityCache_;
-            g->onEntityAdded += addEntityCache_;
+            g->onEntityAdded -= {index(), addEntityCache_};
+            g->onEntityAdded += {index(), addEntityCache_};
 
-            g->onEntityRemoved -= addEntityCache_;
-            g->onEntityRemoved += addEntityCache_;
+            g->onEntityRemoved -= {index(), addEntityCache_};
+            g->onEntityRemoved += {index(), addEntityCache_};
         }
     }
 }
@@ -57,14 +57,14 @@ void Collector::activate()
 void Collector::deactivate()
 {
     for (const auto& g : groups_) {
-        g->onEntityAdded -= addEntityCache_;
-        g->onEntityRemoved -= addEntityCache_;
+        g->onEntityAdded -= {index(), addEntityCache_};
+        g->onEntityRemoved -= {index(), addEntityCache_};
     }
 
     clearCollectedEntities();
 }
 
-Collector::CollectedEntities Collector::getCollectedEntities()
+const Collector::CollectedEntities& Collector::getCollectedEntities() const
 {
     return collectedEntities_;
 }

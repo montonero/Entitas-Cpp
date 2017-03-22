@@ -26,8 +26,8 @@ class Pool
 		void destroyEntity(EntityPtr entity);
 		void destroyAllEntities();
 
-		auto getEntities() -> std::vector<EntityPtr>;
-		auto getEntities(const Matcher matcher) -> std::vector<EntityPtr>;
+		auto getEntities() -> const std::vector<EntityPtr>&;
+		auto getEntities(const Matcher matcher) -> const std::vector<EntityPtr>&;
 		auto getGroup(Matcher matcher) -> Group::SharedPtr;
 
 		void clearGroups();

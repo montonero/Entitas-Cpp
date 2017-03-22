@@ -19,7 +19,7 @@ auto Group::count() const -> unsigned int
     return static_cast<unsigned>(entities_.size());
 }
 
-auto Group::getEntities() -> std::vector<EntityPtr>
+auto Group::getEntities() -> const std::vector<EntityPtr>&
 {
     if (entitiesCache_.empty() && !entities_.empty()) {
         entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());

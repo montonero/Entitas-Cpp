@@ -47,11 +47,12 @@ namespace DelegateImpl {
     public:
         static void invoke(Delegate<void(TArgs...)>& delegate, TArgs... params)
         {
+            using namespace std;
             std::lock_guard<std::mutex> lock(delegate.mMutex);
 
-            for (const auto& functionPtr : delegate.functionList_) {
-                functionPtr(params...);
-            }
+            for_each(begin(delegate.functionList_), end(delegate.functionList_),
+                     [&](auto& fpair){ auto& f = fpair.second; f(params...);}
+                     );
         }
     };
 }
@@ -62,6 +63,7 @@ template <typename TReturnType, typename... TArgs>
 class Delegate<TReturnType(TArgs...)> {
     using Invoker = DelegateImpl::Invoker<TReturnType, TArgs...>;
     using FunctionType = std::function<TReturnType(TArgs...)>;
+    using FunctionPair = std::pair<size_t, FunctionType>;
     // using FunctionPointer = std::shared_ptr<FunctionType>;
     using FunctionPointer = FunctionType;
     friend Invoker;
@@ -74,26 +76,22 @@ public:
     Delegate(const Delegate&) = delete;
     const Delegate& operator=(const Delegate&) = delete;
 
-    Delegate& Connect(const FunctionType& function)
+    // Delegate& Connect(const FunctionType& function)
+    Delegate& Connect(const FunctionPair function)
     {
         std::lock_guard<std::mutex> lock(mMutex);
         functionList_.push_back(function);
         return *this;
     }
 
-    Delegate& remove(const FunctionType& function)
+    // Delegate& remove(const FunctionType& function)
+    Delegate& remove(const FunctionPair function)
     {
         using namespace std;
         std::lock_guard<std::mutex> lock(mMutex);
         if (functionList_.size() > 0)
             functionList_.erase(remove_if(begin(functionList_), end(functionList_),
-                bind(areEqual, function, placeholders::_1)
-                // [&](FunctionPointer functionPtr) {
-                // auto h1 = hash(function);
-                // auto h2 = hash(functionPtr);
-                // return h1 == h2;
-                // }
-                ));
+                bind(areEqual1, function.first, placeholders::_1)           ), end(functionList_));
 
         return *this;
     }
@@ -110,12 +108,14 @@ public:
         return *this;
     }
 
-    inline Delegate& operator+=(const FunctionType& function)
+    // inline Delegate& operator+=(const FunctionType& function)
+    inline Delegate& operator+=(const FunctionPair function)
     {
         return Connect(function);
     }
 
-    inline Delegate& operator-=(const FunctionType& function)
+    // inline Delegate& operator-=(const FunctionType& function)
+    inline Delegate& operator-=(const FunctionPair function)
     {
         return remove(function);
     }
@@ -124,15 +124,20 @@ public:
     {
         return Invoker::invoke(*this, args...);
     }
-    static inline bool areEqual(const FunctionType& f1, const FunctionType& f2)
+    static inline bool areEqual1(size_t ind1, const FunctionPair& f2)
     {
-        return (hash(f1) == hash(f2));
-        FunctionType& ff1 = const_cast<FunctionType&>(f1);
-        auto h = ff1.template target<FunctionType>();
-        auto h2 = f2.template target<FunctionType>();
-        return h == h2;
-        if (hash(f1) == hash(f2)) {
-        }
+        return ind1 == f2.first;
+    }
+    static inline bool areEqual(const FunctionPair& f1, const FunctionPair& f2)
+    {
+        return f1.first == f2.first;
+        // return (hash(f1) == hash(f2));
+        // FunctionType& ff1 = const_cast<FunctionType&>(f1);
+        // auto h = ff1.template target<FunctionType>();
+        // auto h2 = f2.template target<FunctionType>();
+        // return h == h2;
+        // if (hash(f1) == hash(f2)) {
+        // }
     }
 
     static inline constexpr size_t hash(const FunctionType& function)
@@ -143,6 +148,6 @@ public:
 
 private:
     std::mutex mMutex;
-    std::vector<FunctionPointer> functionList_;
+    std::vector<FunctionPair> functionList_;
 };
 }

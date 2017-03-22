@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "501682402.61758"
+            timestampString = "511898023.972915"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141">
+            startingLineNumber = "145"
+            endingLineNumber = "145">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -24,11 +24,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "501682955.505987"
+            timestampString = "511898023.972915"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
             landmarkName = "Pool::~Pool()"
             landmarkType = "7">
          </BreakpointContent>
@@ -40,11 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "501683222.31205"
+            timestampString = "511898023.972915"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "Pool::destroyEntity(EntityPtr entity)"
             landmarkType = "7">
          </BreakpointContent>
@@ -52,7 +52,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Group.cpp"
@@ -72,11 +72,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511812707.893736"
+            timestampString = "511898023.972915"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
             landmarkName = "Pool::onEntityReleased(Entity* entity)"
             landmarkType = "7">
          </BreakpointContent>
@@ -88,13 +88,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511812707.893736"
+            timestampString = "511898023.972915"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
-            landmarkName = "Pool::onEntityReleased(Entity* entity)"
-            landmarkType = "7">
+            startingLineNumber = "280"
+            endingLineNumber = "280">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -230,11 +228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511787855.459325"
+            timestampString = "511898023.972915"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
             landmarkName = "Pool::destroyEntity(EntityPtr entity)"
             landmarkType = "7">
          </BreakpointContent>
@@ -433,17 +431,17 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511882745.380546"
+            timestampString = "511897920.731324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "439"
-            endingLineNumber = "439">
+            startingLineNumber = "441"
+            endingLineNumber = "441">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
@@ -456,14 +454,14 @@
             landmarkType = "3">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "RenderPositionSystem::execute(std::__1::vector&lt;std::__1::shared_ptr&lt;entitas::Entity&gt;, std::__1::allocator&lt;std::__1::shared_ptr&lt;entitas::Entity&gt; &gt; &gt;&amp;)"
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/sample/sample2.cpp"
-                  timestampString = "511891191.115531"
+                  timestampString = "511895841.704296"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "147"
@@ -471,14 +469,14 @@
                   offsetFromSymbolStart = "36">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "RenderPositionSystem::execute(std::__1::vector&lt;std::__1::shared_ptr&lt;entitas::Entity&gt;, std::__1::allocator&lt;std::__1::shared_ptr&lt;entitas::Entity&gt; &gt; &gt;&amp;)"
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/sample/sample2.cpp"
-                  timestampString = "511891191.117273"
+                  timestampString = "511895841.705904"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "147"
@@ -507,7 +505,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/ReactiveSystem.cpp"
@@ -520,14 +518,14 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "entitas::ReactiveSystem::ReactiveSystem(entitas::Pool*, std::__1::shared_ptr&lt;entitas::IReactiveSystem&gt;)"
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/ReactiveSystem.cpp"
-                  timestampString = "511891191.120963"
+                  timestampString = "511894829.112506"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "12"
@@ -535,14 +533,14 @@
                   offsetFromSymbolStart = "71">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "entitas::ReactiveSystem::ReactiveSystem(entitas::Pool*, std::__1::shared_ptr&lt;entitas::IReactiveSystem&gt;)"
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/ReactiveSystem.cpp"
-                  timestampString = "511891191.123457"
+                  timestampString = "511894829.114278"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "12"
@@ -575,7 +573,7 @@
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/ReactiveSystem.cpp"
-                  timestampString = "511891191.127086"
+                  timestampString = "511898113.922905"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "17"
@@ -590,7 +588,7 @@
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/ReactiveSystem.cpp"
-                  timestampString = "511891191.128359"
+                  timestampString = "511898113.924288"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "17"
@@ -637,11 +635,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511882745.380546"
+            timestampString = "511897920.731324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
             landmarkName = "execute()"
             landmarkType = "9">
             <Locations>
@@ -681,22 +679,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Collector.cpp"
-            timestampString = "511813632.210602"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
-            landmarkName = "Collector::activate()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -731,11 +713,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511882745.380546"
+            timestampString = "511897920.731324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
             landmarkName = "setPool(Pool* pool)"
             landmarkType = "9">
          </BreakpointContent>
@@ -746,28 +728,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Collector.cpp"
-            timestampString = "511814671.127259"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
-            landmarkName = "Collector::activate()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511878230.21801"
+            timestampString = "511898023.972915"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161">
+            startingLineNumber = "163"
+            endingLineNumber = "163">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -821,7 +787,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/ReactiveSystem.cpp"
@@ -837,49 +803,65 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Delegate.hpp"
-            timestampString = "511884747.94403"
+            timestampString = "511896401.950313"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
             endingLineNumber = "90"
-            landmarkName = "remove(const FunctionType&amp; function)"
+            landmarkName = "remove(const FunctionPair function)"
             landmarkType = "9">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::remove(std::__1::function&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt; const&amp;)"
+                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::remove(std::__1::pair&lt;unsigned long, std::__1::function&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt; &gt; const&amp;)"
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.145701"
+                  timestampString = "511894591.857109"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "90"
-                  endingLineNumber = "90"
-                  offsetFromSymbolStart = "593">
+                  startingLineNumber = "91"
+                  endingLineNumber = "91"
+                  offsetFromSymbolStart = "53">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (entitas::Entity*)&gt;::remove(std::__1::function&lt;void (entitas::Entity*)&gt; const&amp;)"
+                  symbolName = "entitas::Delegate&lt;void (entitas::Entity*)&gt;::remove(std::__1::pair&lt;unsigned long, std::__1::function&lt;void (entitas::Entity*)&gt; &gt; const&amp;)"
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.148138"
+                  timestampString = "511894591.85815"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "90"
-                  endingLineNumber = "90"
-                  offsetFromSymbolStart = "593">
+                  startingLineNumber = "91"
+                  endingLineNumber = "91"
+                  offsetFromSymbolStart = "53">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Delegate.hpp"
+            timestampString = "511896401.950313"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
+            landmarkName = "areEqual(const FunctionPair&amp; f1, const FunctionPair&amp; f2)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -888,405 +870,154 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Delegate.hpp"
-            timestampString = "511889098.534493"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
-            landmarkName = "areEqual(const FunctionType&amp; f1, const FunctionType&amp; f2)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::hash(std::__1::function&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511889099.72058"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "143"
-                  endingLineNumber = "143"
-                  offsetFromSymbolStart = "12">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (entitas::Entity*)&gt;::hash(std::__1::function&lt;void (entitas::Entity*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511889099.721642"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "143"
-                  endingLineNumber = "143"
-                  offsetFromSymbolStart = "12">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Delegate.hpp"
-            timestampString = "511886261.61669"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "remove(const FunctionType&amp; function)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::remove(std::__1::function&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.151308"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "99"
-                  endingLineNumber = "99"
-                  offsetFromSymbolStart = "2307">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (entitas::Entity*)&gt;::remove(std::__1::function&lt;void (entitas::Entity*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.15257"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "99"
-                  endingLineNumber = "99"
-                  offsetFromSymbolStart = "2307">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Delegate.hpp"
-            timestampString = "511886262.370135"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "remove(const FunctionType&amp; function)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::remove(std::__1::function&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.156478"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "99"
-                  endingLineNumber = "99"
-                  offsetFromSymbolStart = "2307">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (entitas::Entity*)&gt;::remove(std::__1::function&lt;void (entitas::Entity*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.158487"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "99"
-                  endingLineNumber = "99"
-                  offsetFromSymbolStart = "2307">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Delegate.hpp"
-            timestampString = "511886263.056501"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
-            landmarkName = "remove(const FunctionType&amp; function)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::remove(std::__1::function&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.161492"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "99"
-                  endingLineNumber = "99"
-                  offsetFromSymbolStart = "2307">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (entitas::Entity*)&gt;::remove(std::__1::function&lt;void (entitas::Entity*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.162845"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "99"
-                  endingLineNumber = "99"
-                  offsetFromSymbolStart = "2307">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Delegate.hpp"
-            timestampString = "511888983.724591"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "operator-=(const FunctionType&amp; function)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::operator()(std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.166163"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "125"
-                  endingLineNumber = "125"
-                  offsetFromSymbolStart = "27">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*, entitas::IComponent*)&gt;::operator()(std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*, entitas::IComponent*)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.168179"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "125"
-                  endingLineNumber = "125"
-                  offsetFromSymbolStart = "31">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*, entitas::IComponent*)&gt;::operator()(std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*, entitas::IComponent*)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.17002"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "125"
-                  endingLineNumber = "125"
-                  offsetFromSymbolStart = "34">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (entitas::Pool*, std::__1::shared_ptr&lt;entitas::Entity&gt;)&gt;::operator()(entitas::Pool*, std::__1::shared_ptr&lt;entitas::Entity&gt;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.171315"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "125"
-                  endingLineNumber = "125"
-                  offsetFromSymbolStart = "24">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (entitas::Pool*, std::__1::shared_ptr&lt;entitas::Group&gt;)&gt;::operator()(entitas::Pool*, std::__1::shared_ptr&lt;entitas::Group&gt;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.172583"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "125"
-                  endingLineNumber = "125"
-                  offsetFromSymbolStart = "24">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::operator()(std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.174171"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "125"
-                  endingLineNumber = "125"
-                  offsetFromSymbolStart = "30">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (entitas::Entity*)&gt;::operator()(entitas::Entity*)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.176188"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "125"
-                  endingLineNumber = "125"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Delegate.hpp"
-            timestampString = "511890050.386274"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "operator+=(const FunctionType&amp; function)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::operator+=(std::__1::function&lt;void (std::__1::shared_ptr&lt;entitas::Group&gt;, std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.18104"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt;::operator+=(std::__1::function&lt;void (std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.182516"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*, entitas::IComponent*)&gt;::operator+=(std::__1::function&lt;void (std::__1::shared_ptr&lt;entitas::Entity&gt;, unsigned int, entitas::IComponent*, entitas::IComponent*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.184329"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "entitas::Delegate&lt;void (entitas::Entity*)&gt;::operator+=(std::__1::function&lt;void (entitas::Entity*)&gt; const&amp;)"
-                  moduleName = "sample2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Delegate.hpp"
-                  timestampString = "511891191.186473"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "../../../entitas/Entity.cpp"
             timestampString = "511890203.24238"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "26"
             endingLineNumber = "26">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Collector.cpp"
+            timestampString = "511894611.329862"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "Collector::activate()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Collector.cpp"
+            timestampString = "511894872.580447"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "Collector::activate()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Group.cpp"
+            timestampString = "511896473.396537"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "Group::handleEntitySilently(EntityPtr entity)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Pool.cpp"
+            timestampString = "511898023.972915"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "156"
+            endingLineNumber = "156">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Pool.cpp"
+            timestampString = "511898023.972915"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Pool.cpp"
+            timestampString = "511898023.972915"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
+            landmarkName = "Pool::hasEntity(const EntityPtr&amp; entity)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../sample/sample2.cpp"
+            timestampString = "511897920.731324"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "addRandomEntity(Pool* pool)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../sample/sample2.cpp"
+            timestampString = "511897914.022032"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "addRandomEntity(Pool* pool)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../sample/sample2.cpp"
+            timestampString = "511898103.485702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "387"
+            endingLineNumber = "387"
+            landmarkName = "main(const int argc, const char* argv[])"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
