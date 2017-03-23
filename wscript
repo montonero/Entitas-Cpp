@@ -168,6 +168,7 @@ def build(ctx):
 			cxxflags = cxx_flags,
 			linkflags = link_flags,
 			lib = ['pthread'],
+			defines = ['_SDL2'],
 			use = libs
 		)
 
