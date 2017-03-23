@@ -25,7 +25,7 @@ class ReactiveSystem : public IExecuteSystem
 
 	private:
 		std::shared_ptr<IReactiveExecuteSystem> mSubsystem;
-		Collector* mObserver;
+        Collector* collector_{nullptr};
 		Matcher mEnsureComponents;
 		Matcher mExcludeComponents;
 		bool mClearAfterExecute{false};

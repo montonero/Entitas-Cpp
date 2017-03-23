@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <map>
 
+
 namespace entitas
 {
 class ISystem;
@@ -25,9 +26,9 @@ class Pool
 		void destroyEntity(EntityPtr entity);
 		void destroyAllEntities();
 
-		auto getEntities() -> std::vector<EntityPtr>;
-		auto getEntities(const Matcher matcher) -> std::vector<EntityPtr>;
-		auto getGroup(Matcher matcher) -> std::shared_ptr<Group>;
+		auto getEntities() -> const std::vector<EntityPtr>&;
+		auto getEntities(const Matcher matcher) -> const std::vector<EntityPtr>&;
+		auto getGroup(Matcher matcher) -> Group::SharedPtr;
 
 		void clearGroups();
 		void resetCreationIndex();
@@ -43,7 +44,7 @@ class Pool
 		template <typename T> inline auto createSystem() -> std::shared_ptr<ISystem>;
 
 		using PoolChanged = Delegate<void(Pool* pool, EntityPtr entity)>;
-		using GroupChanged = Delegate<void(Pool* pool, std::shared_ptr<Group> group)>;
+		using GroupChanged = Delegate<void(Pool* pool, Group::SharedPtr group)>;
 
 		PoolChanged onEntityCreated;
 		PoolChanged onEntityWillBeDestroyed;
@@ -59,7 +60,7 @@ class Pool
 
 		unsigned int creationIndex_;									///< Index that is used as uuid for Entities
 		std::unordered_set<EntityPtr> entities_;
-		std::unordered_map<Matcher, std::shared_ptr<Group>> groups_;
+		std::unordered_map<Matcher, Group::SharedPtr> groups_;
 		std::stack<Entity*> mReusableEntities;
 
 		std::unordered_set<Entity*> retainedEntities_;
@@ -71,12 +72,12 @@ class Pool
 		std::map<ComponentId, std::vector<std::weak_ptr<Group>>> groupsForIndex_;
 
 		std::vector<EntityPtr> entitiesCache_;
-		std::function<void(Entity*)> mOnEntityReleasedCache;
+		std::function<void(Entity*)> onEntityReleasedCache_;
 };
 
 template <typename T>
 auto Pool::createSystem() -> std::shared_ptr<ISystem>
 {
-	return createSystem(std::dynamic_pointer_cast<ISystem>(std::shared_ptr<T>(new T())));
+	return createSystem(std::dynamic_pointer_cast<ISystem>(std::make_shared<T>()));
 }
 }

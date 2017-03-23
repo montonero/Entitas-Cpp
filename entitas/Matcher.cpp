@@ -218,22 +218,5 @@ namespace entitas
 		indices.erase(std::unique(indices.begin(), indices.end()), indices.end());
 
 		return indices;
-
-	// Old Code (delete!)
-	/*auto indicesSet = unordered_set<unsigned int>(indices.begin(), indices.end());
-
-          auto uniqueIndices = ComponentIdList();
-          uniqueIndices.reserve(indicesSet.size());
-
-          for(const auto &id : indicesSet)
-          {
-          uniqueIndices.push_back(id);
-          }
-
-          std::sort(uniqueIndices.begin(), uniqueIndices.end(), [](unsigned int a, unsigned int b) {
-          return b < a;
-          });
-
-          return uniqueIndices;*/
     }
 }

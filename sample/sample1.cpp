@@ -87,7 +87,7 @@ struct RenderComponent : public IComponent
 
 class MoveSystem : public IExecuteSystem, public ISetPoolSystem
 {
-    std::shared_ptr<Group> _group;
+    Group::SharedPtr _group;
 
     public:
         void setPool(Pool* pool) {

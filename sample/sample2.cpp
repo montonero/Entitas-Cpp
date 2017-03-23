@@ -2,6 +2,8 @@
 #include "entitas/Matcher.hpp"
 #include "entitas/Pool.hpp"
 #include "entitas/SystemContainer.hpp"
+#include "entitas/Collector.hpp"
+
 #include <iostream>
 #include <random>
 
@@ -21,7 +23,7 @@
 #endif
 
 #ifdef __EMSCRIPTEN__
-#   include <emscripten.h>
+#include <emscripten.h>
 #endif
 
 #include <SDLpp.h>
@@ -108,7 +110,7 @@ struct RenderComponent : public IComponent {
 /* -------------------------------------------------------------------------- */
 
 class MoveSystem : public IExecuteSystem, public ISetPoolSystem {
-    std::shared_ptr<Group> _group;
+    Group::SharedPtr _group;
 
 public:
     void setPool(Pool* pool)
@@ -127,10 +129,34 @@ public:
     }
 };
 
+class RenderPositionSystem : public IReactiveSystem {
+    //TriggerOnEvent trigger;
+
+public:
+    RenderPositionSystem()
+    {
+        // auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(Move), COMPONENT_GET_TYPE_ID(Position) });
+        // trigger = Matcher_AllOf(Position, View)->OnEntityAdded();
+        trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) })).onEntityAdded();
+    }
+
+    void execute(std::vector<EntityPtr>& entities) override
+    {
+        // Gets executed only if the observed group changed.
+        // Changed entities are passed as an argument
+        for (auto& e : entities) {
+            auto pos = e->get<Position>();
+            // NOTE: Unity-only example, but this maybe could be the code if Unity were compatible with C++
+            // e->Get<View>()->gameObject.transform.position = new Vector3(pos->x, pos->y, pos->z);
+        }
+    }
+};
+
 /* -------------------------------------------------------------------------- */
 
-void renderMat(sdl::Renderer* renderer, sdl::Color c, const Vec2& v, const Vec2& s)
-{ 
+void
+renderMat(sdl::Renderer* renderer, sdl::Color c, const Vec2& v, const Vec2& s)
+{
     auto rect = sdl::makeRect(v, s);
     renderer->draw(rect, c);
 }
@@ -156,7 +182,7 @@ Vec2 randomVec2(int x, int y, int mx, int my)
     static mt19937 engineMt(rd());
     uniform_real_distribution<float> unifW(x, mx);
     uniform_real_distribution<float> unifH(y, my);
-    Vec2 v{unifW(engineMt), unifH(engineMt)};
+    Vec2 v{ unifW(engineMt), unifH(engineMt) };
     return v;
 }
 
@@ -180,10 +206,11 @@ void addRandomEntity(Pool* pool)
 {
     auto e = pool->createEntity();
     e->add<RenderComponent>(randomColor());
-    // e->add<RenderComponent>(Material::yellow());
-    // e->add<Position>(100, 100, 10);
     e->add<Position>(randomVec2Pos());
     e->add<Appearance>(randomVec2Size());
+    
+    auto r = pool->hasEntity(e);
+    std::cout << r;
 }
 
 class MySystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem {
@@ -194,6 +221,9 @@ public:
         //group_ = pool_->getGroup(Matcher_allOf(Position, RenderComponent));
         auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
         group_ = pool_->getGroup(matcher);
+        collector_ = group_->createCollector(GroupEventType::OnEntityAdded);
+        collector_->activate();
+        collector_->activate();
         std::cout << "MySystem::setPool called" << std::endl;
     }
 
@@ -213,6 +243,11 @@ public:
             renderMat(renderer_, mat->material.color, pos->position_, appearance->size_);
         }
         // std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
+        for (auto& e : (collector_->getCollectedEntities()) )
+        {
+            std::cout << "ent";
+        }
+        collector_->clearCollectedEntities();
     }
 
     void setRenderer(sdl::Renderer& r) { renderer_ = &r; }
@@ -220,7 +255,9 @@ public:
 private:
     sdl::Renderer* renderer_{ nullptr };
     Pool* pool_{ nullptr };
-    std::shared_ptr<Group> group_;
+    Group::SharedPtr group_;
+    // test
+    std::shared_ptr<Collector> collector_;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -267,25 +304,24 @@ public:
 /* -------------------------------------------------------------------------- */
 
 struct MainLoopContext {
-    sdl::Window     window;
-    sdl::Renderer*  renderer;
+    sdl::Window window;
+    sdl::Renderer* renderer;
 
-    std::shared_ptr<SystemContainer>    systems;
-    std::shared_ptr<Pool>               pool;
-    std::shared_ptr<ISystem>            mySystem;
+    std::shared_ptr<SystemContainer> systems;
+    std::shared_ptr<Pool> pool;
+    std::shared_ptr<ISystem> mySystem;
 
-    int             done{0};
-    std::shared_ptr<sdl::Sprite>            sprite;
-
+    int done{ 0 };
+    std::shared_ptr<sdl::Sprite> sprite;
 };
 
 void mainLoop(void* vctx)
 {
-    auto ctx = (MainLoopContext*) vctx;
+    auto ctx = (MainLoopContext*)vctx;
 
     SDL_Event event;
     //std::cout << "Main loop entered.\n";
-    
+
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             std::cout << "Quitting\n";
@@ -300,30 +336,28 @@ void mainLoop(void* vctx)
     ctx->renderer->clear(sdl::Colors::Black);
     ctx->systems->execute();
 
-    ctx->renderer->drawCircle({100, 100}, 50.f, sdl::Colors::Blue);
-    ctx->renderer->drawLine({0,0}, {100,100}, sdl::Colors::White);
+    ctx->renderer->drawCircle({ 100, 100 }, 50.f, sdl::Colors::Blue);
+    ctx->renderer->drawLine({ 0, 0 }, { 100, 100 }, sdl::Colors::White);
 
-    
     // Construct a view
     // sdl::View view{sdl::Vector2f{0.f, 0.f}, sdl::Vector2f{800.f, 600.f}};
-    sdl::View view{sdl::Vector2f{0.f, 0.f}, sdl::Vector2f{200.f, 150.f}};
+    sdl::View view{ sdl::Vector2f{ 0.f, 0.f }, sdl::Vector2f{ 200.f, 150.f } };
     auto renderer = ctx->renderer;
     auto snowSprite = *ctx->sprite.get();
-    
+
     renderer->SetView(view);
-    
+
     renderer->Draw(snowSprite);
-    
-    view.Move({-100.f, -200.f});
+
+    view.Move({ -100.f, -200.f });
     renderer->SetView(view);
-    
+
     renderer->Draw(snowSprite);
     // snowSprite.scale(0.5f);
     // view.Move({-400.f, -600.f});
     // renderer->SetView(view);
     // renderer->Draw(snowSprite);
 
-    
     // Render the rect to the screen
     // SDL_RenderPresent(ctx->renderer);
     ctx->renderer->Present();
@@ -341,16 +375,17 @@ int main(const int argc, const char* argv[])
     //systems->add(pool->createSystem<DemoSystem>());
     auto mySystem = pool->createSystem<MySystem>();
     systems->add(mySystem);
+    systems->add(pool->createSystem<RenderPositionSystem>());
     systems->initialize();
 
     //for(unsigned int i = 0; i < 2; ++i) {
     //  systems->execute();
     //}
-    
+
     std::cout << "All systems initilized.\n";
-    
+
     auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
-    auto entities = pool->getEntities(matcher); // *Some magic preprocessor involved*
+    auto entities = pool->getEntities(matcher);
 #if 0
     for (auto& e : entities) { // e is a shared_ptr of Entity
         // do something
@@ -362,45 +397,44 @@ int main(const int argc, const char* argv[])
     /* seed random number generator */
     srand(time(NULL));
 
-    
     std::cout << "sdl::Init() successfully!\n";
     sdl::Window w{ "Test window", kScreenWidth, kScreenHeight };
     auto renderer = w.CreateRenderer();
     ((MySystem*)mySystem.get())->setRenderer(*renderer);
-    
 
-    
-    //ctx->renderer = ctx->window.CreateRenderer();
-    //((MySystem*)mySystem.get())->setRenderer(*ctx->renderer);
+//ctx->renderer = ctx->window.CreateRenderer();
+//((MySystem*)mySystem.get())->setRenderer(*ctx->renderer);
 
 #ifdef __EMSCRIPTEN__
-    const std::string kAssetsFolder = "../assets/";
+    const std::string kAssetsFolder = "/";
+    // const std::string kAssetsTexturesFolder = kAssetsFolder + "textures/";
+    const std::string kAssetsTexturesFolder = kAssetsFolder + "textures/";
 #else
     const std::string kAssetsFolder = "../assets/";
-#endif
     const std::string kAssetsTexturesFolder = kAssetsFolder + "textures/";
+#endif
+
     auto texture = renderer->CreateTexture(kAssetsTexturesFolder + "tiles_snow/light.png");
     sdl::Sprite snowSprite(*texture);
     snowSprite.scale(2.0f);
-    
-    
-    auto ctx = new MainLoopContext {
+
+    auto ctx = new MainLoopContext{
         std::move(w), renderer,
         systems, pool, mySystem,
         0, std::make_shared<sdl::Sprite>(std::move(snowSprite))
     };
     std::cout << "Context created.\n";
 
-    /* Enter render loop, waiting for user to quit */
-    #ifdef __EMSCRIPTEN__
-        emscripten_set_main_loop_arg(mainLoop, (void*) ctx, 0, 0);
-    #else
-        while (ctx->done == 0) {
-            mainLoop(ctx);
-        }
-        std::cout << "Done.\n";
-        delete ctx;
-    #endif
+/* Enter render loop, waiting for user to quit */
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop_arg(mainLoop, (void*)ctx, 0, 0);
+#else
+    while (ctx->done == 0) {
+        mainLoop(ctx);
+    }
+    std::cout << "Done.\n";
+    delete ctx;
+#endif
 
     return 0;
 }
