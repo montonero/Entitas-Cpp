@@ -139,6 +139,7 @@ def build(ctx):
         target='s1',
         cxxflags     = ['-std=c++14', '-g'],
         lib = ['m', 'c', 'pthread'],
+        defines = ['_SDL2'],
         #linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl', '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
@@ -153,7 +154,7 @@ def build(ctx):
         cxxflags     = ['-std=c++14', '-g'],
         linkflags = [ '-lm', '-lpthread', '-lc', '-lstdc++'],
         # linkflags = ['-Wl,-Bdynamic', '-lm', '-lpthread', '-lc', '-lstdc++'],
-        defines = ['_SDL2'],
+        defines = ['_SDL2'],     
         lib = ['SDL2_ttf', 'SDL2_image'],
         use =  libs + ['SDL2', 'pthread'] 
     )
