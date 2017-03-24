@@ -85,7 +85,6 @@ auto Pool::createEntity() -> EntityPtr
 
 bool Pool::hasEntity(const EntityPtr& entity) const
 {
-    //return std::find(entities_.begin(), entities_.end(), std::weak_ptr<Entity>(entity)) != entities_.end();
     return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
 
 }
@@ -131,7 +130,7 @@ void Pool::destroyAllEntities()
     }
 }
 
-auto Pool::getEntities() -> const std::vector<EntityPtr>&
+auto Pool::getEntities() ->  std::vector<EntityPtr>&
 {
     if (entitiesCache_.empty()) {
         entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());
@@ -139,7 +138,7 @@ auto Pool::getEntities() -> const std::vector<EntityPtr>&
     return entitiesCache_;
 }
 
-auto Pool::getEntities(const Matcher matcher) -> const std::vector<EntityPtr>&
+auto Pool::getEntities(const Matcher matcher) ->  std::vector<EntityPtr>&
 {
     return getGroup(std::move(matcher))->getEntities();
 }
@@ -270,12 +269,11 @@ void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IC
     if (groupsForIndex_.find(index) == groupsForIndex_.end()) {
         return;
     }
+    using namespace std;
+    auto& groups = groupsForIndex_[index];
+    for_each(begin(groups), end(groups),
+                 [=](const auto& g) {g.lock()->updateEntity(entity, index, previousComponent, newComponent);});
 
-    if (groupsForIndex_[index].size() > 0) {
-        for (const auto& g : groupsForIndex_[index]) {
-            g.lock()->updateEntity(entity, index, previousComponent, newComponent);
-        }
-    }
 }
 
 void Pool::onEntityReleased(Entity* entity)

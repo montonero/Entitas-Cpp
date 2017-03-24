@@ -34,6 +34,7 @@ public:
     inline auto replace(TArgs&&... args) -> EntityPtr;
     template <typename T>
     inline auto refresh() -> EntityPtr;
+    
     template <typename T>
     inline auto get() const -> T*;
     template <typename T>
@@ -78,10 +79,11 @@ protected:
     bool enabled_{ true };
 
 private:
-    auto getComponentPool(const ComponentId index) const -> std::stack<IComponent*>*;
+    ComponentPool& getComponentPool(const ComponentId index) const;
+    /// Replace a given component
     void replace(const ComponentId index, IComponent* replacement);
 
-    EntityPtrWeak mInstance;
+    EntityPtrWeak instance_;
     std::map<ComponentId, IComponent*> components_;
 
     ComponentPools& componentPools_;
@@ -92,13 +94,12 @@ private:
 template <typename T, typename... TArgs>
 auto Entity::createComponent(TArgs&&... args) -> IComponent*
 {
-    // std::stack<IComponent*>* componentPool = getComponentPool(ComponentTypeId::get<T>());
     auto componentPool = getComponentPool(ComponentTypeId::get<T>());
     IComponent* component = nullptr;
 
-    if (componentPool->size() > 0) {
-        component = componentPool->top();
-        componentPool->pop();
+    if (componentPool.size() > 0) {
+        component = componentPool.top();
+        componentPool.pop();
     } else {
         component = new T();
     }

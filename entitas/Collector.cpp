@@ -15,6 +15,7 @@ Collector::Collector(Group::SharedPtr group, const GroupEventType eventType)
 {
 }
 
+/// This is currently not used
 Collector::Collector(std::vector<Group::SharedPtr> groups, std::vector<GroupEventType> eventTypes)
     : groups_{ groups }
     , eventTypes_{ eventTypes }
@@ -39,17 +40,17 @@ void Collector::activate()
         auto eventType = eventTypes_[i];
 
         if (eventType == GroupEventType::OnEntityAdded) {
-            g->onEntityAdded -= {index(), addEntityCache_};
-            g->onEntityAdded += {index(), addEntityCache_};
+            g->onEntityAdded -= { index(), addEntityCache_ };
+            g->onEntityAdded += { index(), addEntityCache_ };
         } else if (eventType == GroupEventType::OnEntityRemoved) {
-            g->onEntityRemoved -= {index(), addEntityCache_};
-            g->onEntityRemoved += {index(), addEntityCache_};
+            g->onEntityRemoved -= { index(), addEntityCache_ };
+            g->onEntityRemoved += { index(), addEntityCache_ };
         } else if (eventType == GroupEventType::OnEntityAddedOrRemoved) {
-            g->onEntityAdded -= {index(), addEntityCache_};
-            g->onEntityAdded += {index(), addEntityCache_};
+            g->onEntityAdded -= { index(), addEntityCache_ };
+            g->onEntityAdded += { index(), addEntityCache_ };
 
-            g->onEntityRemoved -= {index(), addEntityCache_};
-            g->onEntityRemoved += {index(), addEntityCache_};
+            g->onEntityRemoved -= { index(), addEntityCache_ };
+            g->onEntityRemoved += { index(), addEntityCache_ };
         }
     }
 }
@@ -57,8 +58,8 @@ void Collector::activate()
 void Collector::deactivate()
 {
     for (const auto& g : groups_) {
-        g->onEntityAdded -= {index(), addEntityCache_};
-        g->onEntityRemoved -= {index(), addEntityCache_};
+        g->onEntityAdded -= { index(), addEntityCache_ };
+        g->onEntityRemoved -= { index(), addEntityCache_ };
     }
 
     clearCollectedEntities();

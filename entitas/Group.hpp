@@ -1,3 +1,4 @@
+// Copyright (c) 2017 Igor M
 // Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: MIT License
 // MIT License web page: https://opensource.org/licenses/MIT
@@ -11,7 +12,6 @@
 
 namespace entitas {
 class Collector;
-    //using GroupPtr = std::shared_ptr<Group>;
     
 class Group {
     friend class Pool;
@@ -20,7 +20,8 @@ public:
     using SharedPtr = std::shared_ptr<Group>;
     Group(const Matcher& matcher);
     auto count() const -> unsigned int;
-    auto getEntities() -> const std::vector<EntityPtr>&;
+    
+    auto getEntities() ->  std::vector<EntityPtr>&;
     auto getSingleEntity() const -> EntityPtr;
     bool containsEntity(const EntityPtr& entity) const;
     auto getMatcher() const -> Matcher;
@@ -30,7 +31,10 @@ public:
     using GroupUpdated = Delegate<void(SharedPtr group, EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)>;
 
     GroupChanged onEntityAdded;
+    /// Occurs when a component of an entity in the group gets replaced.
+    // TODO not properly used
     GroupUpdated onEntityUpdated;
+    /// Occurs when an entity gets removed.
     GroupChanged onEntityRemoved;
 
 protected:

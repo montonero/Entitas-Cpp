@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511898023.972915"
+            timestampString = "511985596.818147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145">
+            startingLineNumber = "144"
+            endingLineNumber = "144">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -40,11 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511898023.972915"
+            timestampString = "511985596.818147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
             landmarkName = "Pool::destroyEntity(EntityPtr entity)"
             landmarkType = "7">
          </BreakpointContent>
@@ -72,11 +72,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511898023.972915"
+            timestampString = "511985596.818147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "282"
-            endingLineNumber = "282"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
             landmarkName = "Pool::onEntityReleased(Entity* entity)"
             landmarkType = "7">
          </BreakpointContent>
@@ -88,11 +88,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511898023.972915"
+            timestampString = "511985596.818147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280">
+            startingLineNumber = "283"
+            endingLineNumber = "283"
+            landmarkName = "Pool::onEntityReleased(Entity* entity)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -148,11 +150,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511813575.623718"
+            timestampString = "512061639.472953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
             landmarkName = "randomColor()"
             landmarkType = "9">
          </BreakpointContent>
@@ -164,11 +166,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511813575.623718"
+            timestampString = "512061639.472953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
             landmarkName = "execute()"
             landmarkType = "9">
          </BreakpointContent>
@@ -180,11 +182,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511813575.623718"
+            timestampString = "512061639.472953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "RenderPositionSystem()"
             landmarkType = "7">
          </BreakpointContent>
@@ -228,28 +230,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511898023.972915"
+            timestampString = "511985596.818147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "Pool::destroyEntity(EntityPtr entity)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Entity.cpp"
-            timestampString = "511790999.501444"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "Entity::replace(const ComponentId index, IComponent* replacement)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -431,11 +417,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511897920.731324"
+            timestampString = "512061639.472953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "441"
-            endingLineNumber = "441">
+            startingLineNumber = "433"
+            endingLineNumber = "433">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -445,11 +431,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511813575.623718"
+            timestampString = "512061639.472953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
             landmarkName = "class RenderPositionSystem"
             landmarkType = "3">
             <Locations>
@@ -573,7 +559,7 @@
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/ReactiveSystem.cpp"
-                  timestampString = "511898113.922905"
+                  timestampString = "512062734.499448"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "17"
@@ -588,7 +574,7 @@
                   moduleName = "sample2"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/ReactiveSystem.cpp"
-                  timestampString = "511898113.924288"
+                  timestampString = "512062734.500437"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "17"
@@ -621,11 +607,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Collector.cpp"
-            timestampString = "511813007.209229"
+            timestampString = "511977050.570361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87">
+            startingLineNumber = "88"
+            endingLineNumber = "88">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -635,11 +621,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511897920.731324"
+            timestampString = "512061639.472953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
             landmarkName = "execute()"
             landmarkType = "9">
             <Locations>
@@ -713,11 +699,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511897920.731324"
+            timestampString = "512062733.189627"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
             landmarkName = "setPool(Pool* pool)"
             landmarkType = "9">
          </BreakpointContent>
@@ -729,11 +715,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511898023.972915"
+            timestampString = "511985596.818147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163">
+            startingLineNumber = "162"
+            endingLineNumber = "162">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -885,11 +871,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Collector.cpp"
-            timestampString = "511894611.329862"
+            timestampString = "511977050.570361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "Collector::activate()"
             landmarkType = "7">
          </BreakpointContent>
@@ -901,11 +887,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Collector.cpp"
-            timestampString = "511894872.580447"
+            timestampString = "511977050.570361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "Collector::activate()"
             landmarkType = "7">
          </BreakpointContent>
@@ -933,27 +919,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511898023.972915"
+            timestampString = "511985596.818147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511898023.972915"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
-            landmarkName = "Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)"
-            landmarkType = "7">
+            startingLineNumber = "155"
+            endingLineNumber = "155">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -963,11 +933,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../entitas/Pool.cpp"
-            timestampString = "511898023.972915"
+            timestampString = "511985596.818147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
+            landmarkName = "Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Pool.cpp"
+            timestampString = "511985596.818147"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "Pool::hasEntity(const EntityPtr&amp; entity)"
             landmarkType = "7">
          </BreakpointContent>
@@ -979,23 +965,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511897920.731324"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "addRandomEntity(Pool* pool)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../sample/sample2.cpp"
-            timestampString = "511897914.022032"
+            timestampString = "512061639.472953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "213"
@@ -1007,17 +977,222 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../sample/sample2.cpp"
+            timestampString = "512061639.472953"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
+            landmarkName = "addRandomEntity(Pool* pool)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../../sample/sample2.cpp"
-            timestampString = "511898103.485702"
+            timestampString = "512061639.472953"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
+            startingLineNumber = "379"
+            endingLineNumber = "379"
             landmarkName = "main(const int argc, const char* argv[])"
             landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Collector.cpp"
+            timestampString = "511977050.570361"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Entity.cpp"
+            timestampString = "511977704.08958"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "Entity::removeAllComponents()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "entitas::Entity::removeAllComponents()"
+                  moduleName = "sample2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Entity.cpp"
+                  timestampString = "511990517.297789"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "252">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "auto entitas::Entity::removeAllComponents()::$_2::operator()&lt;std::__1::pair&lt;unsigned int const, entitas::IComponent*&gt; &gt;(std::__1::pair&lt;unsigned int const, entitas::IComponent*&gt;&amp;) const"
+                  moduleName = "sample2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/entitas/Entity.cpp"
+                  timestampString = "511990517.299474"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../sample/sample2.cpp"
+            timestampString = "512061639.472953"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "execute()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "RenderPositionSystem::~RenderPositionSystem()"
+                  moduleName = "sample2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/sample/sample2.cpp"
+                  timestampString = "512062734.516589"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "134"
+                  endingLineNumber = "134"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "RenderPositionSystem::~RenderPositionSystem()"
+                  moduleName = "sample2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/sample/sample2.cpp"
+                  timestampString = "512062734.517605"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "134"
+                  endingLineNumber = "134"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "RenderPositionSystem::~RenderPositionSystem()"
+                  moduleName = "sample2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/im/chew/c++/Entitas-Cpp/sample/sample2.cpp"
+                  timestampString = "512062734.518584"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "134"
+                  endingLineNumber = "134"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Pool.cpp"
+            timestampString = "511985328.634247"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
+            landmarkName = "Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Entity.cpp"
+            timestampString = "511990398.435959"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "Entity::removeAllComponents()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Pool.cpp"
+            timestampString = "511990767.755908"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "Pool::destroyAllEntities()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../entitas/Group.cpp"
+            timestampString = "511992609.334052"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "Group::updateEntity(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -4,7 +4,7 @@
 #include "entitas/SystemContainer.hpp"
 #include "entitas/Collector.hpp"
 
-#include <iostream>
+//#include <iostream>
 #include <random>
 
 #ifdef WIN32
@@ -26,6 +26,8 @@
 #include <emscripten.h>
 #endif
 
+#include <fmt/format.h>
+
 #include <SDLpp.h>
 
 #include "Rectangle.h"
@@ -41,7 +43,7 @@ class DemoComponent : public IComponent {
 public:
     void reset(const std::string& name1, const std::string& name2)
     {
-        std::cout << "Created new entity: " << name1 << "," << name2 << std::endl;
+        //std::cout << "Created new entity: " << name1 << "," << name2 << std::endl;
     }
 };
 
@@ -55,7 +57,7 @@ public:
     void initialize()
     {
         mPool->createEntity()->add<DemoComponent>("foo", "bar");
-        std::cout << "DemoSystem initialized" << std::endl;
+        //std::cout << "DemoSystem initialized" << std::endl;
     }
 
     void execute()
@@ -63,9 +65,8 @@ public:
         mPool->createEntity()->add<DemoComponent>("foo", "bar");
 
         auto entitiesCount = mPool->getGroup(Matcher_allOf(DemoComponent))->count();
-        std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
-
-        std::cout << "DemoSystem executed" << std::endl;
+        //std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
+       // std::cout << "DemoSystem executed" << std::endl;
     }
 
 private:
@@ -105,6 +106,7 @@ public:
 struct RenderComponent : public IComponent {
     void reset(Material m) { material = m; }
     Material material;
+    Vec2 position;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -124,13 +126,13 @@ public:
         for (auto& e : _group->getEntities()) {
             auto move = e->get<Move>();
             auto pos = e->get<Position>();
-            // e->replace<Position>(pos->x, pos->y + move->speed, pos->z);
+            Vec2 newPos = move->direction * move->speed + pos->position_;
+            e->replace<Position>(std::move(newPos));
         }
     }
 };
 
 class RenderPositionSystem : public IReactiveSystem {
-    //TriggerOnEvent trigger;
 
 public:
     RenderPositionSystem()
@@ -210,7 +212,28 @@ void addRandomEntity(Pool* pool)
     e->add<Appearance>(randomVec2Size());
     
     auto r = pool->hasEntity(e);
-    std::cout << r;
+    //std::cout << r;
+}
+
+template<typename Iter, typename RandomGenerator>
+Iter select_randomly(Iter start, Iter end, RandomGenerator& g) {
+    std::uniform_int_distribution<> dis(0, std::distance(start, end) - 1);
+    std::advance(start, dis(g));
+    return start;
+}
+
+template<typename Iter>
+Iter select_randomly(Iter start, Iter end) {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    return select_randomly(start, end, gen);
+}
+
+void changeRandomEntity(Pool* p)
+{
+    auto es = p->getEntities();
+    auto randomEntity = *select_randomly(es.begin(), es.end());
+    randomEntity->replace<Position>(randomVec2Pos());
 }
 
 class MySystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem {
@@ -218,34 +241,34 @@ public:
     void setPool(Pool* pool)
     {
         pool_ = pool;
-        //group_ = pool_->getGroup(Matcher_allOf(Position, RenderComponent));
-        auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
+        //auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
+        auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent)});
         group_ = pool_->getGroup(matcher);
         collector_ = group_->createCollector(GroupEventType::OnEntityAdded);
-        collector_->activate();
-        collector_->activate();
-        std::cout << "MySystem::setPool called" << std::endl;
+        //collector_->activate();
+        //collector_->activate();
+        fmt::print("MySystem::setPool called\n");
     }
 
     void initialize()
     {
         addRandomEntity(pool_);
-        std::cout << "MySystem initialized" << std::endl;
+        fmt::print("MySystem initialized\n");
     }
 
     void execute()
     {
         auto es = group_->getEntities();
         for (auto& e : es) {
-            auto mat = e->get<RenderComponent>();
+            auto ren = e->get<RenderComponent>();
             auto pos = e->get<Position>();
             auto appearance = e->get<Appearance>();
-            renderMat(renderer_, mat->material.color, pos->position_, appearance->size_);
+            renderMat(renderer_, ren->material.color, ren->position, appearance->size_);
         }
         // std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
         for (auto& e : (collector_->getCollectedEntities()) )
         {
-            std::cout << "ent";
+            //std::cout << "ent";
         }
         collector_->clearCollectedEntities();
     }
@@ -262,44 +285,10 @@ private:
 
 /* -------------------------------------------------------------------------- */
 
-SDL_Rect toSdlRect(Rectangle r)
-{
-    SDL_Rect sr;
-    sr.x = r.position.x();
-    sr.y = r.position.y();
-    sr.w = r.size.x();
-    sr.h = r.size.y();
-    return sr;
-}
+
 
 /* -------------------------------------------------------------------------- */
 
-/*
-class RenderPositionSystem : public IReactiveSystem
-{
-    // std::unique_ptr<TriggerOnEvent> trigger;
-    TriggerOnEvent trigger;
-
-public:
-    RenderPositionSystem()
-    {
-        trigger = Matcher_allOf(Position, RenderComponent)->onEntityAdded();
-        // trigger.reset(Matcher_allOf(Position, RenderComponent)->onEntityAdded());
-    }
-
-    void execute(std::vector<EntityPtr> entities)
-    {
-        // Gets executed only if the observed group changed.
-        // Changed entities are passed as an argument
-        for (auto& e : entities)
-        {
-            auto pos = e->get<Position>();
-            // NOTE: Unity-only example, but this maybe could be the code if Unity were compatible with C++
-            // e->get<View>()->gameObject.transform.position = new Vector3(pos->x, pos->y, pos->z);
-        }
-    }
-};
-*/
 
 /* -------------------------------------------------------------------------- */
 
@@ -324,12 +313,16 @@ void mainLoop(void* vctx)
 
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            std::cout << "Quitting\n";
+            //std::cout << "Quitting\n";
             ctx->done = 1;
         }
         if (event.type == SDL_KEYDOWN) {
-            std::cout << "Hello\n";
+            //std::cout << "Hello\n";
             addRandomEntity(ctx->pool.get());
+        }
+        if (event.type == SDL_MOUSEBUTTONDOWN)
+        {
+            changeRandomEntity(ctx->pool.get());
         }
     }
 
@@ -382,7 +375,7 @@ int main(const int argc, const char* argv[])
     //  systems->execute();
     //}
 
-    std::cout << "All systems initilized.\n";
+    //std::cout << "All systems initilized.\n";
 
     auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) });
     auto entities = pool->getEntities(matcher);
@@ -391,13 +384,13 @@ int main(const int argc, const char* argv[])
         // do something
     }
 #endif
-    std::cout << "sdl::Init()\n";
+    //std::cout << "sdl::Init()\n";
     sdl::Init();
 
     /* seed random number generator */
     srand(time(NULL));
 
-    std::cout << "sdl::Init() successfully!\n";
+    //std::cout << "sdl::Init() successfully!\n";
     sdl::Window w{ "Test window", kScreenWidth, kScreenHeight };
     auto renderer = w.CreateRenderer();
     ((MySystem*)mySystem.get())->setRenderer(*renderer);
@@ -423,7 +416,7 @@ int main(const int argc, const char* argv[])
         systems, pool, mySystem,
         0, std::make_shared<sdl::Sprite>(std::move(snowSprite))
     };
-    std::cout << "Context created.\n";
+    //std::cout << "Context created.\n";
 
 /* Enter render loop, waiting for user to quit */
 #ifdef __EMSCRIPTEN__
@@ -432,7 +425,7 @@ int main(const int argc, const char* argv[])
     while (ctx->done == 0) {
         mainLoop(ctx);
     }
-    std::cout << "Done.\n";
+    //std::cout << "Done.\n";
     delete ctx;
 #endif
 

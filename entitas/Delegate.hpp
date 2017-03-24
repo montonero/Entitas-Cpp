@@ -1,3 +1,4 @@
+// Copyright (c) 2017 Igor M
 // Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: MIT License
 // MIT License web page: https://opensource.org/licenses/MIT
@@ -63,6 +64,7 @@ template <typename TReturnType, typename... TArgs>
 class Delegate<TReturnType(TArgs...)> {
     using Invoker = DelegateImpl::Invoker<TReturnType, TArgs...>;
     using FunctionType = std::function<TReturnType(TArgs...)>;
+    // Use an id alongside function so that we can identify them for later removal
     using FunctionPair = std::pair<size_t, FunctionType>;
     // using FunctionPointer = std::shared_ptr<FunctionType>;
     using FunctionPointer = FunctionType;
@@ -88,7 +90,7 @@ public:
     Delegate& remove(const FunctionPair function)
     {
         using namespace std;
-        std::lock_guard<std::mutex> lock(mMutex);
+        lock_guard<mutex> lock(mMutex);
         if (functionList_.size() > 0)
             functionList_.erase(remove_if(begin(functionList_), end(functionList_),
                 bind(areEqual1, function.first, placeholders::_1)           ), end(functionList_));

@@ -1,3 +1,4 @@
+// Copyright (c) 2017 Igor M
 // Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: MIT License
 // MIT License web page: https://opensource.org/licenses/MIT
@@ -63,7 +64,9 @@ private:
     void addEntity(Group::SharedPtr group, EntityPtr entity, ComponentId index, IComponent* component);
     /// We store collected entities here
     CollectedEntities collectedEntities_;
+    /// Groups that are used to 'collect' entities
     std::vector<Group::SharedPtr> groups_;
+    
     std::vector<GroupEventType> eventTypes_;
     /// This is a callback that will be called by group and will save changes in 'collectedEntities_'
     std::function<void(Group::SharedPtr, EntityPtr, ComponentId, IComponent*)> addEntityCache_;

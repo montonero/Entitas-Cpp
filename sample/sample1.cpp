@@ -51,16 +51,12 @@ class Position : public IComponent
 {
 public:
   // You must provide at least ONE public "Reset" method with any parameters you want
-  void reset(float px, float py, float pz)
+  void reset(Vec2 pos)
   {
-    x = px;
-    y = py;
-    z = pz;
+      pos_ = pos;
   }
 
-  float x;
-  float y;
-  float z;
+    Vec2 pos_;
 };
 
 

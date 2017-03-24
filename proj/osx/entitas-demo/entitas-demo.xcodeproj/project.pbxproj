@@ -77,6 +77,10 @@
 		893F35AF1DE714AA0001A83A /* SystemContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35A51DE714AA0001A83A /* SystemContainer.cpp */; };
 		893F35B21DE714BD0001A83A /* sample1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 893F35B11DE714BD0001A83A /* sample1.cpp */; };
 		893F35E11DE717490001A83A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893F35E01DE717490001A83A /* SDL2.framework */; };
+		89CF22651E856E5A00BB59F6 /* format.cc in Sources */ = {isa = PBXBuildFile; fileRef = 89CF225B1E856E5A00BB59F6 /* format.cc */; };
+		89CF22671E856E5A00BB59F6 /* ostream.cc in Sources */ = {isa = PBXBuildFile; fileRef = 89CF225D1E856E5A00BB59F6 /* ostream.cc */; };
+		89CF22691E856E5A00BB59F6 /* posix.cc in Sources */ = {isa = PBXBuildFile; fileRef = 89CF225F1E856E5A00BB59F6 /* posix.cc */; };
+		89CF226B1E856E5A00BB59F6 /* printf.cc in Sources */ = {isa = PBXBuildFile; fileRef = 89CF22611E856E5A00BB59F6 /* printf.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -209,6 +213,16 @@
 		893F35B11DE714BD0001A83A /* sample1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sample1.cpp; path = ../../../../sample/sample1.cpp; sourceTree = "<group>"; };
 		893F35B71DE715FD0001A83A /* sample2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sample2; sourceTree = BUILT_PRODUCTS_DIR; };
 		893F35E01DE717490001A83A /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		89CF225B1E856E5A00BB59F6 /* format.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = format.cc; path = ../../../external/fmt/fmt/format.cc; sourceTree = "<group>"; };
+		89CF225C1E856E5A00BB59F6 /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = format.h; path = ../../../external/fmt/fmt/format.h; sourceTree = "<group>"; };
+		89CF225D1E856E5A00BB59F6 /* ostream.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ostream.cc; path = ../../../external/fmt/fmt/ostream.cc; sourceTree = "<group>"; };
+		89CF225E1E856E5A00BB59F6 /* ostream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ostream.h; path = ../../../external/fmt/fmt/ostream.h; sourceTree = "<group>"; };
+		89CF225F1E856E5A00BB59F6 /* posix.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = posix.cc; path = ../../../external/fmt/fmt/posix.cc; sourceTree = "<group>"; };
+		89CF22601E856E5A00BB59F6 /* posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = posix.h; path = ../../../external/fmt/fmt/posix.h; sourceTree = "<group>"; };
+		89CF22611E856E5A00BB59F6 /* printf.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = printf.cc; path = ../../../external/fmt/fmt/printf.cc; sourceTree = "<group>"; };
+		89CF22621E856E5A00BB59F6 /* printf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = printf.h; path = ../../../external/fmt/fmt/printf.h; sourceTree = "<group>"; };
+		89CF22631E856E5A00BB59F6 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = string.h; path = ../../../external/fmt/fmt/string.h; sourceTree = "<group>"; };
+		89CF22641E856E5A00BB59F6 /* time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = time.h; path = ../../../external/fmt/fmt/time.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -327,6 +341,7 @@
 		786999DE1DE5D05800FB0EC9 = {
 			isa = PBXGroup;
 			children = (
+				89CF225A1E856E3100BB59F6 /* fmt */,
 				784711921E78236D003817CA /* SDLpp */,
 				784711831E780E6B003817CA /* sample2a */,
 				784711571E780E1B003817CA /* entitas */,
@@ -416,6 +431,23 @@
 				893F35E01DE717490001A83A /* SDL2.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		89CF225A1E856E3100BB59F6 /* fmt */ = {
+			isa = PBXGroup;
+			children = (
+				89CF225B1E856E5A00BB59F6 /* format.cc */,
+				89CF225C1E856E5A00BB59F6 /* format.h */,
+				89CF225D1E856E5A00BB59F6 /* ostream.cc */,
+				89CF225E1E856E5A00BB59F6 /* ostream.h */,
+				89CF225F1E856E5A00BB59F6 /* posix.cc */,
+				89CF22601E856E5A00BB59F6 /* posix.h */,
+				89CF22611E856E5A00BB59F6 /* printf.cc */,
+				89CF22621E856E5A00BB59F6 /* printf.h */,
+				89CF22631E856E5A00BB59F6 /* string.h */,
+				89CF22641E856E5A00BB59F6 /* time.h */,
+			);
+			name = fmt;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -629,12 +661,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89CF22671E856E5A00BB59F6 /* ostream.cc in Sources */,
 				784711A01E782387003817CA /* Window.cpp in Sources */,
 				7847119F1E782387003817CA /* View.cpp in Sources */,
 				7847119E1E782387003817CA /* Texture.cpp in Sources */,
 				7847119B1E782387003817CA /* Renderer.cpp in Sources */,
+				89CF22691E856E5A00BB59F6 /* posix.cc in Sources */,
 				7847119A1E782387003817CA /* Clock.cpp in Sources */,
 				7847119D1E782387003817CA /* Text.cpp in Sources */,
+				89CF226B1E856E5A00BB59F6 /* printf.cc in Sources */,
+				89CF22651E856E5A00BB59F6 /* format.cc in Sources */,
 				7847119C1E782387003817CA /* Sprite.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -709,7 +745,7 @@
 		784711901E782367003817CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEVELOPMENT_TEAM = Z5NG57QR3C;
@@ -718,14 +754,23 @@
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../..",
+					"$(SRCROOT)/../../../external/glm",
+					"$(SRCROOT)/../../../external/SDLpp/include",
+					"$(SRCROOT)/../../../external/mathfu/include",
+					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
+					"$(SRCROOT)/../../../external/fmt",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
 		784711911E782367003817CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEVELOPMENT_TEAM = Z5NG57QR3C;
@@ -734,14 +779,23 @@
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../..",
+					"$(SRCROOT)/../../../external/glm",
+					"$(SRCROOT)/../../../external/SDLpp/include",
+					"$(SRCROOT)/../../../external/mathfu/include",
+					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
+					"$(SRCROOT)/../../../external/fmt",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
 		786999EC1DE5D05900FB0EC9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -784,6 +838,7 @@
 					"$(SRCROOT)/../../../external/SDLpp/include",
 					"$(SRCROOT)/../../../external/mathfu/include",
 					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
+					"$(SRCROOT)/../../../external/fmt",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -796,7 +851,7 @@
 		786999ED1DE5D05900FB0EC9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -833,6 +888,7 @@
 					"$(SRCROOT)/../../../external/SDLpp/include",
 					"$(SRCROOT)/../../../external/mathfu/include",
 					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
+					"$(SRCROOT)/../../../external/fmt",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -892,6 +948,7 @@
 					"$(SRCROOT)/../../../external/mathfu/include",
 					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
 					"$(SRCROOT)/../../../external/SDLpp/include",
+					"$(SRCROOT)/../../../external/fmt",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -912,6 +969,7 @@
 					"$(SRCROOT)/../../../external/mathfu/include",
 					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
 					"$(SRCROOT)/../../../external/SDLpp/include",
+					"$(SRCROOT)/../../../external/fmt",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

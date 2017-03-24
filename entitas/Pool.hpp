@@ -26,8 +26,9 @@ class Pool
 		void destroyEntity(EntityPtr entity);
 		void destroyAllEntities();
 
-		auto getEntities() -> const std::vector<EntityPtr>&;
-		auto getEntities(const Matcher matcher) -> const std::vector<EntityPtr>&;
+		auto getEntities() ->  std::vector<EntityPtr>&;
+		auto getEntities(const Matcher matcher) ->  std::vector<EntityPtr>&;
+    
 		auto getGroup(Matcher matcher) -> Group::SharedPtr;
 
 		void clearGroups();
@@ -72,6 +73,8 @@ class Pool
 		std::map<ComponentId, std::vector<std::weak_ptr<Group>>> groupsForIndex_;
 
 		std::vector<EntityPtr> entitiesCache_;
+        // TODO cache other functions too
+        // so that we don't have to construct lambda everytime
 		std::function<void(Entity*)> onEntityReleasedCache_;
 };
 

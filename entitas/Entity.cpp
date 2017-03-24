@@ -23,9 +23,9 @@ auto Entity::addComponent(const ComponentId index, IComponent* component) -> Ent
 
     components_[index] = component;
 
-    onComponentAdded(mInstance.lock(), index, component);
+    onComponentAdded(instance_.lock(), index, component);
 
-    return mInstance.lock();
+    return instance_.lock();
 }
 
 auto Entity::removeComponent(const ComponentId index) -> EntityPtr
@@ -40,7 +40,7 @@ auto Entity::removeComponent(const ComponentId index) -> EntityPtr
 
     replace(index, nullptr);
 
-    return mInstance.lock();
+    return instance_.lock();
 }
 
 auto Entity::replaceComponent(const ComponentId index, IComponent* component) -> EntityPtr
@@ -55,7 +55,7 @@ auto Entity::replaceComponent(const ComponentId index, IComponent* component) ->
         addComponent(index, component);
     }
 
-    return mInstance.lock();
+    return instance_.lock();
 }
 
 auto Entity::getComponent(const ComponentId index) const -> IComponent*
@@ -90,17 +90,17 @@ auto Entity::getComponentsCount() const -> unsigned int
 
 void Entity::removeAllComponents()
 {
-    {
-        auto componentsIdTemp = std::vector<ComponentId>(components_.size());
+    std::vector<ComponentId> componentsIdTemp;
+    //for (const auto& pair : components_) {
+    //    componentsIdTemp.push_back(pair.first);
+    //}
+    using namespace std;
+    transform(begin(components_), end(components_), back_inserter(componentsIdTemp), [](auto& p) { return p.first; });
 
-        for (const auto& pair : components_) {
-            componentsIdTemp.push_back(pair.first);
-        }
-
-        while (!components_.empty()) {
-            replace(componentsIdTemp.back(), nullptr);
-            componentsIdTemp.pop_back();
-        }
+    while (!components_.empty()) {
+        // Replacing with nullptr removes it
+        replace(componentsIdTemp.back(), nullptr);
+        componentsIdTemp.pop_back();
     }
 }
 
@@ -126,7 +126,7 @@ bool Entity::operator==(const Entity right) const
 
 void Entity::setInstance(EntityPtr instance)
 {
-    mInstance = instance;
+    instance_ = instance;
 }
 
 void Entity::destroy()
@@ -138,9 +138,9 @@ void Entity::destroy()
     enabled_ = false;
 }
 
-auto Entity::getComponentPool(const ComponentId index) const -> ComponentPool*
+auto Entity::getComponentPool(const ComponentId index) const -> ComponentPool&
 {
-    return &(componentPools_[index]);
+    return (componentPools_[index]);
 }
 
 void Entity::replace(const ComponentId index, IComponent* replacement)
@@ -148,16 +148,17 @@ void Entity::replace(const ComponentId index, IComponent* replacement)
     auto previousComponent = getComponent(index);
 
     if (previousComponent == replacement) {
-        onComponentReplaced(mInstance.lock(), index, previousComponent, replacement);
+        onComponentReplaced(instance_.lock(), index, previousComponent, replacement);
     } else {
-        getComponentPool(index)->push(previousComponent);
+        // Save 'replaced' component to the pool for later reuse
+        getComponentPool(index).push(previousComponent);
 
         if (replacement == nullptr) {
             components_.erase(index);
-            onComponentRemoved(mInstance.lock(), index, previousComponent);
+            onComponentRemoved(instance_.lock(), index, previousComponent);
         } else {
             components_[index] = replacement;
-            onComponentReplaced(mInstance.lock(), index, previousComponent, replacement);
+            onComponentReplaced(instance_.lock(), index, previousComponent, replacement);
         }
     }
 }
