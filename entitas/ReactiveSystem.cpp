@@ -6,134 +6,120 @@
 #include "Pool.hpp"
 #include "TriggerOnEvent.hpp"
 
-namespace entitas
-{
-ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveSystem> subsystem) :
-    ReactiveSystem(pool, subsystem, std::vector<TriggerOnEvent>{subsystem->trigger})
+namespace entitas {
+ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveSystem> subsystem)
+    : ReactiveSystem(pool, subsystem, std::vector<TriggerOnEvent>{ subsystem->trigger })
 {
 }
 
-ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IMultiReactiveSystem> subsystem) :
-	ReactiveSystem(pool, subsystem, subsystem->triggers)
+ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IMultiReactiveSystem> subsystem)
+    : ReactiveSystem(pool, subsystem, subsystem->triggers)
 {
 }
 
 ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSystem> subsystem, std::vector<TriggerOnEvent> triggers)
+    : subsystem_{ subsystem }
 {
-	mSubsystem = subsystem;
 
-	if(std::dynamic_pointer_cast<IEnsureComponents>(subsystem) != nullptr)
-	{
-		mEnsureComponents = (std::dynamic_pointer_cast<IEnsureComponents>(subsystem))->ensureComponents;
-	}
+    if (std::dynamic_pointer_cast<IEnsureComponents>(subsystem) != nullptr) {
+        ensureComponents_ = (std::dynamic_pointer_cast<IEnsureComponents>(subsystem))->ensureComponents;
+    }
 
-	if(std::dynamic_pointer_cast<IExcludeComponents>(subsystem) != nullptr)
-	{
-		mExcludeComponents = (std::dynamic_pointer_cast<IExcludeComponents>(subsystem))->excludeComponents;
-	}
+    if (std::dynamic_pointer_cast<IExcludeComponents>(subsystem) != nullptr) {
+        excludeComponents_ = (std::dynamic_pointer_cast<IExcludeComponents>(subsystem))->excludeComponents;
+    }
 
-	if(std::dynamic_pointer_cast<IClearReactiveSystem>(subsystem) != nullptr)
-	{
-		mClearAfterExecute = true;
-	}
+    if (std::dynamic_pointer_cast<IClearReactiveSystem>(subsystem) != nullptr) {
+        clearAfterExecute_ = true;
+    }
 
-	auto triggersLength = triggers.size();
-	auto groups = std::vector<Group::SharedPtr>(triggersLength);
-	auto eventTypes = std::vector<GroupEventType>(triggersLength);
+    auto triggersLength = triggers.size();
+    auto groups = std::vector<Group::SharedPtr>(triggersLength);
+    auto eventTypes = std::vector<GroupEventType>(triggersLength);
 
-	for(unsigned int i = 0; i < triggersLength; ++i)
-	{
-		auto trigger = triggers[i];
-		groups[i] = pool->getGroup(trigger.trigger);
-		eventTypes[i] = trigger.eventType;
-	}
+    for (unsigned int i = 0; i < triggersLength; ++i) {
+        auto trigger = triggers[i];
+        groups[i] = pool->getGroup(trigger.trigger);
+        eventTypes[i] = trigger.eventType;
+    }
 
-	collector_ = new Collector(groups, eventTypes);
+#if 0
+    for_each(triggers, [&](auto& trigger)
+             {
+                 groups.push_back(pool->getGroup(trigger));
+                 eventTypes.push_back(trigger.eventType);
+             });
+#endif
+
+    collector_ = new Collector(std::move(groups), std::move(eventTypes));
 }
 
-ReactiveSystem::~ReactiveSystem ()
+ReactiveSystem::~ReactiveSystem()
 {
-	deactivate();
-	delete collector_;
+    deactivate();
+    delete collector_;
 }
 
 auto ReactiveSystem::getSubsystem() const -> std::shared_ptr<IReactiveExecuteSystem>
 {
-	return mSubsystem;
+    return subsystem_;
 }
 
 void ReactiveSystem::activate()
 {
-	collector_->activate();
+    collector_->activate();
 }
 
 void ReactiveSystem::deactivate()
 {
-	collector_->deactivate();
+    collector_->deactivate();
 }
 
 void ReactiveSystem::clear()
 {
-	collector_->clearCollectedEntities();
+    collector_->clearCollectedEntities();
 }
 
 void ReactiveSystem::execute()
 {
-	if(collector_->getCollectedEntities().size() != 0)
-	{
-		if(! mEnsureComponents.isEmpty())
-		{
-			if(! mExcludeComponents.isEmpty())
-			{
-				for(const auto &e : collector_->getCollectedEntities())
-				{
-					if(mEnsureComponents.matches(e) && ! mExcludeComponents.matches(e))
-					{
-						mEntityBuffer.push_back(e);
-					}
-				}
-			}
-			else
-			{
-				for(const auto &e : collector_->getCollectedEntities())
-				{
-					if(mEnsureComponents.matches(e))
-					{
-						mEntityBuffer.push_back(e);
-					}
-				}
-			}
-		}
-		else if(! mExcludeComponents.isEmpty())
-		{
-			for(const auto &e : collector_->getCollectedEntities())
-			{
-				if(! mExcludeComponents.matches(e))
-				{
-					mEntityBuffer.push_back(e);
-				}
-			}
-		}
-		else
-		{
-			for(const auto &e : collector_->getCollectedEntities())
-			{
-				mEntityBuffer.push_back(e);
-			}
-		}
+    if (collector_->getCollectedEntities().size() != 0) {
+        if (!ensureComponents_.isEmpty()) {
+            if (!excludeComponents_.isEmpty()) {
+                for (const auto& e : collector_->getCollectedEntities()) {
+                    if (ensureComponents_.matches(e) && !excludeComponents_.matches(e)) {
+                        entityBuffer_.push_back(e);
+                    }
+                }
+            } else {
+                for (const auto& e : collector_->getCollectedEntities()) {
+                    if (ensureComponents_.matches(e)) {
+                        entityBuffer_.push_back(e);
+                    }
+                }
+            }
+        } else if (!excludeComponents_.isEmpty()) {
+            for (const auto& e : collector_->getCollectedEntities()) {
+                if (!excludeComponents_.matches(e)) {
+                    entityBuffer_.push_back(e);
+                }
+            }
+        } else {
+            for (const auto& e : collector_->getCollectedEntities()) {
+                entityBuffer_.push_back(e);
+            }
+        }
 
-		collector_->clearCollectedEntities();
+        collector_->clearCollectedEntities();
+        
+        if (!entityBuffer_.empty()) {
+            subsystem_->execute(entityBuffer_);
+            entityBuffer_.clear();
 
-		if(mEntityBuffer.size() != 0)
-		{
-			mSubsystem->execute(mEntityBuffer);
-			mEntityBuffer.clear();
-
-			if(mClearAfterExecute)
-			{
-				collector_->clearCollectedEntities();
-			}
-		}
-	}
+            // FIXME we are already clearing?!
+            if (clearAfterExecute_) {
+                collector_->clearCollectedEntities();
+            }
+        }
+    }
 }
 }

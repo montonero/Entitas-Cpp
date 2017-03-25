@@ -16,7 +16,7 @@ Collector::Collector(Group::SharedPtr group, const GroupEventType eventType)
 }
 
 /// This is currently not used
-Collector::Collector(std::vector<Group::SharedPtr> groups, std::vector<GroupEventType> eventTypes)
+Collector::Collector(std::vector<Group::SharedPtr>&& groups, std::vector<GroupEventType>&& eventTypes)
     : groups_{ groups }
     , eventTypes_{ eventTypes }
 {

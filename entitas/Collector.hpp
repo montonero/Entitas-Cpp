@@ -46,7 +46,7 @@ public:
 
     /// Creates a Collector and will collect changed entities
     /// based on the specified eventTypes.
-    Collector(std::vector<Group::SharedPtr> groups, std::vector<GroupEventType> eventTypes);
+    Collector(std::vector<Group::SharedPtr>&& groups, std::vector<GroupEventType>&& eventTypes);
     ~Collector();
 
     void activate();

@@ -32,11 +32,15 @@ public:
     void execute();
 
 private:
-    std::shared_ptr<IReactiveExecuteSystem> mSubsystem;
+    std::shared_ptr<IReactiveExecuteSystem> subsystem_;
     Collector* collector_{ nullptr };
-    Matcher mEnsureComponents;
-    Matcher mExcludeComponents;
-    bool mClearAfterExecute{ false };
-    std::vector<EntityPtr> mEntityBuffer;
+    /// Additional matchers
+    /// ensure that only these components are gathered by observer
+    Matcher ensureComponents_;
+    /// make sure these are not
+    Matcher excludeComponents_;
+    /// FIXME bug?
+    bool clearAfterExecute_{ false };
+    std::vector<EntityPtr> entityBuffer_;
 };
 }
