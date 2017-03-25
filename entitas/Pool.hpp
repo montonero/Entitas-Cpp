@@ -29,6 +29,9 @@ class Pool
 		auto getEntities() ->  std::vector<EntityPtr>&;
 		auto getEntities(const Matcher matcher) ->  std::vector<EntityPtr>&;
     
+    /// Returns a group for the specified matcher.
+    /// Calling context.GetGroup(matcher) with the same matcher will always
+    /// return the same instance of the group.
 		auto getGroup(Matcher matcher) -> Group::SharedPtr;
 
 		void clearGroups();

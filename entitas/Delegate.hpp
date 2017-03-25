@@ -13,56 +13,57 @@
 #include <mutex>
 #include <vector>
 
+#include "Functional.hpp"
+
 namespace entitas {
 template <typename>
 class Delegate;
 
 /* -------------------------------------------------------------------------- */
 
-namespace DelegateImpl {
-    template <typename TReturnType, typename... TArgs>
-    struct Invoker {
-        using ReturnType = std::vector<TReturnType>;
+namespace detail {
 
-    public:
-        static ReturnType invoke(Delegate<TReturnType(TArgs...)>& delegate,
-            TArgs... params)
-        {
-            std::lock_guard<std::mutex> lock(delegate.mMutex);
-            ReturnType returnValues;
+template <typename TReturnType, typename... TArgs>
+struct Invoker {
+    using ReturnType = std::vector<TReturnType>;
 
-            for (const auto& functionPtr : delegate.functionList_) {
-                returnValues.push_back((*functionPtr)(params...));
-            }
+public:
+    static ReturnType invoke(Delegate<TReturnType(TArgs...)>& delegate,
+        TArgs... params)
+    {
+        std::lock_guard<std::mutex> lock(delegate.mMutex);
+        ReturnType returnValues;
 
-            return returnValues;
+        for (const auto& functionPtr : delegate.functionList_) {
+            returnValues.push_back((*functionPtr)(params...));
         }
-    };
 
-    /* -------------------------------------------------------------------------- */
+        return returnValues;
+    }
+};
 
-    template <typename... TArgs>
-    struct Invoker<void, TArgs...> {
-        using ReturnType = void;
+/* -------------------------------------------------------------------------- */
 
-    public:
-        static void invoke(Delegate<void(TArgs...)>& delegate, TArgs... params)
-        {
-            using namespace std;
-            std::lock_guard<std::mutex> lock(delegate.mMutex);
+template <typename... TArgs>
+struct Invoker<void, TArgs...> {
+    using ReturnType = void;
 
-            for_each(begin(delegate.functionList_), end(delegate.functionList_),
-                     [&](auto& fpair){ auto& f = fpair.second; f(params...);}
-                     );
-        }
-    };
-}
+public:
+    static void invoke(Delegate<void(TArgs...)>& delegate, TArgs... params)
+    {
+        std::lock_guard<std::mutex> lock(delegate.mMutex);
+
+        for_each(delegate.functionList_,
+            [&](auto& fpair) { auto& f = fpair.second; f(params...); });
+    }
+};
+} // namespace detail
 
 /* -------------------------------------------------------------------------- */
 
 template <typename TReturnType, typename... TArgs>
 class Delegate<TReturnType(TArgs...)> {
-    using Invoker = DelegateImpl::Invoker<TReturnType, TArgs...>;
+    using Invoker = detail::Invoker<TReturnType, TArgs...>;
     using FunctionType = std::function<TReturnType(TArgs...)>;
     // Use an id alongside function so that we can identify them for later removal
     using FunctionPair = std::pair<size_t, FunctionType>;
@@ -93,7 +94,8 @@ public:
         lock_guard<mutex> lock(mMutex);
         if (functionList_.size() > 0)
             functionList_.erase(remove_if(begin(functionList_), end(functionList_),
-                bind(areEqual1, function.first, placeholders::_1)           ), end(functionList_));
+                                    bind(areEqual1, function.first, placeholders::_1)),
+                end(functionList_));
 
         return *this;
     }
@@ -133,20 +135,12 @@ public:
     static inline bool areEqual(const FunctionPair& f1, const FunctionPair& f2)
     {
         return f1.first == f2.first;
-        // return (hash(f1) == hash(f2));
-        // FunctionType& ff1 = const_cast<FunctionType&>(f1);
-        // auto h = ff1.template target<FunctionType>();
-        // auto h2 = f2.template target<FunctionType>();
-        // return h == h2;
-        // if (hash(f1) == hash(f2)) {
-        // }
     }
 
     static inline constexpr size_t hash(const FunctionType& function)
     {
         return function.target_type().hash_code();
     }
-
 
 private:
     std::mutex mMutex;

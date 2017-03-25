@@ -81,6 +81,7 @@
 		89CF22671E856E5A00BB59F6 /* ostream.cc in Sources */ = {isa = PBXBuildFile; fileRef = 89CF225D1E856E5A00BB59F6 /* ostream.cc */; };
 		89CF22691E856E5A00BB59F6 /* posix.cc in Sources */ = {isa = PBXBuildFile; fileRef = 89CF225F1E856E5A00BB59F6 /* posix.cc */; };
 		89CF226B1E856E5A00BB59F6 /* printf.cc in Sources */ = {isa = PBXBuildFile; fileRef = 89CF22611E856E5A00BB59F6 /* printf.cc */; };
+		89CF22701E859C2B00BB59F6 /* Functional.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 89CF226F1E859C2B00BB59F6 /* Functional.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -223,6 +224,7 @@
 		89CF22621E856E5A00BB59F6 /* printf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = printf.h; path = ../../../external/fmt/fmt/printf.h; sourceTree = "<group>"; };
 		89CF22631E856E5A00BB59F6 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = string.h; path = ../../../external/fmt/fmt/string.h; sourceTree = "<group>"; };
 		89CF22641E856E5A00BB59F6 /* time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = time.h; path = ../../../external/fmt/fmt/time.h; sourceTree = "<group>"; };
+		89CF226F1E859C2B00BB59F6 /* Functional.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Functional.hpp; path = ../../../entitas/Functional.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -295,6 +297,7 @@
 				784711691E780E27003817CA /* SystemContainer.cpp */,
 				7847116A1E780E27003817CA /* SystemContainer.hpp */,
 				7847116B1E780E27003817CA /* TriggerOnEvent.hpp */,
+				89CF226F1E859C2B00BB59F6 /* Functional.hpp */,
 			);
 			name = entitas;
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 				7847117E1E780E27003817CA /* SystemContainer.hpp in Headers */,
 				784711711E780E27003817CA /* Entity.hpp in Headers */,
 				784711751E780E27003817CA /* IComponent.hpp in Headers */,
+				89CF22701E859C2B00BB59F6 /* Functional.hpp in Headers */,
 				7847116E1E780E27003817CA /* ComponentTypeId.hpp in Headers */,
 				7847117A1E780E27003817CA /* Pool.hpp in Headers */,
 				784711731E780E27003817CA /* Group.hpp in Headers */,

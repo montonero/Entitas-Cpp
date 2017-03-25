@@ -19,6 +19,9 @@ using ComponentPools = std::map<ComponentId, ComponentPool>;
 
 /* -------------------------------------------------------------------------- */
 
+/// Use context.CreateEntity() to create a new entity and
+/// context.DestroyEntity() to destroy it.
+/// You can add, replace and remove IComponent to an entity.
 class Entity {
     friend class Pool;
 
@@ -34,7 +37,7 @@ public:
     inline auto replace(TArgs&&... args) -> EntityPtr;
     template <typename T>
     inline auto refresh() -> EntityPtr;
-    
+
     template <typename T>
     inline auto get() const -> T*;
     template <typename T>
@@ -65,6 +68,9 @@ public:
 
 protected:
     void setInstance(EntityPtr instance);
+    /// Adds a component at the specified index.
+    /// You can only have one component at an index.
+    /// Each component type must have its own constant index.
     auto addComponent(const ComponentId index, IComponent* component) -> EntityPtr;
     auto removeComponent(const ComponentId index) -> EntityPtr;
     auto replaceComponent(const ComponentId index, IComponent* component) -> EntityPtr;
@@ -85,7 +91,13 @@ private:
 
     EntityPtrWeak instance_;
     std::map<ComponentId, IComponent*> components_;
-
+    /// componentPools is set by the context which created the entity and
+    /// is used to reuse removed components.
+    /// Removed components will be pushed to the componentPool.
+    /// Use entity.CreateComponent(index, type) to get a new or
+    /// reusable component from the componentPool.
+    /// Use entity.GetComponentPool(index) to get a componentPool for
+    /// a specific component index.
     ComponentPools& componentPools_;
 };
 

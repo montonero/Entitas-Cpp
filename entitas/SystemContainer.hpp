@@ -26,8 +26,8 @@ namespace entitas
         void clearReactiveSystems();
 
     private:
-        std::vector<std::shared_ptr<IInitializeSystem>> mInitializeSystems;
-        std::vector<std::shared_ptr<IExecuteSystem>> mExecuteSystems;
+        std::vector<std::shared_ptr<IInitializeSystem>> initializeSystems_;
+        std::vector<std::shared_ptr<IExecuteSystem>> executeSystes_;
         std::vector<std::shared_ptr<IFixedExecuteSystem>> mFixedExecuteSystems;
     };
 

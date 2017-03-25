@@ -4,6 +4,7 @@
 
 #include "Pool.hpp"
 #include "Entity.hpp"
+#include "Functional.hpp"
 #include "ISystem.hpp"
 #include "ReactiveSystem.hpp"
 #include <algorithm>
@@ -85,8 +86,8 @@ auto Pool::createEntity() -> EntityPtr
 
 bool Pool::hasEntity(const EntityPtr& entity) const
 {
-    return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
-
+    //return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
+    return doesExist(entities_, entity);
 }
 
 void Pool::destroyEntity(EntityPtr entity)
@@ -130,7 +131,7 @@ void Pool::destroyAllEntities()
     }
 }
 
-auto Pool::getEntities() ->  std::vector<EntityPtr>&
+auto Pool::getEntities() -> std::vector<EntityPtr>&
 {
     if (entitiesCache_.empty()) {
         entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());
@@ -138,10 +139,11 @@ auto Pool::getEntities() ->  std::vector<EntityPtr>&
     return entitiesCache_;
 }
 
-auto Pool::getEntities(const Matcher matcher) ->  std::vector<EntityPtr>&
+auto Pool::getEntities(const Matcher matcher) -> std::vector<EntityPtr>&
 {
     return getGroup(std::move(matcher))->getEntities();
 }
+
 
 auto Pool::getGroup(Matcher matcher) -> Group::SharedPtr
 {
@@ -153,13 +155,16 @@ auto Pool::getGroup(Matcher matcher) -> Group::SharedPtr
 
         // 'Handle' all pool's entities
         auto& entities = getEntities();
-        std::for_each(std::begin(entities), std::end(entities), [=,&group](auto& e){ group->handleEntitySilently(e); });
+        for_each(entities,
+            [=, &group](auto& e) { group->handleEntitySilently(e); });
 
         groups_[group->getMatcher()] = group;
 
-        for (int i = 0, indicesLength = matcher.getIndices().size(); i < indicesLength; i++) {
-            groupsForIndex_[matcher.getIndices()[i]].push_back(group);
-        }
+        //for (int i = 0, indicesLength = matcher.getIndices().size(); i < indicesLength; i++) {
+        //    groupsForIndex_[matcher.getIndices()[i]].push_back(group);
+        //}
+        for_each(matcher.getIndices(),
+            [&, this](auto index) { groupsForIndex_[index].push_back(group); });
 
         onGroupCreated(this, group);
     } else {
@@ -199,9 +204,8 @@ void Pool::clearComponentPool(const ComponentId index)
 
 void Pool::clearComponentPools()
 {
-    for (const auto& pair : componentPools_) {
-        clearComponentPool(pair.first);
-    }
+    for_each(componentPools_,
+        [this](const auto& pair) { clearComponentPool(pair.first); });
 }
 
 void Pool::reset()
@@ -253,15 +257,13 @@ void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId ind
     // All groups that contain entities with a given component
     auto groups = groupsForIndex_[index];
 
-    if (groups.size() > 0) {
-        // Collect all the events that need to be processed (e.g. onAdded
-        for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i) {
-            auto g = groups[i].lock();
-            auto cb = g->handleEntity(entity);
+    // Collect all the events that need to be processed (e.g. onAdded
+    for_each(groups,
+        [=](const auto& g) {
+            auto cb = g.lock()->handleEntity(entity);
             if (cb)
-                (*cb)(g, entity, index, component);
-        }
-    }
+                (*cb)(g.lock(), entity, index, component);
+        });
 }
 
 void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
@@ -269,11 +271,10 @@ void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IC
     if (groupsForIndex_.find(index) == groupsForIndex_.end()) {
         return;
     }
-    using namespace std;
+    //using namespace std;
     auto& groups = groupsForIndex_[index];
-    for_each(begin(groups), end(groups),
-                 [=](const auto& g) {g.lock()->updateEntity(entity, index, previousComponent, newComponent);});
-
+    for_each(groups,
+        [=](const auto& g) { g.lock()->updateEntity(entity, index, previousComponent, newComponent); });
 }
 
 void Pool::onEntityReleased(Entity* entity)

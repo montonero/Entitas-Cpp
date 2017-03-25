@@ -25,7 +25,7 @@ namespace entitas
 
         bool isEmpty() const;
         bool matches(const EntityPtr& entity);
-        auto getIndices() -> const ComponentIdList;
+        auto getIndices() -> const ComponentIdList&;
         auto getAllOfIndices() const -> const ComponentIdList;
         auto getAnyOfIndices() const -> const ComponentIdList;
         auto getNoneOfIndices() const -> const ComponentIdList;

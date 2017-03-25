@@ -6,6 +6,7 @@
 #include "Collector.hpp"
 #include "Matcher.hpp"
 #include <algorithm>
+#include "Functional.hpp"
 
 namespace entitas {
 
@@ -43,7 +44,8 @@ auto Group::getSingleEntity() const -> EntityPtr
 
 bool Group::containsEntity(const EntityPtr& entity) const
 {
-    return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
+    //return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
+    return doesExist(entities_, entity);
 }
 
 auto Group::getMatcher() const -> Matcher
@@ -103,6 +105,7 @@ void Group::removeAllEventHandlers()
 
 bool Group::addEntitySilently(EntityPtr entity)
 {
+    // True if insertion took place
     if (entities_.insert(entity).second) {
         // Since entity was added we must update cache
         entitiesCache_.clear();

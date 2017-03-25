@@ -12,7 +12,13 @@
 
 namespace entitas {
 class Collector;
-    
+
+/// Use context.GetGroup(matcher) to get a group of entities which match
+/// the specified matcher. Calling context.GetGroup(matcher) with the
+/// same matcher will always return the same instance of the group.
+/// The created group is managed by the context and will always be up to date.
+/// It will automatically add entities that match the matcher or
+/// remove entities as soon as they don't match the matcher anymore.
 class Group {
     friend class Pool;
 
@@ -20,8 +26,8 @@ public:
     using SharedPtr = std::shared_ptr<Group>;
     Group(const Matcher& matcher);
     auto count() const -> unsigned int;
-    
-    auto getEntities() ->  std::vector<EntityPtr>&;
+
+    auto getEntities() -> std::vector<EntityPtr>&;
     auto getSingleEntity() const -> EntityPtr;
     bool containsEntity(const EntityPtr& entity) const;
     auto getMatcher() const -> Matcher;
@@ -44,6 +50,7 @@ protected:
     // Does not call callback
     void handleEntitySilently(EntityPtr entity);
     void handleEntity(EntityPtr entity, ComponentId index, IComponent* component);
+    /// Called by context/pool
     void updateEntity(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
     void removeAllEventHandlers();
 

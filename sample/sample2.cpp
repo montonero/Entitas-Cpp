@@ -137,8 +137,6 @@ class RenderPositionSystem : public IReactiveSystem {
 public:
     RenderPositionSystem()
     {
-        // auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(Move), COMPONENT_GET_TYPE_ID(Position) });
-        // trigger = Matcher_AllOf(Position, View)->OnEntityAdded();
         trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(Position) })).onEntityAdded();
     }
 
@@ -148,8 +146,8 @@ public:
         // Changed entities are passed as an argument
         for (auto& e : entities) {
             auto pos = e->get<Position>();
-            // NOTE: Unity-only example, but this maybe could be the code if Unity were compatible with C++
-            // e->Get<View>()->gameObject.transform.position = new Vector3(pos->x, pos->y, pos->z);
+            auto ren = e->get<RenderComponent>();
+            ren->position = pos->position_;
         }
     }
 };
@@ -246,7 +244,6 @@ public:
         group_ = pool_->getGroup(matcher);
         collector_ = group_->createCollector(GroupEventType::OnEntityAdded);
         //collector_->activate();
-        //collector_->activate();
         fmt::print("MySystem::setPool called\n");
     }
 
@@ -261,11 +258,10 @@ public:
         auto es = group_->getEntities();
         for (auto& e : es) {
             auto ren = e->get<RenderComponent>();
-            auto pos = e->get<Position>();
             auto appearance = e->get<Appearance>();
             renderMat(renderer_, ren->material.color, ren->position, appearance->size_);
         }
-        // std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
+
         for (auto& e : (collector_->getCollectedEntities()) )
         {
             //std::cout << "ent";
@@ -395,8 +391,6 @@ int main(const int argc, const char* argv[])
     auto renderer = w.CreateRenderer();
     ((MySystem*)mySystem.get())->setRenderer(*renderer);
 
-//ctx->renderer = ctx->window.CreateRenderer();
-//((MySystem*)mySystem.get())->setRenderer(*ctx->renderer);
 
 #ifdef __EMSCRIPTEN__
     const std::string kAssetsFolder = "/";
@@ -418,7 +412,7 @@ int main(const int argc, const char* argv[])
     };
     //std::cout << "Context created.\n";
 
-/* Enter render loop, waiting for user to quit */
+
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(mainLoop, (void*)ctx, 0, 0);
 #else

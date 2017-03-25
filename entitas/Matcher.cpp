@@ -64,7 +64,7 @@ namespace entitas
 		return matchesAllOf && matchesAnyOf && matchesNoneOf;
     }
 
-    auto Matcher::getIndices() -> const ComponentIdList
+    auto Matcher::getIndices() -> const ComponentIdList&
     {
 		if(indices_.empty())
 		{
@@ -120,6 +120,7 @@ namespace entitas
 		return true;
     }
 
+    // TODO need to implement component related changes
     auto Matcher::onEntityAdded() -> const TriggerOnEvent
     {
 		return TriggerOnEvent(*this, GroupEventType::OnEntityAdded);
