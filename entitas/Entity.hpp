@@ -64,6 +64,9 @@ public:
     EntityChanged onComponentAdded;
     ComponentReplaced onComponentReplaced;
     EntityChanged onComponentRemoved;
+    /// Occurs when an entity gets released and is not retained anymore.
+    /// All event handlers will be removed when
+    /// the entity gets destroyed by the context.
     EntityReleased onEntityReleased;
 
 protected:

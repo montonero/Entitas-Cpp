@@ -27,9 +27,9 @@ Pool::~Pool()
         // Warning, some entities remain undestroyed in the pool destruction !"
     }
 
-    while (!mReusableEntities.empty()) {
-        delete mReusableEntities.top();
-        mReusableEntities.pop();
+    while (!reusableEntities_.empty()) {
+        delete reusableEntities_.top();
+        reusableEntities_.pop();
     }
 
     for (auto& pair : componentPools_) {
@@ -41,14 +41,15 @@ Pool::~Pool()
         }
     }
 }
-
+    /// Creates a new entity or gets a reusable entity from the
+    /// internal ObjectPool for entities.
 auto Pool::createEntity() -> EntityPtr
 {
     EntityPtr entity;
 
-    if (mReusableEntities.size() > 0) {
-        entity = EntityPtr(mReusableEntities.top());
-        mReusableEntities.pop();
+    if (reusableEntities_.size() > 0) {
+        entity = EntityPtr(reusableEntities_.top());
+        reusableEntities_.pop();
     } else {
         entity = EntityPtr(new Entity(componentPools_), [](Entity* entity) {
             entity->onEntityReleased(entity);
@@ -106,7 +107,7 @@ void Pool::destroyEntity(EntityPtr entity)
 
     if (entity.use_count() == 1) {
         entity->onEntityReleased -= { entity->uuid_, onEntityReleasedCache_ };
-        mReusableEntities.push(entity.get());
+        reusableEntities_.push(entity.get());
     } else {
         retainedEntities_.insert(entity.get());
     }
@@ -222,7 +223,7 @@ auto Pool::getEntityCount() const -> unsigned int
 
 auto Pool::getReusableEntitiesCount() const -> unsigned int
 {
-    return mReusableEntities.size();
+    return reusableEntities_.size();
 }
 
 auto Pool::getRetainedEntitiesCount() const -> unsigned int
@@ -284,6 +285,6 @@ void Pool::onEntityReleased(Entity* entity)
     }
 
     retainedEntities_.erase(entity);
-    mReusableEntities.push(entity);
+    reusableEntities_.push(entity);
 }
 }

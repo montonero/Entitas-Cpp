@@ -65,7 +65,7 @@ class Pool
 		unsigned int creationIndex_;									///< Index that is used as uuid for Entities
 		std::unordered_set<EntityPtr> entities_;
 		std::unordered_map<Matcher, Group::SharedPtr> groups_;
-		std::stack<Entity*> mReusableEntities;
+		std::stack<Entity*> reusableEntities_;
 
 		std::unordered_set<Entity*> retainedEntities_;
     

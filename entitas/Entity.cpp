@@ -90,17 +90,17 @@ auto Entity::getComponentsCount() const -> unsigned int
 
 void Entity::removeAllComponents()
 {
-    std::vector<ComponentId> componentsIdTemp;
+    std::vector<ComponentId> componentsIds;
     //for (const auto& pair : components_) {
     //    componentsIdTemp.push_back(pair.first);
     //}
     using namespace std;
-    transform(begin(components_), end(components_), back_inserter(componentsIdTemp), [](auto& p) { return p.first; });
+    transform(begin(components_), end(components_), back_inserter(componentsIds), [](auto& p) { return p.first; });
 
     while (!components_.empty()) {
         // Replacing with nullptr removes it
-        replace(componentsIdTemp.back(), nullptr);
-        componentsIdTemp.pop_back();
+        replace(componentsIds.back(), nullptr);
+        componentsIds.pop_back();
     }
 }
 

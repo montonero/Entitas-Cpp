@@ -15,7 +15,7 @@ Collector::Collector(Group::SharedPtr group, const GroupEventType eventType)
 {
 }
 
-/// This is currently not used
+/// This is currently used by Reactive System
 Collector::Collector(std::vector<Group::SharedPtr>&& groups, std::vector<GroupEventType>&& eventTypes)
     : groups_{ groups }
     , eventTypes_{ eventTypes }

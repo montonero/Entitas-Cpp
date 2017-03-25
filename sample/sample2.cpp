@@ -320,6 +320,12 @@ void mainLoop(void* vctx)
         {
             changeRandomEntity(ctx->pool.get());
         }
+        if (event.type == SDL_MOUSEBUTTONUP)
+        {
+            auto x = event.button.x;
+            auto y = event.button.y;
+            fmt::print("Button clicked at {} {}\n",x, y);
+        }
     }
 
     ctx->renderer->clear(sdl::Colors::Black);
@@ -363,8 +369,9 @@ int main(const int argc, const char* argv[])
 
     //systems->add(pool->createSystem<DemoSystem>());
     auto mySystem = pool->createSystem<MySystem>();
-    systems->add(mySystem);
+
     systems->add(pool->createSystem<RenderPositionSystem>());
+    systems->add(mySystem);
     systems->initialize();
 
     //for(unsigned int i = 0; i < 2; ++i) {
