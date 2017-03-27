@@ -953,6 +953,7 @@
 					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
 					"$(SRCROOT)/../../../external/SDLpp/include",
 					"$(SRCROOT)/../../../external/fmt",
+					"$(SRCROOT)/../../../external",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -974,6 +975,7 @@
 					"$(SRCROOT)/../../../external/mathfu/dependencies/vectorial/include",
 					"$(SRCROOT)/../../../external/SDLpp/include",
 					"$(SRCROOT)/../../../external/fmt",
+					"$(SRCROOT)/../../../external",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

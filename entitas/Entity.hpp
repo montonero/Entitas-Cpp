@@ -10,6 +10,8 @@
 #include <map>
 #include <stack>
 
+#include <fmt/format.h>
+
 namespace entitas {
 class Entity;
 using EntityPtr = std::shared_ptr<Entity>;
@@ -28,6 +30,11 @@ class Entity {
 public:
     Entity(ComponentPools& componentPools)
         : componentPools_{ componentPools } {};
+    
+    ~Entity()
+    {
+        fmt::print("~Entity() id: {}", getUuid() );
+    }
 
     template <typename T, typename... TArgs>
     inline auto add(TArgs&&... args) -> EntityPtr;

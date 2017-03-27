@@ -23,40 +23,43 @@ class Delegate;
 
 namespace detail {
 
-template <typename TReturnType, typename... TArgs>
-struct Invoker {
-    using ReturnType = std::vector<TReturnType>;
+    template <typename TReturnType, typename... TArgs>
+    struct Invoker {
+        using ReturnType = std::vector<TReturnType>;
 
-public:
-    static ReturnType invoke(Delegate<TReturnType(TArgs...)>& delegate,
-        TArgs... params)
-    {
-        std::lock_guard<std::mutex> lock(delegate.mMutex);
-        ReturnType returnValues;
+    public:
+        static ReturnType invoke(Delegate<TReturnType(TArgs...)>& delegate,
+            TArgs... params)
+        {
+            std::lock_guard<std::mutex> lock(delegate.mMutex);
+            ReturnType returnValues;
 
-        for (const auto& functionPtr : delegate.functionList_) {
-            returnValues.push_back((*functionPtr)(params...));
+            for (const auto& functionPtr : delegate.functionList_) {
+                returnValues.push_back((*functionPtr)(params...));
+            }
+
+            return returnValues;
         }
+    };
 
-        return returnValues;
-    }
-};
+    /* -------------------------------------------------------------------------- */
 
-/* -------------------------------------------------------------------------- */
+    template <typename... TArgs>
+    struct Invoker<void, TArgs...> {
+        using ReturnType = void;
 
-template <typename... TArgs>
-struct Invoker<void, TArgs...> {
-    using ReturnType = void;
+    public:
+        static void invoke(Delegate<void(TArgs...)>& delegate, TArgs... params)
+        {
+            std::lock_guard<std::mutex> lock(delegate.mMutex);
 
-public:
-    static void invoke(Delegate<void(TArgs...)>& delegate, TArgs... params)
-    {
-        std::lock_guard<std::mutex> lock(delegate.mMutex);
-
-        for_each(delegate.functionList_,
-            [&](auto& fpair) { auto& f = fpair.second; f(params...); });
-    }
-};
+            for_each(delegate.functionList_,
+                [&](auto& fpair) {
+                    auto& f = fpair.second;
+                    f(params...);
+                });
+        }
+    };
 } // namespace detail
 
 /* -------------------------------------------------------------------------- */
