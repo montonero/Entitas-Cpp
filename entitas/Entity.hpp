@@ -74,7 +74,7 @@ public:
     /// Occurs when an entity gets released and is not retained anymore.
     /// All event handlers will be removed when
     /// the entity gets destroyed by the context.
-    EntityReleased onEntityReleased;
+    EntityReleased onReleased;
 
 protected:
     void setInstance(EntityPtr instance);
@@ -116,8 +116,8 @@ private:
 template <typename T, typename... TArgs>
 auto Entity::createComponent(TArgs&&... args) -> IComponent*
 {
-    auto componentPool = getComponentPool(ComponentTypeId::get<T>());
-    IComponent* component = nullptr;
+    auto& componentPool = getComponentPool(ComponentTypeId::get<T>());
+    IComponent* component{nullptr};
 
     if (componentPool.size() > 0) {
         component = componentPool.top();

@@ -35,7 +35,7 @@
 #include "Rectangle.h"
 
 constexpr int kScreenWidth = 600;
-constexpr int kScreenHeight = 1000;
+constexpr int kScreenHeight = 800;
 
 using namespace entitas;
 

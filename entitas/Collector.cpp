@@ -20,7 +20,7 @@ Collector::Collector(std::vector<Group::SharedPtr>&& groups, std::vector<GroupEv
     : groups_{ groups }
     , eventTypes_{ eventTypes }
 {
-    addEntityCache_ = std::bind(&Collector::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+    addEntityCache_ = std::bind(&Collector::addEntity, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4); // sizeof find out
 
     if (groups.size() != eventTypes.size()) {
         throw std::runtime_error("Error, group and eventType vector counts must be equal");

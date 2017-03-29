@@ -36,8 +36,7 @@ auto SystemContainer::add(std::shared_ptr<ISystem> system) -> SystemContainer*
 void SystemContainer::initialize()
 {
     using namespace std;
-    for_each(initializeSystems_,
-        [](auto& system) { system->initialize(); });
+    for_each(initializeSystems_, mem_fn(&IInitializeSystem::initialize));
 }
 
 void SystemContainer::execute()

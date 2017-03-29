@@ -31,7 +31,7 @@ namespace detail {
         static ReturnType invoke(Delegate<TReturnType(TArgs...)>& delegate,
             TArgs... params)
         {
-            std::lock_guard<std::mutex> lock(delegate.mMutex);
+            std::lock_guard<std::mutex> lock(delegate.mutex_);
             ReturnType returnValues;
 
             for (const auto& functionPtr : delegate.functionList_) {
@@ -51,8 +51,9 @@ namespace detail {
     public:
         static void invoke(Delegate<void(TArgs...)>& delegate, TArgs... params)
         {
-            std::lock_guard<std::mutex> lock(delegate.mMutex);
-
+            std::lock_guard<std::mutex> lock(delegate.mutex_);
+            if (delegate.functionList_.empty())
+                return;
             for_each(delegate.functionList_,
                 [&](auto& fpair) {
                     auto& f = fpair.second;
@@ -85,7 +86,7 @@ public:
     // Delegate& Connect(const FunctionType& function)
     Delegate& Connect(const FunctionPair function)
     {
-        std::lock_guard<std::mutex> lock(mMutex);
+        std::lock_guard<std::mutex> lock(mutex_);
         functionList_.push_back(function);
         return *this;
     }
@@ -94,7 +95,7 @@ public:
     Delegate& remove(const FunctionPair function)
     {
         using namespace std;
-        lock_guard<mutex> lock(mMutex);
+        lock_guard<mutex> lock(mutex_);
         if (functionList_.size() > 0)
             functionList_.erase(remove_if(begin(functionList_), end(functionList_),
                                     bind(areEqual1, function.first, placeholders::_1)),
@@ -110,7 +111,7 @@ public:
 
     Delegate& clear()
     {
-        std::lock_guard<std::mutex> lock(mMutex);
+        std::lock_guard<std::mutex> lock(mutex_);
         functionList_.clear();
         return *this;
     }
@@ -146,7 +147,7 @@ public:
     }
 
 private:
-    std::mutex mMutex;
+    std::mutex mutex_;
     std::vector<FunctionPair> functionList_;
 };
 }

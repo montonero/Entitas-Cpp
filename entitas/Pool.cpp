@@ -9,6 +9,7 @@
 #include "ReactiveSystem.hpp"
 #include <algorithm>
 #include <assert.h>
+#include <utility>
 
 namespace entitas {
 Pool::Pool(const unsigned int startCreationIndex)
@@ -48,11 +49,14 @@ auto Pool::createEntity() -> EntityPtr
     EntityPtr entity;
 
     if (reusableEntities_.size() > 0) {
-        entity = EntityPtr(reusableEntities_.top());
+        entity = EntityPtr(reusableEntities_.top(), [](Entity* entity) {
+            entity->onReleased(entity);
+        });
+
         reusableEntities_.pop();
     } else {
         entity = EntityPtr(new Entity(componentPools_), [](Entity* entity) {
-            entity->onEntityReleased(entity);
+            entity->onReleased(entity);
         });
     }
 
@@ -62,7 +66,7 @@ auto Pool::createEntity() -> EntityPtr
 
     entities_.insert(entity);
     entitiesCache_.clear();
-
+    // TODO This can be optimized by making less generic since 'onComponentAdded' will have usually only 1 callback
     entity->onComponentAdded += { entity->uuid_,
         [this](EntityPtr entity, ComponentId index, IComponent* component) {
             updateGroupsComponentAddedOrRemoved(entity, index, component);
@@ -76,8 +80,8 @@ auto Pool::createEntity() -> EntityPtr
             updateGroupsComponentReplaced(entity, index, previousComponent, newComponent);
         } };
 
-    entity->onEntityReleased.clear();
-    entity->onEntityReleased += { entity->uuid_, onEntityReleasedCache_ };
+    entity->onReleased.clear();
+    entity->onReleased += { entity->uuid_, onEntityReleasedCache_ };
 
     onEntityCreated(this, entity);
 
@@ -106,7 +110,7 @@ void Pool::destroyEntity(EntityPtr entity)
     onEntityDestroyed(this, entity);
 
     if (entity.use_count() == 1) {
-        entity->onEntityReleased -= { entity->uuid_, onEntityReleasedCache_ };
+        entity->onReleased -= { entity->uuid_, onEntityReleasedCache_ };
         reusableEntities_.push(entity.get());
     } else {
         retainedEntities_.insert(entity.get());
@@ -258,13 +262,32 @@ void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId ind
     // All groups that contain entities with a given component
     auto groups = groupsForIndex_[index];
 
-    // Collect all the events that need to be processed (e.g. onAdded
-    for_each(groups,
-        [=](const auto& g) {
-            auto cb = g.lock()->handleEntity(entity);
+    if (!groups.empty())
+    {
+        // Collect all the events that need to be processed (e.g. onAdded
+        std::vector<Group::GroupChanged*> events;
+        for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i)
+        {
+            events.push_back(groups[i].lock()->handleEntity(entity));
+        }
+        
+        for (int i = 0, eventsCount = events.size(); i < eventsCount; ++i)
+        {
+            auto cb = events[i];
             if (cb)
-                (*cb)(g.lock(), entity, index, component);
-        });
+                (*cb)(groups[i].lock(), entity, index, component);
+        }
+        
+
+#if 0
+        for_each(groups,
+            [=](const auto& g) {
+                auto groupChangedEvent = g.lock()->handleEntity(entity);
+                if (groupChangedEvent)
+                    (*groupChangedEvent)(g.lock(), entity, index, component);
+            });
+#endif
+    }
 }
 
 void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
