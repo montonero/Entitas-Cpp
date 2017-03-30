@@ -10,24 +10,21 @@
 #include <memory>
 
 namespace entitas {
+using std::dynamic_pointer_cast;
 auto SystemContainer::add(std::shared_ptr<ISystem> system) -> SystemContainer*
 {
-    if (std::dynamic_pointer_cast<ReactiveSystem>(system) != nullptr) {
-        if (std::dynamic_pointer_cast<IInitializeSystem>((std::dynamic_pointer_cast<ReactiveSystem>(system))->getSubsystem()) != nullptr) {
-            initializeSystems_.push_back(std::dynamic_pointer_cast<IInitializeSystem>((std::dynamic_pointer_cast<ReactiveSystem>(system))->getSubsystem()));
+    if (auto subSystemReactive = dynamic_pointer_cast<ReactiveSystem>(system) ) {
+        if (dynamic_pointer_cast<IInitializeSystem>(subSystemReactive->getSubsystem()) != nullptr) {
+            initializeSystems_.push_back(dynamic_pointer_cast<IInitializeSystem>(subSystemReactive->getSubsystem()));
         }
     } else {
-        if (std::dynamic_pointer_cast<IInitializeSystem>(system) != nullptr) {
-            initializeSystems_.push_back(std::dynamic_pointer_cast<IInitializeSystem>(system));
+        if (auto systemInitialize = dynamic_pointer_cast<IInitializeSystem>(system)) {
+            initializeSystems_.push_back(systemInitialize);
         }
     }
 
-    if (std::dynamic_pointer_cast<IExecuteSystem>(system) != nullptr) {
-        executeSystes_.push_back(std::dynamic_pointer_cast<IExecuteSystem>(system));
-    }
-
-    if (std::dynamic_pointer_cast<IFixedExecuteSystem>(system) != nullptr) {
-        mFixedExecuteSystems.push_back(std::dynamic_pointer_cast<IFixedExecuteSystem>(system));
+    if (auto systemExecute = dynamic_pointer_cast<IExecuteSystem>(system)) {
+        executeSystems_.push_back(systemExecute);
     }
 
     return this;
@@ -41,58 +38,54 @@ void SystemContainer::initialize()
 
 void SystemContainer::execute()
 {
-    for (const auto& system : executeSystes_) {
-        system->execute();
-    }
+    for_each(executeSystems_, std::mem_fn(&IExecuteSystem::execute));
 }
 
+#if 0
 void SystemContainer::fixedExecute()
 {
     for (const auto& system : mFixedExecuteSystems) {
         system->fixedExecute();
     }
 }
+#endif
 
 void SystemContainer::activateReactiveSystems()
 {
-    for (const auto& system : executeSystes_) {
-        if (std::dynamic_pointer_cast<ReactiveSystem>(system) != nullptr) {
-            (std::dynamic_pointer_cast<ReactiveSystem>(system))->activate();
+    for (const auto& system : executeSystems_) {
+        if (dynamic_pointer_cast<ReactiveSystem>(system) != nullptr) {
+            (dynamic_pointer_cast<ReactiveSystem>(system))->activate();
         }
 
-        if (std::dynamic_pointer_cast<SystemContainer>(system) != nullptr) {
-            (std::dynamic_pointer_cast<SystemContainer>(system))->activateReactiveSystems();
+        if (dynamic_pointer_cast<SystemContainer>(system) != nullptr) {
+            (dynamic_pointer_cast<SystemContainer>(system))->activateReactiveSystems();
         }
     }
 }
 
-/// Deactivates all ReactiveSystems in the systems list.
-/// This will also clear all ReactiveSystems.
-/// This is useful when you want to soft-restart your application and
-/// want to reuse your existing system instances.
 void SystemContainer::deactivateReactiveSystems()
 {
-    for (const auto& system : executeSystes_) {
-        if (std::dynamic_pointer_cast<ReactiveSystem>(system) != nullptr) {
-            (std::dynamic_pointer_cast<ReactiveSystem>(system))->deactivate();
+    for (const auto& system : executeSystems_) {
+        if (auto systemReactive = dynamic_pointer_cast<ReactiveSystem>(system)) {
+            systemReactive->deactivate();
         }
 
-        if (std::dynamic_pointer_cast<SystemContainer>(system) != nullptr) {
-            (std::dynamic_pointer_cast<SystemContainer>(system))->deactivateReactiveSystems();
+        if (auto systemContainer = dynamic_pointer_cast<SystemContainer>(system)) {
+            systemContainer->deactivateReactiveSystems();
         }
     }
 }
 
 void SystemContainer::clearReactiveSystems()
 {
-    for (const auto& system : executeSystes_) {
-        if (std::dynamic_pointer_cast<ReactiveSystem>(system) != nullptr) {
-            (std::dynamic_pointer_cast<ReactiveSystem>(system))->clear();
+    for_each(executeSystems_, [&](const auto& system) {
+        if (auto systemReactive = dynamic_pointer_cast<ReactiveSystem>(system)) {
+            systemReactive->clear();
         }
 
-        if (std::dynamic_pointer_cast<SystemContainer>(system) != nullptr) {
-            (std::dynamic_pointer_cast<SystemContainer>(system))->clearReactiveSystems();
+        if (auto systemContainer = dynamic_pointer_cast<SystemContainer>(system)) {
+            systemContainer->clearReactiveSystems();
         }
-    }
+    });
 }
 }

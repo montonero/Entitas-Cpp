@@ -40,41 +40,6 @@ constexpr int kScreenHeight = 800;
 using namespace entitas;
 
 /* -------------------------------------------------------------------------- */
-
-class DemoComponent : public IComponent {
-public:
-    void reset(const std::string& name1, const std::string& name2)
-    {
-        //std::cout << "Created new entity: " << name1 << "," << name2 << std::endl;
-    }
-};
-
-class DemoSystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem {
-public:
-    void setPool(Pool* pool)
-    {
-        mPool = pool;
-    }
-
-    void initialize()
-    {
-        mPool->createEntity()->add<DemoComponent>("foo", "bar");
-        //std::cout << "DemoSystem initialized" << std::endl;
-    }
-
-    void execute()
-    {
-        mPool->createEntity()->add<DemoComponent>("foo", "bar");
-
-        auto entitiesCount = mPool->getGroup(Matcher_allOf(DemoComponent))->count();
-        //std::cout << "There are " << entitiesCount << " entities with the component 'DemoComponent'" << std::endl;
-        // std::cout << "DemoSystem executed" << std::endl;
-    }
-
-private:
-    Pool* mPool;
-};
-
 /* -------------------------------------------------------------------------- */
 
 class PhysicsComponent : public IComponent {
@@ -83,6 +48,10 @@ public:
     {
         position_ = pos;
         dimension_ = dims;
+    }
+    void reset(Vec2&& pos)
+    {
+        position_ = pos;
     }
     Vec2 position_;
     Vec2 dimension_;
@@ -106,7 +75,7 @@ public:
 
 /* -------------------------------------------------------------------------- */
 
-class Move : public IComponent {
+class MoveComponent : public IComponent {
 public:
     void reset(Vec2 d, float s)
     {
@@ -147,13 +116,13 @@ class MoveSystem : public IExecuteSystem, public ISetPoolSystem {
 public:
     void setPool(Pool* pool)
     {
-        auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(Move), COMPONENT_GET_TYPE_ID(AppearanceComponent) });
+        auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(MoveComponent), COMPONENT_GET_TYPE_ID(AppearanceComponent) });
     }
 
     void execute()
     {
         for (auto& e : _group->getEntities()) {
-            auto move = e->get<Move>();
+            auto move = e->get<MoveComponent>();
             auto appear = e->get<AppearanceComponent>();
             Vec2 newPos = move->direction * move->speed + appear->position_;
             e->replace<AppearanceComponent>(std::move(newPos));
@@ -168,18 +137,21 @@ class PhysicsAppearanceSystem : public IReactiveSystem {
 public:
     PhysicsAppearanceSystem()
     {
-        trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(PhysicsComponent), COMPONENT_GET_TYPE_ID(AppearanceComponent) })).onEntityAdded();
+        //trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(PhysicsComponent), COMPONENT_GET_TYPE_ID(AppearanceComponent) })).onEntityAdded();
+        trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(PhysicsComponent) })).onEntityAdded();
     }
 
-    void execute(std::vector<EntityPtr>& entities) override
+    void execute(Entities& entities) override
     {
         // Gets executed only if the observed group changed.
         // Changed entities are passed as an argument
         for (auto& e : entities) {
-            //auto apComp= e->get<AppearanceComponent>();
-            auto physComp = e->get<PhysicsComponent>();
-            //ren->position = pos->position_;
-            e->replace<AppearanceComponent>(physComp->position_, physComp->dimension_);
+            if (e->has<AppearanceComponent>()) {
+                //auto apComp= e->get<AppearanceComponent>();
+                auto physComp = e->get<PhysicsComponent>();
+                //ren->position = pos->position_;
+                e->replace<AppearanceComponent>(physComp->position_, physComp->dimension_);
+            }
         }
     }
 };
@@ -194,7 +166,7 @@ public:
         trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(AppearanceComponent) })).onEntityAdded();
     }
 
-    void execute(std::vector<EntityPtr>& entities) override
+    void execute(Entities& entities) override
     {
         // Gets executed only if the observed group changed.
         // Changed entities are passed as an argument
@@ -219,7 +191,6 @@ public:
     ClickSystem()
     {
         trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(ClickComponent) })).onEntityAdded();
-        //group_ = pool_->getGroup(Matcher::allOf({ COMPONENT_GET_TYPE_ID(AppearanceComponent) }));
     }
     void initialize() override
     {
@@ -230,7 +201,7 @@ public:
     {
         pool_ = pool;
     }
-    void execute(std::vector<EntityPtr>& entities) override
+    void execute(Entities& entities) override
     {
         for (auto& e : entities) {
             // we should only get one at a time
@@ -334,7 +305,7 @@ void changeRandomEntity(Pool* p)
 {
     auto es = p->getEntities();
     auto randomEntity = *select_randomly(es.begin(), es.end());
-    randomEntity->replace<AppearanceComponent>(randomVec2Pos());
+    randomEntity->replace<PhysicsComponent>(std::move(randomVec2Pos()));
 }
 
 // This is actually render system as it renders our quads
@@ -415,6 +386,9 @@ void mainLoop(void* vctx)
             //std::cout << "Hello\n";
             if (event.key.keysym.scancode == SDL_SCANCODE_A)
                 addRandomEntity(ctx->pool.get());
+            else if (event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+                //addRandomEntity(ctx->pool.get());
+                changeRandomEntity(ctx->pool.get());
         }
         if (event.type == SDL_MOUSEBUTTONDOWN) {
             //changeRandomEntity(ctx->pool.get());
@@ -472,6 +446,7 @@ int main(const int argc, const char* argv[])
     auto mySystem = pool->createSystem<MySystem>();
     auto clickSystem = pool->createSystem<ClickSystem>();
     systems->add(pool->createSystem<RenderAppearanceSystem>());
+    systems->add(pool->createSystem<PhysicsAppearanceSystem>());
     systems->add(mySystem);
     systems->add(clickSystem);
     systems->initialize();

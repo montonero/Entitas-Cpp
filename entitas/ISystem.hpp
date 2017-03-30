@@ -7,113 +7,94 @@
 #include "Entity.hpp"
 #include "Matcher.hpp"
 #include "TriggerOnEvent.hpp"
+#include "Group.hpp"
 #include <vector>
 
-namespace entitas
-{
+namespace entitas {
 class Pool;
 
-class ISystem
-{
-	protected:
-		ISystem() = default;
+class ISystem {
+protected:
+    ISystem() = default;
 
-	public:
-		virtual ~ISystem() = default;
+public:
+    virtual ~ISystem() = default;
 };
 
-class ISetPoolSystem
-{
-	protected:
-		ISetPoolSystem() = default;
+class ISetPoolSystem {
+protected:
+    ISetPoolSystem() = default;
 
-	public:
-		virtual ~ISetPoolSystem() = default;
+public:
+    virtual ~ISetPoolSystem() = default;
 
-		virtual void setPool(Pool* pool) = 0;
+    virtual void setPool(Pool* pool) = 0;
 };
 
-class IInitializeSystem
-{
-	protected:
-		IInitializeSystem() = default;
+class IInitializeSystem {
+protected:
+    IInitializeSystem() = default;
 
-	public:
-		virtual ~IInitializeSystem() = default;
+public:
+    virtual ~IInitializeSystem() = default;
 
-		virtual void initialize() = 0;
+    virtual void initialize() = 0;
 };
 
-class IExecuteSystem : public ISystem
-{
-	protected:
-		IExecuteSystem() = default;
+class IExecuteSystem : public ISystem {
+protected:
+    IExecuteSystem() = default;
 
-	public:
-		virtual ~IExecuteSystem() = default;
+public:
+    virtual ~IExecuteSystem() = default;
 
-		virtual void execute() = 0;
+    virtual void execute() = 0;
 };
 
-class IFixedExecuteSystem : public ISystem
-{
-	protected:
-		IFixedExecuteSystem() = default;
+class IReactiveExecuteSystem : public ISystem {
+protected:
+    IReactiveExecuteSystem() = default;
 
-	public:
-		virtual ~IFixedExecuteSystem() = default;
+public:
+    virtual ~IReactiveExecuteSystem() = default;
 
-		virtual void fixedExecute() = 0;
+    virtual void execute(Entities& entities) = 0;
 };
 
-class IReactiveExecuteSystem : public ISystem
-{
-	protected:
-		IReactiveExecuteSystem() = default;
+class IReactiveSystem : public IReactiveExecuteSystem {
+public:
+    virtual ~IReactiveSystem() = default;
+    TriggerOnEvent trigger;
 
-	public:
-		virtual ~IReactiveExecuteSystem() = default;
-
-		virtual void execute(std::vector<EntityPtr>& entities) = 0;
+protected:
+    //bool filter(EntityPtr entity) = 0;
 };
 
-class IReactiveSystem : public IReactiveExecuteSystem
-{
-	public:
-		virtual ~IReactiveSystem() = default;
+class IMultiReactiveSystem : public IReactiveExecuteSystem {
+public:
+    virtual ~IMultiReactiveSystem() = default;
 
-		TriggerOnEvent trigger;
+    std::vector<TriggerOnEvent> triggers;
 };
 
-class IMultiReactiveSystem : public IReactiveExecuteSystem
-{
-	public:
-		virtual ~IMultiReactiveSystem() = default;
+class IEnsureComponents {
+protected:
+    IEnsureComponents() = default;
 
-		std::vector<TriggerOnEvent> triggers;
+public:
+    Matcher ensureComponents;
 };
 
-class IEnsureComponents
-{
-	protected:
-		IEnsureComponents() = default;
+class IExcludeComponents {
+protected:
+    IExcludeComponents() = default;
 
-	public:
-		Matcher ensureComponents;
+public:
+    Matcher excludeComponents;
 };
 
-class IExcludeComponents
-{
-	protected:
-		IExcludeComponents() = default;
-
-	public:
-		Matcher excludeComponents;
+class IClearReactiveSystem {
+protected:
+    IClearReactiveSystem() = default;
 };
-
-class IClearReactiveSystem
-{
-	protected:
-		IClearReactiveSystem() = default;
-};
-}
+} // namespace entitas

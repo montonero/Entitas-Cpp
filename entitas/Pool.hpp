@@ -6,84 +6,83 @@
 
 #include "Entity.hpp"
 #include "Group.hpp"
-#include <unordered_map>
 #include <map>
+#include <unordered_map>
 
-
-namespace entitas
-{
+namespace entitas {
 class ISystem;
 
-class Pool
-{
-	public:    
-		static const unsigned kStartCreationIndex = 1;
-		Pool(const unsigned int startCreationIndex = kStartCreationIndex);
-		~Pool();
+class Pool {
+public:
+    static const unsigned kStartCreationIndex = 1;
+    Pool(const unsigned int startCreationIndex = kStartCreationIndex);
+    ~Pool();
 
-		auto createEntity() -> EntityPtr;
-		bool hasEntity(const EntityPtr& entity) const;
-		void destroyEntity(EntityPtr entity);
-		void destroyAllEntities();
+    auto createEntity() -> EntityPtr;
+    bool hasEntity(const EntityPtr& entity) const;
+    void destroyEntity(EntityPtr entity);
+    void destroyAllEntities();
 
-		auto getEntities() ->  std::vector<EntityPtr>&;
-		auto getEntities(const Matcher matcher) ->  std::vector<EntityPtr>&;
-    
+    Entities& getEntities();
+    Entities& getEntities(const Matcher matcher);
+
     /// Returns a group for the specified matcher.
     /// Calling context.GetGroup(matcher) with the same matcher will always
     /// return the same instance of the group.
-		auto getGroup(Matcher matcher) -> Group::SharedPtr;
+    auto getGroup(Matcher matcher) -> Group::SharedPtr;
 
-		void clearGroups();
-		void resetCreationIndex();
-		void clearComponentPool(const ComponentId index);
-		void clearComponentPools();
-		void reset();
+    void clearGroups();
+    void resetCreationIndex();
+    void clearComponentPool(const ComponentId index);
+    void clearComponentPools();
+    void reset();
 
-		auto getEntityCount() const -> unsigned int;
-		auto getReusableEntitiesCount() const -> unsigned int;
-		auto getRetainedEntitiesCount() const -> unsigned int;
+    auto count() const -> unsigned int;
+    /// Returns the number of entities in the internal ObjectPool
+    /// for entities which can be reused.
+    auto getReusableEntitiesCount() const -> unsigned int;
+    auto getRetainedEntitiesCount() const -> unsigned int;
 
-		auto createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>;
-		template <typename T> inline auto createSystem() -> std::shared_ptr<ISystem>;
+    auto createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>;
+    template <typename T>
+    inline auto createSystem() -> std::shared_ptr<ISystem>;
 
-		using PoolChanged = Delegate<void(Pool* pool, EntityPtr entity)>;
-		using GroupChanged = Delegate<void(Pool* pool, Group::SharedPtr group)>;
+    using PoolChanged = Delegate<void(Pool* pool, EntityPtr entity)>;
+    using GroupChanged = Delegate<void(Pool* pool, Group::SharedPtr group)>;
 
-		PoolChanged onEntityCreated;
-		PoolChanged onEntityWillBeDestroyed;
-		PoolChanged onEntityDestroyed;
+    PoolChanged onEntityCreated;
+    PoolChanged onEntityWillBeDestroyed;
+    PoolChanged onEntityDestroyed;
 
-		GroupChanged onGroupCreated;
-		GroupChanged onGroupCleared;
+    GroupChanged onGroupCreated;
+    GroupChanged onGroupCleared;
 
-	private:
-		void updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component);
-		void updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
-		void onEntityReleased(Entity* entity);
+private:
+    void updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component);
+    void updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
+    void onEntityReleased(Entity* entity);
 
-		unsigned int creationIndex_;									///< Index that is used as uuid for Entities
-		std::unordered_set<EntityPtr> entities_;
-		std::unordered_map<Matcher, Group::SharedPtr> groups_;
-		std::stack<Entity*> reusableEntities_;
+    unsigned int creationIndex_; ///< Index that is used as uuid for Entities
+    std::unordered_set<EntityPtr> entities_;
+    std::unordered_map<Matcher, Group::SharedPtr> groups_;
+    std::stack<Entity*> reusableEntities_;
 
-		std::unordered_set<Entity*> retainedEntities_;
-    
-    
-		ComponentPools componentPools_;
-		/// ComponentId to corresponding groups map
-		/// Used to quickly find groups when modifying components
-		std::map<ComponentId, std::vector<std::weak_ptr<Group>>> groupsForIndex_;
+    std::unordered_set<Entity*> retainedEntities_;
 
-		std::vector<EntityPtr> entitiesCache_;
-        // TODO cache other functions too
-        // so that we don't have to construct lambda everytime
-		std::function<void(Entity*)> onEntityReleasedCache_;
+    ComponentPools componentPools_;
+    /// ComponentId to corresponding groups map
+    /// Used to quickly find groups when modifying components
+    std::map<ComponentId, std::vector<std::weak_ptr<Group>>> groupsForIndex_;
+
+    Entities entitiesCache_;
+    // TODO cache other functions too
+    // so that we don't have to construct lambda everytime
+    std::function<void(Entity*)> onEntityReleasedCache_;
 };
 
 template <typename T>
 auto Pool::createSystem() -> std::shared_ptr<ISystem>
 {
-	return createSystem(std::dynamic_pointer_cast<ISystem>(std::make_shared<T>()));
+    return createSystem(std::dynamic_pointer_cast<ISystem>(std::make_shared<T>()));
 }
-}
+} // namespace entitas

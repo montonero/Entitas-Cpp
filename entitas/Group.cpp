@@ -20,10 +20,10 @@ auto Group::count() const -> unsigned int
     return static_cast<unsigned>(entities_.size());
 }
 
-auto Group::getEntities() ->  std::vector<EntityPtr>&
+auto Group::getEntities() ->  Entities&
 {
     if (entitiesCache_.empty() && !entities_.empty()) {
-        entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());
+        entitiesCache_ = Entities(entities_.begin(), entities_.end());
     }
 
     return entitiesCache_;
@@ -44,7 +44,6 @@ auto Group::getSingleEntity() const -> EntityPtr
 
 bool Group::containsEntity(const EntityPtr& entity) const
 {
-    //return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
     return doesExist(entities_, entity);
 }
 
@@ -96,6 +95,9 @@ void Group::updateEntity(EntityPtr entity, ComponentId index, IComponent* previo
     }
 }
 
+/// This is called by context.Reset() and context.ClearGroups() to remove
+/// all event handlers.
+/// This is useful when you want to soft-restart your application.
 void Group::removeAllEventHandlers()
 {
     onEntityAdded.clear();
