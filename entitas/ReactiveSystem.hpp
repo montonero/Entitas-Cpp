@@ -41,6 +41,6 @@ private:
     Matcher excludeComponents_;
     /// FIXME bug?
     bool clearAfterExecute_{ false };
-    std::vector<EntityPtr> entityBuffer_;
+    Entities entityBuffer_;
 };
 }

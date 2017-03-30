@@ -52,7 +52,6 @@ auto Pool::createEntity() -> EntityPtr
         entity = EntityPtr(reusableEntities_.top(), [](Entity* entity) {
             entity->onReleased(entity);
         });
-
         reusableEntities_.pop();
     } else {
         entity = EntityPtr(new Entity(componentPools_), [](Entity* entity) {
@@ -120,7 +119,7 @@ void Pool::destroyEntity(EntityPtr entity)
 void Pool::destroyAllEntities()
 {
     {
-        auto entitiesTemp = std::vector<EntityPtr>(entities_.begin(), entities_.end());
+        auto entitiesTemp = Entities(entities_.begin(), entities_.end());
 
         while (!entities_.empty()) {
             destroyEntity(entitiesTemp.back());
@@ -136,17 +135,17 @@ void Pool::destroyAllEntities()
     }
 }
 
-auto Pool::getEntities() -> std::vector<EntityPtr>&
+ Entities& Pool::getEntities()
 {
     if (entitiesCache_.empty()) {
-        entitiesCache_ = std::vector<EntityPtr>(entities_.begin(), entities_.end());
+        entitiesCache_ = Entities(entities_.begin(), entities_.end());
     }
     return entitiesCache_;
 }
 
-auto Pool::getEntities(const Matcher matcher) -> std::vector<EntityPtr>&
+Entities& Pool::getEntities(const Matcher matcher)
 {
-    return getGroup(std::move(matcher))->getEntities();
+    return getGroup(matcher)->getEntities();
 }
 
 
@@ -158,7 +157,9 @@ auto Pool::getGroup(Matcher matcher) -> Group::SharedPtr
         group.reset(new Group(matcher));
         group->setInstance(group);
 
-        // 'Handle' all pool's entities
+        // 'Handle' all entities that are already in a pool
+        // Thus if the group is created later it will still be able to 'handle'
+        // previously created entities
         auto& entities = getEntities();
         for_each(entities,
             [=, &group](auto& e) { group->handleEntitySilently(e); });
@@ -220,7 +221,7 @@ void Pool::reset()
     resetCreationIndex();
 }
 
-auto Pool::getEntityCount() const -> unsigned int
+auto Pool::count() const -> unsigned int
 {
     return entities_.size();
 }
@@ -237,13 +238,14 @@ auto Pool::getRetainedEntitiesCount() const -> unsigned int
 
 auto Pool::createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>
 {
-    if (std::dynamic_pointer_cast<ISetPoolSystem>(system) != nullptr) {
-        (std::dynamic_pointer_cast<ISetPoolSystem>(system)->setPool(this));
+    using std::dynamic_pointer_cast;
+    if (auto systemSetPool = dynamic_pointer_cast<ISetPoolSystem>(system)) {
+        systemSetPool->setPool(this);
     }
 
-    if (std::dynamic_pointer_cast<IReactiveSystem>(system) != nullptr) {
+    if (auto systemReactive = dynamic_pointer_cast<IReactiveSystem>(system)) {
         // given system is used as a subsystem
-        return std::make_shared<ReactiveSystem>(this, std::dynamic_pointer_cast<IReactiveSystem>(system));
+        return std::make_shared<ReactiveSystem>(this, systemReactive);
     }
 
     if (std::dynamic_pointer_cast<IMultiReactiveSystem>(system) != nullptr) {
@@ -260,7 +262,7 @@ void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId ind
     }
 
     // All groups that contain entities with a given component
-    auto groups = groupsForIndex_[index];
+    auto& groups = groupsForIndex_[index];
 
     if (!groups.empty())
     {

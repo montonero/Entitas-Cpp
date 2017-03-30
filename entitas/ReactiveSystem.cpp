@@ -20,16 +20,17 @@ ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IMultiReactiveSystem>
 ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSystem> subsystem, std::vector<TriggerOnEvent> triggers)
     : subsystem_{ subsystem }
 {
-
-    if (std::dynamic_pointer_cast<IEnsureComponents>(subsystem) != nullptr) {
-        ensureComponents_ = (std::dynamic_pointer_cast<IEnsureComponents>(subsystem))->ensureComponents;
+    using std::dynamic_pointer_cast;
+    if (auto subsystemEnsure = dynamic_pointer_cast<IEnsureComponents>(subsystem)) {
+        ensureComponents_ = subsystemEnsure->ensureComponents;
     }
 
-    if (std::dynamic_pointer_cast<IExcludeComponents>(subsystem) != nullptr) {
-        excludeComponents_ = (std::dynamic_pointer_cast<IExcludeComponents>(subsystem))->excludeComponents;
+    if (auto subsystemExclude = dynamic_pointer_cast<IExcludeComponents>(subsystem)) {
+        excludeComponents_ = subsystemExclude->excludeComponents;
     }
 
-    if (std::dynamic_pointer_cast<IClearReactiveSystem>(subsystem) != nullptr) {
+    
+    if (dynamic_pointer_cast<IClearReactiveSystem>(subsystem) != nullptr) {
         clearAfterExecute_ = true;
     }
 

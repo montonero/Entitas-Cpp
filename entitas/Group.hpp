@@ -13,6 +13,7 @@
 namespace entitas {
 class Collector;
 
+using Entities = std::vector<EntityPtr>;
 /// Use context.GetGroup(matcher) to get a group of entities which match
 /// the specified matcher. Calling context.GetGroup(matcher) with the
 /// same matcher will always return the same instance of the group.
@@ -27,8 +28,14 @@ public:
     Group(const Matcher& matcher);
     auto count() const -> unsigned int;
 
-    auto getEntities() -> std::vector<EntityPtr>&;
+    /// Returns all entities which are currently in this group.
+    Entities& getEntities();
+    
+    /// Returns the only entity in this group. It will return nullptr
+    /// if the group is empty. It will throw an exception if the group
+    /// has more than one entity.
     auto getSingleEntity() const -> EntityPtr;
+    
     bool containsEntity(const EntityPtr& entity) const;
     auto getMatcher() const -> Matcher;
     auto createCollector(const GroupEventType eventType) -> std::shared_ptr<Collector>;
@@ -36,16 +43,16 @@ public:
     using GroupChanged = Delegate<void(SharedPtr group, EntityPtr entity, ComponentId index, IComponent* component)>;
     using GroupUpdated = Delegate<void(SharedPtr group, EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)>;
 
+    /// Occurs when an entity gets added.
     GroupChanged onEntityAdded;
     /// Occurs when a component of an entity in the group gets replaced.
-    // TODO not properly used
     GroupUpdated onEntityUpdated;
     /// Occurs when an entity gets removed.
     GroupChanged onEntityRemoved;
 
 protected:
     void setInstance(SharedPtr instance);
-    // Returns callback
+    // Returns callback or nullptr if entity was not added nor removed
     auto handleEntity(EntityPtr entity) -> GroupChanged*;
     // Does not call callback
     void handleEntitySilently(EntityPtr entity);
@@ -65,6 +72,6 @@ private:
     std::weak_ptr<Group> instance_;
     Matcher matcher_;
     std::unordered_set<EntityPtr> entities_;
-    std::vector<EntityPtr> entitiesCache_;
+    Entities entitiesCache_;
 };
 }
