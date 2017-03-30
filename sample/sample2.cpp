@@ -30,7 +30,8 @@
 
 #include <SDLpp.h>
 
-#include <tinyheaders/tinyc2.h>
+// #include <tinyheaders/tinyc2.h>
+#include <tinyc2.h>
 
 #include "Rectangle.h"
 

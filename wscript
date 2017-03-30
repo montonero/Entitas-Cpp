@@ -66,8 +66,10 @@ def configure(ctx):
 
 def build(ctx):
 	# libs = ['SDL2', 'chibi_static_lib', 'BOOST', 'ws_client_lib', 'ws_retry_client']
-	libs = ['entitas', 'SDLpp',
-		'mathfu', 'vectorial',
+	libs = ['entitas', 'SDLpp'
+		,'mathfu', 'vectorial'
+                ,'fmt'
+                ,'tinyheaders'
 	]
 	# ctx.recurse('chibi')
 	# ctx.recurse(ctx.env.ws_client_dir)
@@ -77,12 +79,13 @@ def build(ctx):
 		target = 'entitas',
 		cxxflags     = ['-std=c++14', '-g'],
 		includes = 'entitas',
+                use = ['fmt'],
 		export_includes = '. entitas',
 	)
 
 	external_node = ctx.path.find_node('external')
 	sdlpp_node = external_node.find_node('SDLpp')
-
+        tinyh_node = external_node.find_node('tinyheaders')
 
 	mathfu_node = external_node.find_node('mathfu')
 	mathfu_include_path = join(mathfu_node.abspath(), 'include')
@@ -97,8 +100,13 @@ def build(ctx):
 		export_includes=vectorial_include_path,
 		name='vectorial')
 
-	ctx.recurse(sdlpp_node.abspath())
+        tinyh_ip = tinyh_node.abspath()
+        ctx(includes = tinyh_ip,
+            export_includes = tinyh_ip,
+            name = 'tinyheaders')
 
+	ctx.recurse(sdlpp_node.abspath())
+        ctx.recurse(external_node.abspath())
 	"""
 	ctx.stlib(
 		source = ctx.path.ant_glob('external/
