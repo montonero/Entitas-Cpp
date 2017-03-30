@@ -51,6 +51,26 @@ public:
     virtual void execute() = 0;
 };
 
+    class ICleanupSystem{
+    protected:
+        ICleanupSystem() = default;
+        
+    public:
+        //virtual ~ICleanupSystem() = default;
+        /// runs after every execute and reactive system has completed
+        virtual void cleanup() = 0;
+    };
+    
+    class ITearDownSystem{
+    protected:
+        ITearDownSystem() = default;
+        
+    public:
+        //virtual ~ICleanupSystem() = default;
+        /// runs after every execute and reactive system has completed
+        virtual void teardown() = 0;
+    };
+    
 class IReactiveExecuteSystem : public ISystem {
 protected:
     IReactiveExecuteSystem() = default;

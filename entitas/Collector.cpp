@@ -10,13 +10,13 @@ namespace entitas {
 
 size_t Indexed::s_index = 0;
 
-Collector::Collector(Group::SharedPtr group, const GroupEventType eventType)
-    : Collector(std::vector<Group::SharedPtr>{ group }, { eventType })
+Collector::Collector(Group::WeakPtr group, const GroupEventType eventType)
+    : Collector(std::vector<Group::WeakPtr>{ group }, { eventType })
 {
 }
 
 /// This is currently used by Reactive System
-Collector::Collector(std::vector<Group::SharedPtr>&& groups, std::vector<GroupEventType>&& eventTypes)
+Collector::Collector(std::vector<Group::WeakPtr>&& groups, std::vector<GroupEventType>&& eventTypes)
     : groups_{ groups }
     , eventTypes_{ eventTypes }
 {
@@ -27,7 +27,7 @@ Collector::Collector(std::vector<Group::SharedPtr>&& groups, std::vector<GroupEv
     }
     activate();
 }
-
+// Collector quite often will be destroyed _after_ the groups that it uses
 Collector::~Collector()
 {
     deactivate();
@@ -36,7 +36,7 @@ Collector::~Collector()
 void Collector::activate()
 {
     for (unsigned int i = 0, groupCount = groups_.size(); i < groupCount; ++i) {
-        auto& g = groups_[i];
+        auto g = groups_[i].lock().get();
         auto eventType = eventTypes_[i];
 
         if (eventType == GroupEventType::Added) {
@@ -58,8 +58,10 @@ void Collector::activate()
 void Collector::deactivate()
 {
     for (const auto& g : groups_) {
-        g->onEntityAdded -= { index(), addEntityCache_ };
-        g->onEntityRemoved -= { index(), addEntityCache_ };
+        if (!g.expired()) {
+        g.lock()->onEntityAdded -= { index(), addEntityCache_ };
+        g.lock()->onEntityRemoved -= { index(), addEntityCache_ };
+        }
     }
 
     clearCollectedEntities();

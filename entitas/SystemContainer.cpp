@@ -13,13 +13,25 @@ namespace entitas {
 using std::dynamic_pointer_cast;
 auto SystemContainer::add(std::shared_ptr<ISystem> system) -> SystemContainer*
 {
-    if (auto subSystemReactive = dynamic_pointer_cast<ReactiveSystem>(system) ) {
-        if (dynamic_pointer_cast<IInitializeSystem>(subSystemReactive->getSubsystem()) != nullptr) {
-            initializeSystems_.push_back(dynamic_pointer_cast<IInitializeSystem>(subSystemReactive->getSubsystem()));
+    if (auto systemReactive = dynamic_pointer_cast<ReactiveSystem>(system)) {
+        if (auto initSystem = dynamic_pointer_cast<IInitializeSystem>(systemReactive->getSubsystem())) {
+            initializeSystems_.emplace_back(initSystem);
+        }
+        if (auto cleanupSystem = dynamic_pointer_cast<ICleanupSystem>(systemReactive->getSubsystem())) {
+            cleanupSystems_.emplace_back(cleanupSystem);
+        }
+        if (auto teardownSystem = dynamic_pointer_cast<ITearDownSystem>(systemReactive->getSubsystem())) {
+            teardownSystems_.emplace_back(teardownSystem);
         }
     } else {
         if (auto systemInitialize = dynamic_pointer_cast<IInitializeSystem>(system)) {
-            initializeSystems_.push_back(systemInitialize);
+            initializeSystems_.emplace_back(systemInitialize);
+        }
+        if (auto cleanupSystem = dynamic_pointer_cast<ICleanupSystem>(system)) {
+            cleanupSystems_.emplace_back(cleanupSystem);
+        }
+        if (auto teardownSystem = dynamic_pointer_cast<ITearDownSystem>(system)) {
+            teardownSystems_.emplace_back(teardownSystem);
         }
     }
 
@@ -32,13 +44,22 @@ auto SystemContainer::add(std::shared_ptr<ISystem> system) -> SystemContainer*
 
 void SystemContainer::initialize()
 {
-    using namespace std;
-    for_each(initializeSystems_, mem_fn(&IInitializeSystem::initialize));
+    for_each(initializeSystems_, std::mem_fn(&IInitializeSystem::initialize));
 }
 
 void SystemContainer::execute()
 {
     for_each(executeSystems_, std::mem_fn(&IExecuteSystem::execute));
+}
+
+void SystemContainer::cleanup()
+{
+    for_each(cleanupSystems_, std::mem_fn(&ICleanupSystem::cleanup));
+}
+
+void SystemContainer::teardown()
+{
+    for_each(teardownSystems_, std::mem_fn(&ITearDownSystem::teardown));
 }
 
 #if 0

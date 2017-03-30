@@ -954,6 +954,7 @@
 					"$(SRCROOT)/../../../external/SDLpp/include",
 					"$(SRCROOT)/../../../external/fmt",
 					"$(SRCROOT)/../../../external",
+					"$(SRCROOT)/../../../external/tinyheaders",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -976,6 +977,7 @@
 					"$(SRCROOT)/../../../external/SDLpp/include",
 					"$(SRCROOT)/../../../external/fmt",
 					"$(SRCROOT)/../../../external",
+					"$(SRCROOT)/../../../external/tinyheaders",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

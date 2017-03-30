@@ -25,6 +25,7 @@ class Group {
 
 public:
     using SharedPtr = std::shared_ptr<Group>;
+    using WeakPtr = std::weak_ptr<Group>;
     Group(const Matcher& matcher);
     auto count() const -> unsigned int;
 
@@ -38,7 +39,7 @@ public:
     
     bool containsEntity(const EntityPtr& entity) const;
     auto getMatcher() const -> Matcher;
-    auto createCollector(const GroupEventType eventType) -> std::shared_ptr<Collector>;
+    std::shared_ptr<Collector> createCollector(const GroupEventType eventType);
 
     using GroupChanged = Delegate<void(SharedPtr group, EntityPtr entity, ComponentId index, IComponent* component)>;
     using GroupUpdated = Delegate<void(SharedPtr group, EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)>;

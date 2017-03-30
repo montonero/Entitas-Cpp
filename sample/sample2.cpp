@@ -183,7 +183,7 @@ public:
 /* -------------------------------------------------------------------------- */
 
 // React on added clicks
-class ClickSystem : public IInitializeSystem, public IReactiveSystem, public ISetPoolSystem {
+class ClickSystem : public IInitializeSystem, public IReactiveSystem, public ISetPoolSystem, public ICleanupSystem, public ITearDownSystem {
 protected:
     Group::SharedPtr group_;
 
@@ -222,6 +222,15 @@ public:
             // auto ren = e->get<RenderComponent>();
             // ren->position = pos->position_;
         }
+    }
+
+    void cleanup() override
+    {
+    }
+
+    void teardown() override
+    {
+        group_.reset();
     }
 };
 
@@ -310,7 +319,7 @@ void changeRandomEntity(Pool* p)
 }
 
 // This is actually render system as it renders our quads
-class MySystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem {
+class MySystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem, public ICleanupSystem, public ITearDownSystem {
 public:
     void setPool(Pool* pool)
     {
@@ -322,13 +331,13 @@ public:
         fmt::print("MySystem::setPool called\n");
     }
 
-    void initialize()
+    void initialize() override
     {
-        addRandomEntity(pool_);
+        //addRandomEntity(pool_);
         fmt::print("MySystem initialized\n");
     }
 
-    void execute()
+    void execute() override
     {
         auto es = group_->getEntities();
         for (auto& e : es) {
@@ -341,6 +350,17 @@ public:
             //std::cout << "ent";
         }
         collector_->clearCollectedEntities();
+    }
+
+    void cleanup() override
+    {
+    }
+
+    void teardown() override
+    {
+        collector_->deactivate();
+        collector_.reset();
+        group_.reset();
     }
 
     void setRenderer(sdl::Renderer& r) { renderer_ = &r; }
@@ -382,13 +402,12 @@ void mainLoop(void* vctx)
         if (event.type == SDL_QUIT) {
             //std::cout << "Quitting\n";
             ctx->done = 1;
+            return;
         }
         if (event.type == SDL_KEYDOWN) {
-            //std::cout << "Hello\n";
             if (event.key.keysym.scancode == SDL_SCANCODE_A)
                 addRandomEntity(ctx->pool.get());
             else if (event.key.keysym.scancode == SDL_SCANCODE_SPACE)
-                //addRandomEntity(ctx->pool.get());
                 changeRandomEntity(ctx->pool.get());
         }
         if (event.type == SDL_MOUSEBUTTONDOWN) {
@@ -403,9 +422,9 @@ void mainLoop(void* vctx)
             fmt::print("Button clicked at {} {}\n", x, y);
         }
     }
-
+    auto& systems = ctx->systems;
     ctx->renderer->clear(sdl::Colors::Black);
-    ctx->systems->execute();
+    systems->execute();
 
     ctx->renderer->drawCircle({ 100, 100 }, 50.f, sdl::Colors::Blue);
     ctx->renderer->drawLine({ 0, 0 }, { 100, 100 }, sdl::Colors::White);
@@ -433,6 +452,8 @@ void mainLoop(void* vctx)
     // SDL_RenderPresent(ctx->renderer);
     ctx->renderer->Present();
     SDL_Delay(100);
+
+    systems->cleanup();
 }
 
 /* -------------------------------------------------------------------------- */
@@ -443,20 +464,19 @@ int main(const int argc, const char* argv[])
     auto systems = std::make_shared<SystemContainer>();
     auto pool = std::make_shared<Pool>();
 
-    //systems->add(pool->createSystem<DemoSystem>());
     auto mySystem = pool->createSystem<MySystem>();
-    auto clickSystem = pool->createSystem<ClickSystem>();
+
     systems->add(pool->createSystem<RenderAppearanceSystem>());
     systems->add(pool->createSystem<PhysicsAppearanceSystem>());
     systems->add(mySystem);
-    systems->add(clickSystem);
+    systems->addCreate<ClickSystem>(pool);
     systems->initialize();
 
     //for(unsigned int i = 0; i < 2; ++i) {
     //  systems->execute();
     //}
 
-    //std::cout << "All systems initilized.\n";
+    fmt::print("All systems initilized.\n");
 
     auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(AppearanceComponent) });
     auto entities = pool->getEntities(matcher);
@@ -474,7 +494,8 @@ int main(const int argc, const char* argv[])
     //std::cout << "sdl::Init() successfully!\n";
     sdl::Window w{ "Test window", kScreenWidth, kScreenHeight };
     auto renderer = w.CreateRenderer();
-    ((MySystem*)mySystem.get())->setRenderer(*renderer);
+    auto ms = std::dynamic_pointer_cast<MySystem>(mySystem);
+    ms->setRenderer(*renderer);
 
 #ifdef __EMSCRIPTEN__
     const std::string kAssetsFolder = "/";
@@ -505,6 +526,11 @@ int main(const int argc, const char* argv[])
     //std::cout << "Done.\n";
     delete ctx;
 #endif
+
+    systems->deactivateReactiveSystems();
+    // let's if this works
+    systems->teardown();
+
 
     return 0;
 }

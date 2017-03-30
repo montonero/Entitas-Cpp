@@ -5,19 +5,24 @@
 #pragma once
 
 #include "ISystem.hpp"
+#include "Pool.hpp"
 #include <vector>
 
 namespace entitas {
-class SystemContainer : public IInitializeSystem, public IExecuteSystem {
+class SystemContainer : public IInitializeSystem, public IExecuteSystem, public ICleanupSystem, public ITearDownSystem {
 public:
     SystemContainer() = default;
 
     auto add(std::shared_ptr<ISystem> system) -> SystemContainer*;
     template <typename T>
     inline auto add() -> SystemContainer*;
+    template <typename T>
+    inline SystemContainer* addCreate(std::shared_ptr<Pool> pool);
 
-    void initialize();
-    void execute();
+    void initialize() override;
+    void execute() override;
+    void cleanup() override;
+    void teardown() override;
     //void fixedExecute();
 
     void activateReactiveSystems();
@@ -29,8 +34,12 @@ public:
     void clearReactiveSystems();
 
 private:
-    std::vector<std::shared_ptr<IInitializeSystem>> initializeSystems_;
-    std::vector<std::shared_ptr<IExecuteSystem>> executeSystems_;
+    template <typename T>
+    using SystemsVector = std::vector<std::shared_ptr<T>>;
+    SystemsVector<IInitializeSystem> initializeSystems_;
+    SystemsVector<IExecuteSystem> executeSystems_;
+    SystemsVector<ICleanupSystem> cleanupSystems_;
+    SystemsVector<ITearDownSystem> teardownSystems_;
 };
 
 template <typename T>
@@ -38,4 +47,11 @@ auto SystemContainer::add() -> SystemContainer*
 {
     return add(std::make_shared<T>());
 }
+
+template <typename T>
+SystemContainer* SystemContainer::addCreate(std::shared_ptr<Pool> pool)
+{
+    return add(pool->createSystem<T>());
+}
+
 } // namespace entitas

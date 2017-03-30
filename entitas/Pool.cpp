@@ -126,12 +126,12 @@ void Pool::destroyAllEntities()
             entitiesTemp.pop_back();
         }
     }
-
+    // This should be empty by now
     entities_.clear();
 
     if (!retainedEntities_.empty()) {
         // Try calling Pool.clearGroups() and SystemContainer.clearReactiveSystems() before calling pool.destroyAllEntities() to avoid memory leaks
-        throw std::runtime_error("Error, pool detected retained entities although all entities got destroyed. Did you release all entities?");
+        //throw std::runtime_error("Error, pool detected retained entities although all entities got destroyed. Did you release all entities?");
     }
 }
 

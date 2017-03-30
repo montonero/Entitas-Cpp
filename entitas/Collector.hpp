@@ -42,11 +42,11 @@ public:
     using CollectedEntities = std::unordered_set<EntityPtr>;
     /// Creates a Collector and will collect changed entities
     /// based on the specified eventType.
-    Collector(Group::SharedPtr group, const GroupEventType eventType);
+    Collector(Group::WeakPtr group, const GroupEventType eventType);
 
     /// Creates a Collector and will collect changed entities
     /// based on the specified eventTypes.
-    Collector(std::vector<Group::SharedPtr>&& groups, std::vector<GroupEventType>&& eventTypes);
+    Collector(std::vector<Group::WeakPtr>&& groups, std::vector<GroupEventType>&& eventTypes);
     ~Collector();
 
     void activate();
@@ -65,8 +65,8 @@ private:
     /// We store collected entities here
     CollectedEntities collectedEntities_;
     /// Groups that are used to 'collect' entities
-    std::vector<Group::SharedPtr> groups_;
-    
+    std::vector<Group::WeakPtr> groups_;
+
     std::vector<GroupEventType> eventTypes_;
     /// This is a callback that will be called by group and will save changes in 'collectedEntities_'
     std::function<void(Group::SharedPtr, EntityPtr, ComponentId, IComponent*)> addEntityCache_;
