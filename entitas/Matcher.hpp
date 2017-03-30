@@ -53,7 +53,7 @@ namespace entitas
         static auto mergeIndices(MatcherList matchers) -> ComponentIdList;
         static auto distinctIndices(ComponentIdList indices) -> ComponentIdList;
 
-        unsigned int mCachedHash{0};
+        unsigned int hashCached_{0};
     };
 }
 

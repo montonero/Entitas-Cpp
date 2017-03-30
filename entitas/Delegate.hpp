@@ -84,10 +84,10 @@ public:
     const Delegate& operator=(const Delegate&) = delete;
 
     // Delegate& Connect(const FunctionType& function)
-    Delegate& Connect(const FunctionPair function)
+    Delegate& Connect(FunctionPair&& function)
     {
         std::lock_guard<std::mutex> lock(mutex_);
-        functionList_.push_back(function);
+        functionList_.emplace_back(function);
         return *this;
     }
 
@@ -96,7 +96,7 @@ public:
     {
         using namespace std;
         lock_guard<mutex> lock(mutex_);
-        if (functionList_.size() > 0)
+        if (!functionList_.empty())
             functionList_.erase(remove_if(begin(functionList_), end(functionList_),
                                     bind(areEqual1, function.first, placeholders::_1)),
                 end(functionList_));
@@ -117,9 +117,9 @@ public:
     }
 
     // inline Delegate& operator+=(const FunctionType& function)
-    inline Delegate& operator+=(const FunctionPair function)
+    inline Delegate& operator+=(FunctionPair&& function)
     {
-        return Connect(function);
+        return Connect(std::move(function));
     }
 
     // inline Delegate& operator-=(const FunctionType& function)

@@ -39,13 +39,13 @@ void Collector::activate()
         auto& g = groups_[i];
         auto eventType = eventTypes_[i];
 
-        if (eventType == GroupEventType::OnEntityAdded) {
+        if (eventType == GroupEventType::Added) {
             g->onEntityAdded -= { index(), addEntityCache_ };
             g->onEntityAdded += { index(), addEntityCache_ };
-        } else if (eventType == GroupEventType::OnEntityRemoved) {
+        } else if (eventType == GroupEventType::Removed) {
             g->onEntityRemoved -= { index(), addEntityCache_ };
             g->onEntityRemoved += { index(), addEntityCache_ };
-        } else if (eventType == GroupEventType::OnEntityAddedOrRemoved) {
+        } else if (eventType == GroupEventType::AddedOrRemoved) {
             g->onEntityAdded -= { index(), addEntityCache_ };
             g->onEntityAdded += { index(), addEntityCache_ };
 

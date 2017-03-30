@@ -316,7 +316,7 @@ public:
         pool_ = pool;
         auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent) });
         group_ = pool_->getGroup(matcher);
-        collector_ = group_->createCollector(GroupEventType::OnEntityAdded);
+        collector_ = group_->createCollector(GroupEventType::Added);
         //collector_->activate();
         fmt::print("MySystem::setPool called\n");
     }

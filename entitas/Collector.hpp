@@ -32,7 +32,7 @@ protected:
       The Entity Collector provides an easy way to react to changes in a group over time. Let's say you want to collect and process all the entities where a PositionComponent was added or replaced.
 
       auto group = pool->GetGroup(Matcher_AllOf(Position));
-      auto collector = group->CreateCollector(GroupEventType::OnEntityAdded);
+      auto collector = group->CreateCollector(GroupEventType::Added);
 */
 
 /// A Collector can observe one or more groups from the same context
