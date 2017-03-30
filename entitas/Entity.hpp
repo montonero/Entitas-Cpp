@@ -30,10 +30,10 @@ class Entity {
 public:
     Entity(ComponentPools& componentPools)
         : componentPools_{ componentPools } {};
-    
+
     ~Entity()
     {
-        fmt::print("~Entity() id: {}", getUuid() );
+        fmt::print("~Entity() id: {}", getUuid());
     }
 
     template <typename T, typename... TArgs>
@@ -117,7 +117,7 @@ template <typename T, typename... TArgs>
 auto Entity::createComponent(TArgs&&... args) -> IComponent*
 {
     auto& componentPool = getComponentPool(ComponentTypeId::get<T>());
-    IComponent* component{nullptr};
+    IComponent* component{ nullptr };
 
     if (componentPool.size() > 0) {
         component = componentPool.top();

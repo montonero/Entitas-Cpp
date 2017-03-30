@@ -1,3 +1,4 @@
+// Copyright (c) 2017 Igor M
 // Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: MIT License
 // MIT License web page: https://opensource.org/licenses/MIT
@@ -58,9 +59,10 @@ void Collector::activate()
 void Collector::deactivate()
 {
     for (const auto& g : groups_) {
+        // If this is called from destructor then groups might already be destroyed
         if (!g.expired()) {
-        g.lock()->onEntityAdded -= { index(), addEntityCache_ };
-        g.lock()->onEntityRemoved -= { index(), addEntityCache_ };
+            g.lock()->onEntityAdded -= { index(), addEntityCache_ };
+            g.lock()->onEntityRemoved -= { index(), addEntityCache_ };
         }
     }
 

@@ -1,3 +1,4 @@
+// Copyright (c) 2017 Igor M
 // Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: MIT License
 // MIT License web page: https://opensource.org/licenses/MIT
@@ -42,8 +43,8 @@ Pool::~Pool()
         }
     }
 }
-    /// Creates a new entity or gets a reusable entity from the
-    /// internal ObjectPool for entities.
+/// Creates a new entity or gets a reusable entity from the
+/// internal ObjectPool for entities.
 auto Pool::createEntity() -> EntityPtr
 {
     EntityPtr entity;
@@ -135,7 +136,7 @@ void Pool::destroyAllEntities()
     }
 }
 
- Entities& Pool::getEntities()
+Entities& Pool::getEntities()
 {
     if (entitiesCache_.empty()) {
         entitiesCache_ = Entities(entities_.begin(), entities_.end());
@@ -147,7 +148,6 @@ Entities& Pool::getEntities(const Matcher matcher)
 {
     return getGroup(matcher)->getEntities();
 }
-
 
 auto Pool::getGroup(Matcher matcher) -> Group::SharedPtr
 {
@@ -166,9 +166,6 @@ auto Pool::getGroup(Matcher matcher) -> Group::SharedPtr
 
         groups_[group->getMatcher()] = group;
 
-        //for (int i = 0, indicesLength = matcher.getIndices().size(); i < indicesLength; i++) {
-        //    groupsForIndex_[matcher.getIndices()[i]].push_back(group);
-        //}
         for_each(matcher.getIndices(),
             [&, this](auto index) { groupsForIndex_[index].push_back(group); });
 
@@ -264,22 +261,18 @@ void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId ind
     // All groups that contain entities with a given component
     auto& groups = groupsForIndex_[index];
 
-    if (!groups.empty())
-    {
+    if (!groups.empty()) {
         // Collect all the events that need to be processed (e.g. onAdded
         std::vector<Group::GroupChanged*> events;
-        for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i)
-        {
+        for (int i = 0, groupsCount = groups.size(); i < groupsCount; ++i) {
             events.push_back(groups[i].lock()->handleEntity(entity));
         }
-        
-        for (int i = 0, eventsCount = events.size(); i < eventsCount; ++i)
-        {
+
+        for (int i = 0, eventsCount = events.size(); i < eventsCount; ++i) {
             auto cb = events[i];
             if (cb)
                 (*cb)(groups[i].lock(), entity, index, component);
         }
-        
 
 #if 0
         for_each(groups,

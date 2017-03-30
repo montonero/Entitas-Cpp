@@ -4,9 +4,9 @@
 
 #include "Group.hpp"
 #include "Collector.hpp"
+#include "Functional.hpp"
 #include "Matcher.hpp"
 #include <algorithm>
-#include "Functional.hpp"
 
 namespace entitas {
 
@@ -20,7 +20,7 @@ auto Group::count() const -> unsigned int
     return static_cast<unsigned>(entities_.size());
 }
 
-auto Group::getEntities() ->  Entities&
+auto Group::getEntities() -> Entities&
 {
     if (entitiesCache_.empty() && !entities_.empty()) {
         entitiesCache_ = Entities(entities_.begin(), entities_.end());
