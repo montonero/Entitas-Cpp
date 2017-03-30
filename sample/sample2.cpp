@@ -41,6 +41,38 @@ constexpr int kScreenHeight = 800;
 using namespace entitas;
 
 /* -------------------------------------------------------------------------- */
+
+
+template <typename Iter, typename RandomGenerator>
+Iter select_randomly(Iter start, Iter end, RandomGenerator& g)
+{
+    std::uniform_int_distribution<> dis(0, std::distance(start, end) - 1);
+    std::advance(start, dis(g));
+    return start;
+}
+
+template <typename Iter>
+Iter select_randomly(Iter start, Iter end)
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    return select_randomly(start, end, gen);
+}
+// TODO move to entitas
+entitas::EntityPtr randomEntity(Pool& pool)
+{
+    auto es = pool.getEntities();
+    auto randomEntity = *select_randomly(es.begin(), es.end());
+    return randomEntity;
+}
+entitas::EntityPtr randomEntity(Pool& pool, entitas::Matcher matcher)
+{
+    auto es = pool.getEntities(matcher);
+    auto randomEntity = *select_randomly(es.begin(), es.end());
+    return randomEntity;
+}
+
+
 /* -------------------------------------------------------------------------- */
 
 class PhysicsComponent : public IComponent {
@@ -75,6 +107,15 @@ public:
 };
 
 /* -------------------------------------------------------------------------- */
+class InputComponent : public IComponent {
+public:
+    void reset(SDL_Scancode code)
+    {
+        code_ = code;
+    }
+    
+    SDL_Scancode code_;
+};
 
 class MoveComponent : public IComponent {
 public:
@@ -138,7 +179,6 @@ class PhysicsAppearanceSystem : public IReactiveSystem {
 public:
     PhysicsAppearanceSystem()
     {
-        //trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(PhysicsComponent), COMPONENT_GET_TYPE_ID(AppearanceComponent) })).onEntityAdded();
         trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(PhysicsComponent) })).onEntityAdded();
     }
 
@@ -206,9 +246,7 @@ public:
     {
         for (auto& e : entities) {
             // we should only get one at a time
-
             auto pos = e->get<ClickComponent>()->position_;
-
             // now iterate through all entities with a position component
             for (auto& ep : group_->getEntities()) {
                 auto posE = ep->get<AppearanceComponent>()->position_;
@@ -233,7 +271,54 @@ public:
         group_.reset();
     }
 };
+/* -------------------------------------------------------------------------- */
 
+// React on added clicks
+class InputSystem : public IInitializeSystem, public IReactiveSystem, public ISetPoolSystem, public ICleanupSystem, public ITearDownSystem {
+protected:
+    //Group::SharedPtr group_;
+    
+public:
+    Pool* pool_{ nullptr };
+    InputSystem()
+    {
+        trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(InputComponent) })).onEntityAdded();
+    }
+    void initialize() override
+    {
+        //group_ = pool_->getGroup(Matcher::allOf({ COMPONENT_GET_TYPE_ID(Component) }));
+    }
+    
+    void setPool(Pool* pool) override
+    {
+        pool_ = pool;
+    }
+    void execute(Entities& entities) override
+    {
+        for (auto& e : entities) {
+            // we should only get one at a time
+            static auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(MoveComponent) });
+            auto pos = e->get<InputComponent>()->code_;
+            
+            auto e2 = randomEntity(*pool_, matcher);
+            auto moveComp = e2->get<MoveComponent>();
+            e2->replace<MoveComponent>(Vec2{3.f, 1.f}, 1.f);
+            
+            pool_->destroyEntity(e);
+            // auto ren = e->get<RenderComponent>();
+            // ren->position = pos->position_;
+        }
+    }
+    
+    void cleanup() override
+    {
+    }
+    
+    void teardown() override
+    {
+        //group_.reset();
+    }
+};
 /* -------------------------------------------------------------------------- */
 
 void renderMat(sdl::Renderer* renderer, sdl::Color c, const Vec2& v, const Vec2& s)
@@ -289,33 +374,18 @@ void addRandomEntity(Pool* pool)
     e->add<RenderComponent>(randomColor());
     e->add<PhysicsComponent>(randomVec2Pos(), randomVec2Size());
     e->add<AppearanceComponent>(randomVec2Pos(), randomVec2Size());
+    e->add<MoveComponent>(Vec2(0.f), 0.f);
     //e->add<Appearance>(randomVec2Size());
     e->add<LifeComponent>(1);
     auto r = pool->hasEntity(e);
     //std::cout << r;
 }
 
-template <typename Iter, typename RandomGenerator>
-Iter select_randomly(Iter start, Iter end, RandomGenerator& g)
+void changeRandomEntity(Pool* pool)
 {
-    std::uniform_int_distribution<> dis(0, std::distance(start, end) - 1);
-    std::advance(start, dis(g));
-    return start;
-}
-
-template <typename Iter>
-Iter select_randomly(Iter start, Iter end)
-{
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    return select_randomly(start, end, gen);
-}
-
-void changeRandomEntity(Pool* p)
-{
-    auto es = p->getEntities();
-    auto randomEntity = *select_randomly(es.begin(), es.end());
-    randomEntity->replace<PhysicsComponent>(std::move(randomVec2Pos()));
+    auto entity = randomEntity(*pool);
+    auto comp = entity->get<PhysicsComponent>()->dimension_;
+    entity->replace<PhysicsComponent>(randomVec2Pos(), comp);
 }
 
 // This is actually render system as it renders our quads
@@ -405,10 +475,17 @@ void mainLoop(void* vctx)
             return;
         }
         if (event.type == SDL_KEYDOWN) {
-            if (event.key.keysym.scancode == SDL_SCANCODE_A)
+            auto scancode = event.key.keysym.scancode;
+            if (scancode == SDL_SCANCODE_A)
                 addRandomEntity(ctx->pool.get());
-            else if (event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+            else if (scancode == SDL_SCANCODE_SPACE)
                 changeRandomEntity(ctx->pool.get());
+            else {
+                //fmt::print("pressed right");
+                auto pool = ctx->pool.get();
+                auto e = pool->createEntity();
+                e->add<InputComponent>(scancode);
+            }
         }
         if (event.type == SDL_MOUSEBUTTONDOWN) {
             //changeRandomEntity(ctx->pool.get());
@@ -470,6 +547,8 @@ int main(const int argc, const char* argv[])
     systems->add(pool->createSystem<PhysicsAppearanceSystem>());
     systems->add(mySystem);
     systems->addCreate<ClickSystem>(pool);
+    systems->addCreate<InputSystem>(pool);
+   // systems->addCreate<MoveSystem>(pool);
     systems->initialize();
 
     //for(unsigned int i = 0; i < 2; ++i) {
