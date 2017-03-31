@@ -21,8 +21,8 @@
 		784711761E780E27003817CA /* ISystem.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 784711621E780E27003817CA /* ISystem.hpp */; };
 		784711771E780E27003817CA /* Matcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 784711631E780E27003817CA /* Matcher.cpp */; };
 		784711781E780E27003817CA /* Matcher.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 784711641E780E27003817CA /* Matcher.hpp */; };
-		784711791E780E27003817CA /* Pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 784711651E780E27003817CA /* Pool.cpp */; };
-		7847117A1E780E27003817CA /* Pool.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 784711661E780E27003817CA /* Pool.hpp */; };
+		784711791E780E27003817CA /* Context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 784711651E780E27003817CA /* Context.cpp */; };
+		7847117A1E780E27003817CA /* Context.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 784711661E780E27003817CA /* Context.hpp */; };
 		7847117B1E780E27003817CA /* ReactiveSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 784711671E780E27003817CA /* ReactiveSystem.cpp */; };
 		7847117C1E780E27003817CA /* ReactiveSystem.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 784711681E780E27003817CA /* ReactiveSystem.hpp */; };
 		7847117D1E780E27003817CA /* SystemContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 784711691E780E27003817CA /* SystemContainer.cpp */; };
@@ -131,8 +131,8 @@
 		784711621E780E27003817CA /* ISystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ISystem.hpp; path = ../../../entitas/ISystem.hpp; sourceTree = "<group>"; };
 		784711631E780E27003817CA /* Matcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Matcher.cpp; path = ../../../entitas/Matcher.cpp; sourceTree = "<group>"; };
 		784711641E780E27003817CA /* Matcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Matcher.hpp; path = ../../../entitas/Matcher.hpp; sourceTree = "<group>"; };
-		784711651E780E27003817CA /* Pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Pool.cpp; path = ../../../entitas/Pool.cpp; sourceTree = "<group>"; };
-		784711661E780E27003817CA /* Pool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Pool.hpp; path = ../../../entitas/Pool.hpp; sourceTree = "<group>"; };
+		784711651E780E27003817CA /* Context.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Context.cpp; path = ../../../entitas/Context.cpp; sourceTree = "<group>"; };
+		784711661E780E27003817CA /* Context.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Context.hpp; path = ../../../entitas/Context.hpp; sourceTree = "<group>"; };
 		784711671E780E27003817CA /* ReactiveSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ReactiveSystem.cpp; path = ../../../entitas/ReactiveSystem.cpp; sourceTree = "<group>"; };
 		784711681E780E27003817CA /* ReactiveSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ReactiveSystem.hpp; path = ../../../entitas/ReactiveSystem.hpp; sourceTree = "<group>"; };
 		784711691E780E27003817CA /* SystemContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SystemContainer.cpp; path = ../../../entitas/SystemContainer.cpp; sourceTree = "<group>"; };
@@ -290,8 +290,8 @@
 				784711621E780E27003817CA /* ISystem.hpp */,
 				784711631E780E27003817CA /* Matcher.cpp */,
 				784711641E780E27003817CA /* Matcher.hpp */,
-				784711651E780E27003817CA /* Pool.cpp */,
-				784711661E780E27003817CA /* Pool.hpp */,
+				784711651E780E27003817CA /* Context.cpp */,
+				784711661E780E27003817CA /* Context.hpp */,
 				784711671E780E27003817CA /* ReactiveSystem.cpp */,
 				784711681E780E27003817CA /* ReactiveSystem.hpp */,
 				784711691E780E27003817CA /* SystemContainer.cpp */,
@@ -467,7 +467,7 @@
 				784711751E780E27003817CA /* IComponent.hpp in Headers */,
 				89CF22701E859C2B00BB59F6 /* Functional.hpp in Headers */,
 				7847116E1E780E27003817CA /* ComponentTypeId.hpp in Headers */,
-				7847117A1E780E27003817CA /* Pool.hpp in Headers */,
+				7847117A1E780E27003817CA /* Context.hpp in Headers */,
 				784711731E780E27003817CA /* Group.hpp in Headers */,
 				784711781E780E27003817CA /* Matcher.hpp in Headers */,
 				7847116F1E780E27003817CA /* Delegate.hpp in Headers */,
@@ -656,7 +656,7 @@
 				7847116D1E780E27003817CA /* ComponentTypeId.cpp in Sources */,
 				7847117D1E780E27003817CA /* SystemContainer.cpp in Sources */,
 				784711891E780F63003817CA /* Collector.cpp in Sources */,
-				784711791E780E27003817CA /* Pool.cpp in Sources */,
+				784711791E780E27003817CA /* Context.cpp in Sources */,
 				7847117B1E780E27003817CA /* ReactiveSystem.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

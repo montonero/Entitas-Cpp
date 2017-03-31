@@ -13,11 +13,11 @@
 namespace entitas {
 class ISystem;
 
-class Pool {
+class Context {
 public:
     static const unsigned kStartCreationIndex = 1;
-    Pool(const unsigned int startCreationIndex = kStartCreationIndex);
-    ~Pool();
+    Context(const unsigned int startCreationIndex = kStartCreationIndex);
+    ~Context();
 
     auto createEntity() -> EntityPtr;
     bool hasEntity(const EntityPtr& entity) const;
@@ -48,12 +48,12 @@ public:
     template <typename T>
     inline auto createSystem() -> std::shared_ptr<ISystem>;
 
-    using PoolChanged = Delegate<void(Pool* pool, EntityPtr entity)>;
-    using GroupChanged = Delegate<void(Pool* pool, Group::SharedPtr group)>;
+    using EntityChanged = Delegate<void(Context* context, EntityPtr entity)>;
+    using GroupChanged = Delegate<void(Context* context, Group::SharedPtr group)>;
 
-    PoolChanged onEntityCreated;
-    PoolChanged onEntityWillBeDestroyed;
-    PoolChanged onEntityDestroyed;
+    EntityChanged onEntityCreated;
+    EntityChanged onEntityWillBeDestroyed;
+    EntityChanged onEntityDestroyed;
 
     GroupChanged onGroupCreated;
     GroupChanged onGroupCleared;
@@ -82,7 +82,7 @@ private:
 };
 
 template <typename T>
-auto Pool::createSystem() -> std::shared_ptr<ISystem>
+auto Context::createSystem() -> std::shared_ptr<ISystem>
 {
     return createSystem(std::dynamic_pointer_cast<ISystem>(std::make_shared<T>()));
 }

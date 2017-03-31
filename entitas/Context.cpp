@@ -3,7 +3,7 @@
 // License: MIT License
 // MIT License web page: https://opensource.org/licenses/MIT
 
-#include "Pool.hpp"
+#include "Context.hpp"
 #include "Entity.hpp"
 #include "Functional.hpp"
 #include "ISystem.hpp"
@@ -13,13 +13,13 @@
 #include <utility>
 
 namespace entitas {
-Pool::Pool(const unsigned int startCreationIndex)
+Context::Context(const unsigned int startCreationIndex)
 {
     creationIndex_ = startCreationIndex;
-    onEntityReleasedCache_ = std::bind(&Pool::onEntityReleased, this, std::placeholders::_1);
+    onEntityReleasedCache_ = std::bind(&Context::onEntityReleased, this, std::placeholders::_1);
 }
 
-Pool::~Pool()
+Context::~Context()
 {
     reset();
 
@@ -45,7 +45,7 @@ Pool::~Pool()
 }
 /// Creates a new entity or gets a reusable entity from the
 /// internal ObjectPool for entities.
-auto Pool::createEntity() -> EntityPtr
+auto Context::createEntity() -> EntityPtr
 {
     EntityPtr entity;
 
@@ -61,8 +61,7 @@ auto Pool::createEntity() -> EntityPtr
     }
 
     entity->setInstance(entity);
-    entity->enabled_ = true;
-    entity->uuid_ = creationIndex_++;
+    entity->reactivate(creationIndex_++);
 
     entities_.insert(entity);
     entitiesCache_.clear();
@@ -89,18 +88,18 @@ auto Pool::createEntity() -> EntityPtr
     return entity;
 }
 
-bool Pool::hasEntity(const EntityPtr& entity) const
+bool Context::hasEntity(const EntityPtr& entity) const
 {
     //return std::find(entities_.begin(), entities_.end(), entity) != entities_.end();
     return doesExist(entities_, entity);
 }
 
-void Pool::destroyEntity(EntityPtr entity)
+void Context::destroyEntity(EntityPtr entity)
 {
     auto removed = entities_.erase(entity);
 
     if (!removed) {
-        throw std::runtime_error("Error, cannot destroy entity. Pool does not contain entity.");
+        throw std::runtime_error("Error, cannot destroy entity. Context does not contain entity.");
     }
 
     entitiesCache_.clear();
@@ -117,7 +116,7 @@ void Pool::destroyEntity(EntityPtr entity)
     }
 }
 
-void Pool::destroyAllEntities()
+void Context::destroyAllEntities()
 {
     {
         auto entitiesTemp = Entities(entities_.begin(), entities_.end());
@@ -131,12 +130,12 @@ void Pool::destroyAllEntities()
     entities_.clear();
 
     if (!retainedEntities_.empty()) {
-        // Try calling Pool.clearGroups() and SystemContainer.clearReactiveSystems() before calling pool.destroyAllEntities() to avoid memory leaks
-        //throw std::runtime_error("Error, pool detected retained entities although all entities got destroyed. Did you release all entities?");
+        // Try calling Context.clearGroups() and SystemContainer.clearReactiveSystems() before calling context.destroyAllEntities() to avoid memory leaks
+        //throw std::runtime_error("Error, context detected retained entities although all entities got destroyed. Did you release all entities?");
     }
 }
 
-Entities& Pool::getEntities()
+Entities& Context::getEntities()
 {
     if (entitiesCache_.empty()) {
         entitiesCache_ = Entities(entities_.begin(), entities_.end());
@@ -144,12 +143,12 @@ Entities& Pool::getEntities()
     return entitiesCache_;
 }
 
-Entities& Pool::getEntities(const Matcher matcher)
+Entities& Context::getEntities(const Matcher matcher)
 {
     return getGroup(matcher)->getEntities();
 }
 
-auto Pool::getGroup(Matcher matcher) -> Group::SharedPtr
+auto Context::getGroup(Matcher matcher) -> Group::SharedPtr
 {
     Group::SharedPtr group;
     auto it = groups_.find(matcher);
@@ -157,7 +156,7 @@ auto Pool::getGroup(Matcher matcher) -> Group::SharedPtr
         group.reset(new Group(matcher));
         group->setInstance(group);
 
-        // 'Handle' all entities that are already in a pool
+        // 'Handle' all entities that are already in a context
         // Thus if the group is created later it will still be able to 'handle'
         // previously created entities
         auto& entities = getEntities();
@@ -177,7 +176,7 @@ auto Pool::getGroup(Matcher matcher) -> Group::SharedPtr
     return group;
 }
 
-void Pool::clearGroups()
+void Context::clearGroups()
 {
     for (const auto& it : groups_) {
         it.second->removeAllEventHandlers();
@@ -193,47 +192,47 @@ void Pool::clearGroups()
     groupsForIndex_.clear();
 }
 
-void Pool::resetCreationIndex()
+void Context::resetCreationIndex()
 {
     creationIndex_ = kStartCreationIndex;
 }
 
-void Pool::clearComponentPool(const ComponentId index)
+void Context::clearComponentPool(const ComponentId index)
 {
     while (!componentPools_.at(index).empty()) {
         componentPools_.at(index).pop();
     }
 }
 
-void Pool::clearComponentPools()
+void Context::clearComponentPools()
 {
     for_each(componentPools_,
         [this](const auto& pair) { clearComponentPool(pair.first); });
 }
 
-void Pool::reset()
+void Context::reset()
 {
     clearGroups();
     destroyAllEntities();
     resetCreationIndex();
 }
 
-auto Pool::count() const -> unsigned int
+auto Context::count() const -> unsigned int
 {
     return entities_.size();
 }
 
-auto Pool::getReusableEntitiesCount() const -> unsigned int
+auto Context::getReusableEntitiesCount() const -> unsigned int
 {
     return reusableEntities_.size();
 }
 
-auto Pool::getRetainedEntitiesCount() const -> unsigned int
+auto Context::getRetainedEntitiesCount() const -> unsigned int
 {
     return retainedEntities_.size();
 }
 
-auto Pool::createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>
+auto Context::createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISystem>
 {
     using std::dynamic_pointer_cast;
     if (auto systemSetPool = dynamic_pointer_cast<ISetPoolSystem>(system)) {
@@ -252,7 +251,7 @@ auto Pool::createSystem(std::shared_ptr<ISystem> system) -> std::shared_ptr<ISys
     return system;
 }
 
-void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)
+void Context::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId index, IComponent* component)
 {
     if (groupsForIndex_.find(index) == groupsForIndex_.end()) {
         return;
@@ -285,7 +284,7 @@ void Pool::updateGroupsComponentAddedOrRemoved(EntityPtr entity, ComponentId ind
     }
 }
 
-void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
+void Context::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent)
 {
     if (groupsForIndex_.find(index) == groupsForIndex_.end()) {
         return;
@@ -296,7 +295,7 @@ void Pool::updateGroupsComponentReplaced(EntityPtr entity, ComponentId index, IC
         [=](const auto& g) { g.lock()->updateEntity(entity, index, previousComponent, newComponent); });
 }
 
-void Pool::onEntityReleased(Entity* entity)
+void Context::onEntityReleased(Entity* entity)
 {
     if (entity->enabled_) {
         throw std::runtime_error("Error, cannot release entity. Entity is not destroyed yet.");

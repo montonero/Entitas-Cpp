@@ -3,21 +3,21 @@
 // MIT License web page: https://opensource.org/licenses/MIT
 
 #include "ReactiveSystem.hpp"
-#include "Pool.hpp"
+#include "Context.hpp"
 #include "TriggerOnEvent.hpp"
 
 namespace entitas {
-ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveSystem> subsystem)
-    : ReactiveSystem(pool, subsystem, std::vector<TriggerOnEvent>{ subsystem->trigger })
+ReactiveSystem::ReactiveSystem(Context* context, std::shared_ptr<IReactiveSystem> subsystem)
+    : ReactiveSystem(context, subsystem, std::vector<TriggerOnEvent>{ subsystem->trigger })
 {
 }
 
-ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IMultiReactiveSystem> subsystem)
-    : ReactiveSystem(pool, subsystem, subsystem->triggers)
+ReactiveSystem::ReactiveSystem(Context* context, std::shared_ptr<IMultiReactiveSystem> subsystem)
+    : ReactiveSystem(context, subsystem, subsystem->triggers)
 {
 }
 
-ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSystem> subsystem, std::vector<TriggerOnEvent> triggers)
+ReactiveSystem::ReactiveSystem(Context* context, std::shared_ptr<IReactiveExecuteSystem> subsystem, std::vector<TriggerOnEvent> triggers)
     : subsystem_{ subsystem }
 {
     using std::dynamic_pointer_cast;
@@ -41,14 +41,14 @@ ReactiveSystem::ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSyste
 
     for (unsigned int i = 0; i < triggersLength; ++i) {
         auto trigger = triggers[i];
-        groups[i] = pool->getGroup(trigger.trigger);
+        groups[i] = context->getGroup(trigger.trigger);
         eventTypes[i] = trigger.eventType;
     }
 
 #if 0
     for_each(triggers, [&](auto& trigger)
              {
-                 groups.push_back(pool->getGroup(trigger));
+                 groups.push_back(context->getGroup(trigger));
                  eventTypes.push_back(trigger.eventType);
              });
 #endif

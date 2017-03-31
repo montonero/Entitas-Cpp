@@ -1,6 +1,6 @@
 #include "entitas/ISystem.hpp"
 #include "entitas/Matcher.hpp"
-#include "entitas/Pool.hpp"
+#include "entitas/Context.hpp"
 #include "entitas/SystemContainer.hpp"
 #include <iostream>
 
@@ -20,9 +20,9 @@ public:
 
 class DemoSystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem {
 public:
-    void setPool(Pool* pool)
+    void setPool(Context* context)
     {
-        mPool = pool;
+        mPool = context;
     }
 
     void initialize()
@@ -42,7 +42,7 @@ public:
     }
 
 private:
-    Pool* mPool;
+    Context* mPool;
 };
 
 class Position : public IComponent {
@@ -77,11 +77,11 @@ class MoveSystem : public IExecuteSystem, public ISetPoolSystem {
     Group::SharedPtr _group;
 
 public:
-    void setPool(Pool* pool)
+    void setPool(Context* context)
     {
-        //_group = pool->getGroup(Matcher_allOf(Move, Position));
+        //_group = context->getGroup(Matcher_allOf(Move, Position));
         auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(Move), COMPONENT_GET_TYPE_ID(Position) });
-        _group = pool->getGroup(matcher);
+        _group = context->getGroup(matcher);
     }
 
     void execute()
@@ -98,9 +98,9 @@ public:
 int main(const int argc, const char* argv[])
 {
     auto systems = std::make_shared<SystemContainer>();
-    auto pool = std::make_shared<Pool>();
+    auto context = std::make_shared<Context>();
 
-    systems->add(pool->createSystem<DemoSystem>());
+    systems->add(context->createSystem<DemoSystem>());
     systems->initialize();
 
     for (unsigned int i = 0; i < 2; ++i) {
@@ -108,7 +108,7 @@ int main(const int argc, const char* argv[])
     }
 
 #ifndef WIN32
-    auto entities = pool->getEntities(Matcher_allOf(RenderComponent, Position)); // *Some magic preprocessor involved*
+    auto entities = context->getEntities(Matcher_allOf(RenderComponent, Position)); // *Some magic preprocessor involved*
     for (auto& e : entities) { // e is a shared_ptr of Entity
         // do something
     }

@@ -21,7 +21,7 @@ using Entities = std::vector<EntityPtr>;
 /// It will automatically add entities that match the matcher or
 /// remove entities as soon as they don't match the matcher anymore.
 class Group {
-    friend class Pool;
+    friend class Context;
 
 public:
     using SharedPtr = std::shared_ptr<Group>;
@@ -58,7 +58,7 @@ protected:
     // Does not call callback
     void handleEntitySilently(EntityPtr entity);
     void handleEntity(EntityPtr entity, ComponentId index, IComponent* component);
-    /// Called by context/pool
+    /// Called by context
     void updateEntity(EntityPtr entity, ComponentId index, IComponent* previousComponent, IComponent* newComponent);
     void removeAllEventHandlers();
 

@@ -12,7 +12,7 @@
 #include <vector>
 
 namespace entitas {
-class Pool;
+class Context;
 
 class ISystem {
 protected:
@@ -29,7 +29,7 @@ protected:
 public:
     virtual ~ISetPoolSystem() = default;
 
-    virtual void setPool(Pool* pool) = 0;
+    virtual void setPool(Context* context) = 0;
 };
 
 class IInitializeSystem {

@@ -10,9 +10,9 @@
 namespace entitas {
 class ReactiveSystem : public IExecuteSystem {
 public:
-    ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveSystem> subsystem);
-    ReactiveSystem(Pool* pool, std::shared_ptr<IMultiReactiveSystem> subsystem);
-    ReactiveSystem(Pool* pool, std::shared_ptr<IReactiveExecuteSystem> subsystem, std::vector<TriggerOnEvent> triggers);
+    ReactiveSystem(Context* context, std::shared_ptr<IReactiveSystem> subsystem);
+    ReactiveSystem(Context* context, std::shared_ptr<IMultiReactiveSystem> subsystem);
+    ReactiveSystem(Context* context, std::shared_ptr<IReactiveExecuteSystem> subsystem, std::vector<TriggerOnEvent> triggers);
     ~ReactiveSystem();
 
     auto getSubsystem() const -> std::shared_ptr<IReactiveExecuteSystem>;

@@ -1,7 +1,7 @@
 #include "entitas/Collector.hpp"
 #include "entitas/ISystem.hpp"
 #include "entitas/Matcher.hpp"
-#include "entitas/Pool.hpp"
+#include "entitas/Context.hpp"
 #include "entitas/SystemContainer.hpp"
 
 //#include <iostream>
@@ -59,15 +59,15 @@ Iter select_randomly(Iter start, Iter end)
     return select_randomly(start, end, gen);
 }
 // TODO move to entitas
-entitas::EntityPtr randomEntity(Pool& pool)
+entitas::EntityPtr randomEntity(Context& context)
 {
-    auto es = pool.getEntities();
+    auto es = context.getEntities();
     auto randomEntity = *select_randomly(es.begin(), es.end());
     return randomEntity;
 }
-entitas::EntityPtr randomEntity(Pool& pool, entitas::Matcher matcher)
+entitas::EntityPtr randomEntity(Context& context, entitas::Matcher matcher)
 {
-    auto es = pool.getEntities(matcher);
+    auto es = context.getEntities(matcher);
     auto randomEntity = *select_randomly(es.begin(), es.end());
     return randomEntity;
 }
@@ -156,7 +156,7 @@ class MoveSystem : public IExecuteSystem, public ISetPoolSystem {
     Group::SharedPtr _group;
 
 public:
-    void setPool(Pool* pool)
+    void setPool(Context* context)
     {
         auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(MoveComponent), COMPONENT_GET_TYPE_ID(AppearanceComponent) });
     }
@@ -228,19 +228,19 @@ protected:
     Group::SharedPtr group_;
 
 public:
-    Pool* pool_{ nullptr };
+    Context* context_{ nullptr };
     ClickSystem()
     {
         trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(ClickComponent) })).onEntityAdded();
     }
     void initialize() override
     {
-        group_ = pool_->getGroup(Matcher::allOf({ COMPONENT_GET_TYPE_ID(AppearanceComponent) }));
+        group_ = context_->getGroup(Matcher::allOf({ COMPONENT_GET_TYPE_ID(AppearanceComponent) }));
     }
 
-    void setPool(Pool* pool) override
+    void setPool(Context* context) override
     {
-        pool_ = pool;
+        context_ = context;
     }
     void execute(Entities& entities) override
     {
@@ -253,10 +253,10 @@ public:
                 auto sizeE = ep->get<AppearanceComponent>()->size_;
                 auto botRight = posE + sizeE;
                 if ((pos.x() >= posE.x()) && (pos.x() <= botRight.x()) && (pos.y() >= posE.y()) && (pos.y() <= botRight.y()))
-                    pool_->destroyEntity(ep);
+                    context_->destroyEntity(ep);
             }
 
-            pool_->destroyEntity(e);
+            context_->destroyEntity(e);
             // auto ren = e->get<RenderComponent>();
             // ren->position = pos->position_;
         }
@@ -279,19 +279,19 @@ protected:
     //Group::SharedPtr group_;
     
 public:
-    Pool* pool_{ nullptr };
+    Context* context_{ nullptr };
     InputSystem()
     {
         trigger = (Matcher::allOf({ COMPONENT_GET_TYPE_ID(InputComponent) })).onEntityAdded();
     }
     void initialize() override
     {
-        //group_ = pool_->getGroup(Matcher::allOf({ COMPONENT_GET_TYPE_ID(Component) }));
+        //group_ = context_->getGroup(Matcher::allOf({ COMPONENT_GET_TYPE_ID(Component) }));
     }
     
-    void setPool(Pool* pool) override
+    void setPool(Context* context) override
     {
-        pool_ = pool;
+        context_ = context;
     }
     void execute(Entities& entities) override
     {
@@ -300,11 +300,11 @@ public:
             static auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(MoveComponent) });
             auto pos = e->get<InputComponent>()->code_;
             
-            auto e2 = randomEntity(*pool_, matcher);
+            auto e2 = randomEntity(*context_, matcher);
             auto moveComp = e2->get<MoveComponent>();
             e2->replace<MoveComponent>(Vec2{3.f, 1.f}, 1.f);
             
-            pool_->destroyEntity(e);
+            context_->destroyEntity(e);
             // auto ren = e->get<RenderComponent>();
             // ren->position = pos->position_;
         }
@@ -368,22 +368,22 @@ Vec2 randomVec2Size()
 
 /* -------------------------------------------------------------------------- */
 // Random Entity with Color, AppearanceComponent and Size
-void addRandomEntity(Pool* pool)
+void addRandomEntity(Context* context)
 {
-    auto e = pool->createEntity();
+    auto e = context->createEntity();
     e->add<RenderComponent>(randomColor());
     e->add<PhysicsComponent>(randomVec2Pos(), randomVec2Size());
     e->add<AppearanceComponent>(randomVec2Pos(), randomVec2Size());
     e->add<MoveComponent>(Vec2(0.f), 0.f);
     //e->add<Appearance>(randomVec2Size());
     e->add<LifeComponent>(1);
-    auto r = pool->hasEntity(e);
+    auto r = context->hasEntity(e);
     //std::cout << r;
 }
 
-void changeRandomEntity(Pool* pool)
+void changeRandomEntity(Context* context)
 {
-    auto entity = randomEntity(*pool);
+    auto entity = randomEntity(*context);
     auto comp = entity->get<PhysicsComponent>()->dimension_;
     entity->replace<PhysicsComponent>(randomVec2Pos(), comp);
 }
@@ -391,11 +391,11 @@ void changeRandomEntity(Pool* pool)
 // This is actually render system as it renders our quads
 class MySystem : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem, public ICleanupSystem, public ITearDownSystem {
 public:
-    void setPool(Pool* pool)
+    void setPool(Context* context)
     {
-        pool_ = pool;
+        context_ = context;
         auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent) });
-        group_ = pool_->getGroup(matcher);
+        group_ = context_->getGroup(matcher);
         collector_ = group_->createCollector(GroupEventType::Added);
         //collector_->activate();
         fmt::print("MySystem::setPool called\n");
@@ -403,7 +403,7 @@ public:
 
     void initialize() override
     {
-        //addRandomEntity(pool_);
+        //addRandomEntity(context_);
         fmt::print("MySystem initialized\n");
     }
 
@@ -437,7 +437,7 @@ public:
 
 private:
     sdl::Renderer* renderer_{ nullptr };
-    Pool* pool_{ nullptr };
+    Context* context_{ nullptr };
     Group::SharedPtr group_;
     // test
     std::shared_ptr<Collector> collector_;
@@ -454,7 +454,7 @@ struct MainLoopContext {
     sdl::Renderer* renderer;
 
     std::shared_ptr<SystemContainer> systems;
-    std::shared_ptr<Pool> pool;
+    std::shared_ptr<Context> context;
     std::shared_ptr<ISystem> mySystem;
 
     int done{ 0 };
@@ -477,24 +477,24 @@ void mainLoop(void* vctx)
         if (event.type == SDL_KEYDOWN) {
             auto scancode = event.key.keysym.scancode;
             if (scancode == SDL_SCANCODE_A)
-                addRandomEntity(ctx->pool.get());
+                addRandomEntity(ctx->context.get());
             else if (scancode == SDL_SCANCODE_SPACE)
-                changeRandomEntity(ctx->pool.get());
+                changeRandomEntity(ctx->context.get());
             else {
                 //fmt::print("pressed right");
-                auto pool = ctx->pool.get();
-                auto e = pool->createEntity();
+                auto context = ctx->context.get();
+                auto e = context->createEntity();
                 e->add<InputComponent>(scancode);
             }
         }
         if (event.type == SDL_MOUSEBUTTONDOWN) {
-            //changeRandomEntity(ctx->pool.get());
+            //changeRandomEntity(ctx->context.get());
         }
         if (event.type == SDL_MOUSEBUTTONUP) {
             auto x = event.button.x;
             auto y = event.button.y;
-            auto pool = ctx->pool.get();
-            auto e = pool->createEntity();
+            auto context = ctx->context.get();
+            auto e = context->createEntity();
             e->add<ClickComponent>(Vec2(x, y));
             fmt::print("Button clicked at {} {}\n", x, y);
         }
@@ -539,16 +539,16 @@ void mainLoop(void* vctx)
 int main(const int argc, const char* argv[])
 {
     auto systems = std::make_shared<SystemContainer>();
-    auto pool = std::make_shared<Pool>();
+    auto context = std::make_shared<Context>();
 
-    auto mySystem = pool->createSystem<MySystem>();
+    auto mySystem = context->createSystem<MySystem>();
 
-    systems->add(pool->createSystem<RenderAppearanceSystem>());
-    systems->add(pool->createSystem<PhysicsAppearanceSystem>());
+    systems->add(context->createSystem<RenderAppearanceSystem>());
+    systems->add(context->createSystem<PhysicsAppearanceSystem>());
     systems->add(mySystem);
-    systems->addCreate<ClickSystem>(pool);
-    systems->addCreate<InputSystem>(pool);
-   // systems->addCreate<MoveSystem>(pool);
+    systems->addCreate<ClickSystem>(context);
+    systems->addCreate<InputSystem>(context);
+   // systems->addCreate<MoveSystem>(context);
     systems->initialize();
 
     //for(unsigned int i = 0; i < 2; ++i) {
@@ -558,7 +558,7 @@ int main(const int argc, const char* argv[])
     fmt::print("All systems initilized.\n");
 
     auto matcher = Matcher::allOf({ COMPONENT_GET_TYPE_ID(RenderComponent), COMPONENT_GET_TYPE_ID(AppearanceComponent) });
-    auto entities = pool->getEntities(matcher);
+    auto entities = context->getEntities(matcher);
 #if 0
     for (auto& e : entities) { // e is a shared_ptr of Entity
         // do something
@@ -591,7 +591,7 @@ int main(const int argc, const char* argv[])
 
     auto ctx = new MainLoopContext{
         std::move(w), renderer,
-        systems, pool, mySystem,
+        systems, context, mySystem,
         0, std::make_shared<sdl::Sprite>(std::move(snowSprite))
     };
 //std::cout << "Context created.\n";

@@ -25,11 +25,13 @@ using ComponentPools = std::map<ComponentId, ComponentPool>;
 /// context.DestroyEntity() to destroy it.
 /// You can add, replace and remove IComponent to an entity.
 class Entity {
-    friend class Pool;
+    friend class Context;
 
 public:
     Entity(ComponentPools& componentPools)
         : componentPools_{ componentPools } {};
+    
+
 
     ~Entity()
     {
@@ -91,6 +93,12 @@ protected:
     template <typename T, typename... TArgs>
     inline auto createComponent(TArgs&&... args) -> IComponent*;
 
+    void reactivate(unsigned creationIndex)
+    {
+        enabled_ = true;
+        uuid_ = creationIndex;
+    }
+    
     unsigned int uuid_{ 0 };
     bool enabled_{ true };
 

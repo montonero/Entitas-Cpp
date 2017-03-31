@@ -5,7 +5,7 @@
 #pragma once
 
 #include "ISystem.hpp"
-#include "Pool.hpp"
+#include "Context.hpp"
 #include <vector>
 
 namespace entitas {
@@ -17,7 +17,7 @@ public:
     template <typename T>
     inline auto add() -> SystemContainer*;
     template <typename T>
-    inline SystemContainer* addCreate(std::shared_ptr<Pool> pool);
+    inline SystemContainer* addCreate(std::shared_ptr<Context> context);
 
     void initialize() override;
     void execute() override;
@@ -49,9 +49,9 @@ auto SystemContainer::add() -> SystemContainer*
 }
 
 template <typename T>
-SystemContainer* SystemContainer::addCreate(std::shared_ptr<Pool> pool)
+SystemContainer* SystemContainer::addCreate(std::shared_ptr<Context> context)
 {
-    return add(pool->createSystem<T>());
+    return add(context->createSystem<T>());
 }
 
 } // namespace entitas
